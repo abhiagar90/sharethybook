@@ -4,7 +4,7 @@
         <p>Details here. Write out here.</p>
         <p>Some more details</p>
         
-        <form action="#" method="post" class="form">
+        <form action="#" method="get" class="form">
         
             <p class="col_50">
               <label for="name">Simple name:</label><br/>
