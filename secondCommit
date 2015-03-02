@@ -4,4 +4,4 @@ git status --to check changes done locally on ur system
  
 git commit -a -m "third commit"  --To commit locally
 
-git push --to push changes commited on server
+git add filename --to push changes commited on server
