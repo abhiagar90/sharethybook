@@ -19,7 +19,7 @@ public class Refer {
         try {
             Class.forName("org.postgresql.Driver");
             c = DriverManager
-                    .getConnection("jdbc:postgresql://localhost:5432/test1",
+                    .getConnection("jdbc:postgresql://localhost:5432/library",
                             "postgres", "password");
             c.close();
         } catch (Exception e) {
