@@ -1,0 +1,7 @@
+git clone https://github.com/abhiagar90/sharethybook.git --to clone alreadty setuped git directory
+
+git status --to check changes done locally on ur system
+ 
+git commit -a -m "third commit"  --To commit locally
+
+git push --to push changes commited on server
