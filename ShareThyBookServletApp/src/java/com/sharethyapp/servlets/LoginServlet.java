@@ -1,3 +1,5 @@
+package com.sharethyapp.servlets;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -6,6 +8,7 @@
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -15,7 +18,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author abhishek
  */
-public class DummyServlet extends HttpServlet {
+public class LoginServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -31,16 +34,14 @@ public class DummyServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
         try {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet DummyServlet</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet DummyServlet at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
+            String email = request.getParameter("email");
+            String passwd = request.getParameter("passwd");
+            request.setAttribute("email", email);
+            request.setAttribute("passwd", passwd);
+
+            RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/dummyResponse.jsp");
+            dispatcher.forward(request, response);
+            
         } finally {
             out.close();
         }
