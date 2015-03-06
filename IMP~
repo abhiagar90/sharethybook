@@ -27,7 +27,7 @@ CREATE TABLE ContactNumbers(
 EntryNumber varchar(12) REFERENCES UserTable(EntryNumber) ON DELETE CASCADE,
 MobileNumber char(10),
 Type char(1)
-CONSTRAINT PhoneNoCons CHECK(MobileNumber ~ '[7-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]'),
+CONSTRAINT PhoneNoCons CHECK(PhoneNumber ~ '[7-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]'),
 CONSTRAINT TypeCons CHECK(Type ~* 'W|O|H'));
 
 CREATE TABLE MasterBooks (

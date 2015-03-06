@@ -35,13 +35,13 @@ public class TestDemo {
               
          stmt = c.createStatement();
          
-         BufferedReader br1 = new BufferedReader(new FileReader("//home//reshma//Reshma//Sem2//DataBase//Assignments//Project1//sharethybook//indianNames2.csv"));
-         BufferedReader br2 = new BufferedReader(new FileReader("//home//reshma//Reshma//Sem2//DataBase//Assignments//Project1//sharethybook//indiansurnames.csv"));
+         BufferedReader br1 = new BufferedReader(new FileReader("indianNames2.csv"));
+         BufferedReader br2 = new BufferedReader(new FileReader("indiansurnames.csv"));
             try {
                 String firstName = br1.readLine();
                 String LastName = br2.readLine();
                 
-                File file = new File("//home//reshma//Reshma//Sem2//DataBase//Assignments//Project1//sharethybook//Anonymous.png");
+                File file = new File("Anonymous.png");
                 FileInputStream fis = null;
              
                 String prepQuery="Insert into UserTable Values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
