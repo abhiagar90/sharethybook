@@ -43,7 +43,7 @@ CONSTRAINT RatingCons CHECK(Rating >=0 AND Rating<6)
 update masterbooks set year=1800 where year=0;
 //
  COPY masterbooks from '/home/abhishek/Desktop/database/project1/BX-CSV-Dump2/PhysicalFinal6.csv' with delimiter '|' csv header encoding 'latin1' quote '"';
-//
+// from works.zip
 
 CREATE TABLE MasterBooksImages(
 ISBN varchar(13) REFERENCES MasterBooks(ISBN) ON DELETE CASCADE,
@@ -61,13 +61,17 @@ CONSTRAINT BookCondCons CHECK(LastCondition ~* 'D|O|G|E')
 
 CREATE TABLE Authors(
 AuthorID SERIAL NOT NULL UNIQUE,
-AuthorName VARCHAR(100) NOT NULL
+AuthorName VARCHAR(300) NOT NULL
 );
+
+Use this:COPY Authors from '/home/abhishek/Desktop/database/project1/BX-CSV-Dump/AuthorFinal2.csv' with delimiter '|' csv header encoding 'latin1' quote '"'; 
 
 CREATE TABLE BooksWrittenBy(
 ISBN VARCHAR(13) REFERENCES MasterBooks(ISBN),
 AuthorID INT REFERENCES Authors(AuthorID)
 );
+
+COPY BooksWrittenBy from '/home/abhishek/Desktop/database/project1/BX-CSV-Dump/ISBNAuthor.csv' with delimiter '|' csv header encoding 'latin1' quote '"';
 
 CREATE TABLE Transactions(
 TransactionID VARCHAR(30) PRIMARY KEY,

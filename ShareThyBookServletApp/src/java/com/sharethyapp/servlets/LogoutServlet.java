@@ -1,13 +1,11 @@
-package com.sharethyapp.servlets;
-
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-import com.sharethyapp.helper.LoginHelper;
+package com.sharethyapp.servlets;
+
 import java.io.IOException;
-import java.io.PrintWriter;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -18,7 +16,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author abhishek
  */
-public class LoginServlet extends HttpServlet {
+public class LogoutServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -31,26 +29,9 @@ public class LoginServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        PrintWriter out = response.getWriter();
-        try {
-            String entrynum = request.getParameter("entrynumber");
-            String passwd = request.getParameter("passwd");
-
-            if (new LoginHelper().verifyLogin(entrynum, passwd)) {
-                request.getSession().setAttribute("entrynumber", entrynum);
-                RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/welcome.jsp");
-                dispatcher.forward(request, response);
-            } else {
-                request.getSession().setAttribute("entrynumber", "NA");
-                request.setAttribute("error", "Entrynumber or password incorrect");
-                RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/login.jsp");
-                dispatcher.forward(request, response);
-            }
-
-        } finally {
-            out.close();
-        }
+        request.getSession().invalidate();
+        RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/welcome.jsp");
+        dispatcher.forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

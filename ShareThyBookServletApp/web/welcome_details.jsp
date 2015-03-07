@@ -10,7 +10,10 @@
         <p>Blah Blah Blah</p>
         <p>Its free, crowd-sourced, blah, blah!!</p>
         <p> 
-            <a href="signup.jsp">Sign up here</a>
+            <%if (!(request.getSession().getAttribute("entrynumber") != null
+                        && request.getSession().getAttribute("entrynumber") != "NA")) {%>
+                   <a href="signup.jsp">Sign up here</a> 
+            <%}%>
         </p>
     </div>
 </article>
