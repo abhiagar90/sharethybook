@@ -11,7 +11,7 @@
         <p>Its free, crowd-sourced, blah, blah!!</p>
         <p> 
             <%if (!(request.getSession().getAttribute("entrynumber") != null
-                        && request.getSession().getAttribute("entrynumber") != "NA")) {%>
+                        && !request.getSession().getAttribute("entrynumber").equals("NA"))) {%>
                    <a href="signup.jsp">Sign up here</a> 
             <%}%>
         </p>

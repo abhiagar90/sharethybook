@@ -31,26 +31,20 @@ public class LoginServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        PrintWriter out = response.getWriter();
-        try {
-            String entrynum = request.getParameter("entrynumber");
-            String passwd = request.getParameter("passwd");
+        String entrynum = request.getParameter("entrynumber").toUpperCase();
+        String passwd = request.getParameter("passwd");
 
-            if (new LoginHelper().verifyLogin(entrynum, passwd)) {
-                request.getSession().setAttribute("entrynumber", entrynum);
-                RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/welcome.jsp");
-                dispatcher.forward(request, response);
-            } else {
-                request.getSession().setAttribute("entrynumber", "NA");
-                request.setAttribute("error", "Entrynumber or password incorrect");
-                RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/login.jsp");
-                dispatcher.forward(request, response);
-            }
-
-        } finally {
-            out.close();
+        if (new LoginHelper().verifyLogin(entrynum, passwd)) {
+            request.getSession().setAttribute("entrynumber", entrynum);
+            RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/welcome.jsp");
+            dispatcher.forward(request, response);
+        } else {
+            request.getSession().setAttribute("entrynumber", "NA");
+            request.setAttribute("error", "Entrynumber or password incorrect");
+            RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/login.jsp");
+            dispatcher.forward(request, response);
         }
+
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

@@ -5,7 +5,11 @@
  */
 package com.sharethyapp.servlets;
 
+import com.sharethyapp.dbclasses.UserTable;
+import com.sharethyapp.dbclasses.UserTableDB;
+import com.sharethyapp.helper.SessionHelper;
 import java.io.IOException;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -28,7 +32,21 @@ public class ProfileServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+        if(SessionHelper.isLoggedIn(request))
+        {
+            UserTable user=new UserTableDB().getDetailsfromEntryNum((String)request.getSession()
+                    .getAttribute("entrynumber"));
+            RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/profile.jsp");
+            dispatcher.forward(request, response);
+            //TODO: profile.jsp
+            //and update welcome and onemore jsp to use SessionHelper
+        }
+        else
+        {
+            //TODO: set an error msg in request
+            RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/welcome.jsp");
+            dispatcher.forward(request, response);
+        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

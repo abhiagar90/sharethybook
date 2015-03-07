@@ -2,7 +2,7 @@
     <div class="col_100">
         <h1>Login</h1>
         <%if (!(request.getSession().getAttribute("entrynumber") != null
-                        && request.getSession().getAttribute("entrynumber") != "NA")) {%>
+                        && !request.getSession().getAttribute("entrynumber").equals("NA"))) {%>
                    
         <form action="login.do" method="post" class="form">
         
