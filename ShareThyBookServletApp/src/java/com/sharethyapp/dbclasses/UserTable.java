@@ -26,7 +26,7 @@ public class UserTable {
     private int unreadMsgs;
     private int booksContri;
     private int booksHave;
-    private byte[] profileImgage;
+    private byte[] profileImage;
 
     public String getEntrynumber() {
         return entrynumber;
@@ -148,12 +148,12 @@ public class UserTable {
         this.booksHave = booksHave;
     }
 
-    public byte[] getProfileImgage() {
-        return profileImgage;
+    public byte[] getProfileImage() {
+        return profileImage;
     }
 
-    public void setProfileImgage(byte[] profileImgage) {
-        this.profileImgage = profileImgage;
+    public void setProfileImage(byte[] profileImage) {
+        this.profileImage = profileImage;
     }
     
     

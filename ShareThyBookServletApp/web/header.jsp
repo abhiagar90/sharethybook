@@ -7,7 +7,7 @@
 
             <%if (request.getSession().getAttribute("entrynumber") != null
                         && request.getSession().getAttribute("entrynumber") != "NA") {%>
-                    <li class="active">${sessionScope.entrynumber}</li>
+                    <li class="active"><a href="profile.do?entrynumber=${entrynumber}">${sessionScope.entrynumber}</a></li>
                     <li class="active"><a href="logout.do">Logout</a></li>
             <%} else {%>
                     <li class="active"><a href="login.jsp">Login</a></li>

@@ -7,19 +7,23 @@ package com.sharethyapp.servlets;
 
 import com.sharethyapp.dbclasses.UserTable;
 import com.sharethyapp.dbclasses.UserTableDB;
+import java.awt.image.BufferedImage;
+import java.io.BufferedInputStream;
 import java.io.IOException;
-import javax.servlet.RequestDispatcher;
+import java.io.OutputStream;
+import java.io.PrintWriter;
+import javax.imageio.ImageIO;
+import javax.imageio.stream.ImageInputStream;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.swing.ImageIcon;
 
 /**
  *
  * @author abhishek
  */
-public class ProfileServlet extends HttpServlet {
+public class ProfileImageServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -32,33 +36,19 @@ public class ProfileServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-            String entrynum=request.getParameter("entrynumber");
-            UserTable user=new UserTableDB().getDetailsfromEntryNum(entrynum);
-            
-        if(user!=null)
-        {
-            request.setAttribute("user", user);
-            RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/profile.jsp");
-            dispatcher.forward(request, response);
-            
-            //TODO: profile.jsp
-            //and update welcome and onemore jsp to use SessionHelper
-            //An all catch exception
-            //Image show
-            //Fill contact numbers and show
-            //Fill master book images if possible to show prfile image
-            //TestDemo re run again as email ids all in uppercase
-        }
-        else
-        {
-            //From now on, global error msgs in errorMsg
+        response.setContentType("image/jpeg");
+        String entrynum = request.getParameter("entrynumber");
+        byte[] photo = new UserTableDB().getImagefromEntryNum(entrynum);
+        if (photo == null) {
             request.setAttribute("errorMsg", "EntryNumber not Valid!<br/>");
-            RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/welcome.jsp");
-            dispatcher.forward(request, response);
         }
+        OutputStream o = response.getOutputStream();
+        o.write(photo);
+        o.flush();
+        o.close();
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+// <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
      *

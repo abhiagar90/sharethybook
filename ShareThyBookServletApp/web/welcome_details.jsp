@@ -1,4 +1,8 @@
 <article class="hero clearfix">
+   
+    <p style="color: red">
+                ${errorMsg}
+    </p>
     <div class="col_100">
         <img width="100%" height="600" src="book.jpg"/>
     </div>

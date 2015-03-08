@@ -5,10 +5,12 @@
  */
 package com.sharethyapp.dbclasses;
 
+import java.awt.Image;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.ImageIcon;
 
 /**
  *
@@ -17,12 +19,14 @@ import java.util.logging.Logger;
 public class UserTableDB extends DB{
     //Login is the materialized view we have created
     private final String getAllDetailsSQL = "select * from UserTable where entrynumber=?";
-
+    private final String getProfileImageSQL = "select photo from UserTable where entrynumber=?";
+    
     public UserTable getDetailsfromEntryNum(String entryNum) //returns null if exception
     {
         openConnection();
 
         UserTable user = null;
+        
         try {
             UserTable temp = new UserTable();
             preparedStatement = conn.prepareStatement(getAllDetailsSQL);
@@ -43,9 +47,10 @@ public class UserTableDB extends DB{
                 temp.setUnreadMsgs(rs.getInt("unreadmessages"));
                 temp.setBooksContri(rs.getInt("bookscontributed"));
                 temp.setBooksHave(rs.getInt("bookshave"));
-                temp.setProfileImgage(rs.getBytes("photo"));
+                temp.setProfileImage(rs.getBytes("photo"));
+                user=temp;
             }
-            user=temp;
+            
         } catch (SQLException ex) {
             Logger.getLogger(LoginDB.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
@@ -53,10 +58,34 @@ public class UserTableDB extends DB{
         }
         return user;
     }
+    
+    public byte[] getImagefromEntryNum(String entryNum) //returns null if exception
+    {
+        openConnection();
+
+        byte[] photo = null;
+        
+        try {
+            byte[] temp =null;
+            preparedStatement = conn.prepareStatement(getAllDetailsSQL);
+            preparedStatement.setString(1, entryNum);
+            ResultSet rs = preparedStatement.executeQuery();
+            while (rs.next()) {
+                temp =(rs.getBytes("photo"));
+                photo=temp;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(LoginDB.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            closeConnection();
+        }
+        return photo;
+        //if returned is null, then we have a problem
+    }
 
     public static void main(String[] args) {
         UserTable utb = new UserTableDB().getDetailsfromEntryNum("2013SMN1593");
-        System.out.println(utb.getProfileImgage().length);
+        System.out.println(utb.getProfileImage().length);
        }
     
 }

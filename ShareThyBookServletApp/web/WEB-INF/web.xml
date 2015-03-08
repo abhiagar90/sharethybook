@@ -16,6 +16,10 @@
         <servlet-name>ProfileServlet</servlet-name>
         <servlet-class>com.sharethyapp.servlets.ProfileServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ProfileImageServlet</servlet-name>
+        <servlet-class>com.sharethyapp.servlets.ProfileImageServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>DummyServlet</servlet-name>
         <url-pattern>/dummy.do</url-pattern>
@@ -31,6 +35,10 @@
     <servlet-mapping>
         <servlet-name>ProfileServlet</servlet-name>
         <url-pattern>/profile.do</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ProfileImageServlet</servlet-name>
+        <url-pattern>/profileimage.do</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

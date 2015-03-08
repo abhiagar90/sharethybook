@@ -80,7 +80,7 @@ public class TestDemo {
                            ps.setString(8, "Hauz khas");
                            ps.setString(9, "New Delhi");
                            ps.setString(10, "110016");
-                           ps.setString(11, emailID);
+                           ps.setString(11, emailID.toLowerCase());
                            ps.setInt(12, 3);
                            ps.setInt(13, 0);
                            ps.setInt(14, 0);
