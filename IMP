@@ -3,7 +3,7 @@ CREATE DATABASE library;
 
 CREATE TABLE UserTable(
 EntryNumber VARCHAR(12) PRIMARY KEY,
-Password varchar(1000),
+Password varchar(1000) NOT NULL,
 FirstName CHAR(30) NOT NULL,
 LastName CHAR(30),
 Hosteler BOOLEAN NOT NULL,

@@ -34,7 +34,7 @@ public class LoginServlet extends HttpServlet {
         String entrynum = request.getParameter("entrynumber").toUpperCase();
         String passwd = request.getParameter("passwd");
 
-        if (new LoginHelper().verifyLogin(entrynum, passwd)) {
+        if (LoginHelper.verifyLogin(entrynum, passwd)) {
             request.getSession().setAttribute("entrynumber", entrynum);
             RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/welcome.jsp");
             dispatcher.forward(request, response);

@@ -1,12 +1,12 @@
 
+<%@page import="com.sharethyapp.helper.LoginHelper"%>
 <header class="header clearfix">
     <div class="logo">Share Thy Book - A crowd-sourced library for IITD students!</div>
 
     <nav class="menu_main">
         <ul>
 
-            <%if (request.getSession().getAttribute("entrynumber") != null
-                        && request.getSession().getAttribute("entrynumber") != "NA") {%>
+           <%if (LoginHelper.isLoggedIn(request)) {%>
                     <li class="active"><a href="profile.do?entrynumber=${entrynumber}">${sessionScope.entrynumber}</a></li>
                     <li class="active"><a href="logout.do">Logout</a></li>
             <%} else {%>

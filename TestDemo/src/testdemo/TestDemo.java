@@ -70,7 +70,7 @@ public class TestDemo {
                     //sb.append(sb1+"','"+firstName+"','"+LastName+"','true','"+roomNumber+"','"+Randomfetch(hostelNames)+"','Hauz khas','New Delhi','110016','"+emailID+"',3,0,?);");
                     try{
                            PreparedStatement ps = c.prepareStatement(prepQuery);
-                           ps.setString(1, EntryNUmber);
+                           ps.setString(1, EntryNUmber.toUpperCase());
                            ps.setString(2, sb1.toString());
                            ps.setString(3, firstName);
                            ps.setString(4, LastName);

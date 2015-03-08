@@ -22,6 +22,9 @@ CONSTRAINT PinCode_Cons CHECK(PinCode ~ '[1-9][0-9][0-9][0-9][0-9][0-9]'),
 CONSTRAINT Email_Cons CHECK(EmailID ~ '^[A-Za-z][A-Za-z]*[0-9][0-9][0-9][0-9][0-9]*@iitd.ac.in'), 
 CONSTRAINT UserType_Cons CHECK(TypeOfUser >0 AND TypeOfUser<4));
 
+//For Login table
+create materialized view Login as (select entrynumber, password from usertable);
+
 
 CREATE TABLE ContactNumbers(
 EntryNumber varchar(12) REFERENCES UserTable(EntryNumber) ON DELETE CASCADE,

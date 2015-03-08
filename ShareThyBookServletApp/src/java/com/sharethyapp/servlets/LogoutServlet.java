@@ -30,6 +30,7 @@ public class LogoutServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         request.getSession().invalidate();
+        request.setAttribute("infoMsg", "Successfully Logged Out! <br/>");
         RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/welcome.jsp");
         dispatcher.forward(request, response);
     }

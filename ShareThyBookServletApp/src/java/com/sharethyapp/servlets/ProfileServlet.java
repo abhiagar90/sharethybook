@@ -7,6 +7,7 @@ package com.sharethyapp.servlets;
 
 import com.sharethyapp.dbclasses.UserTable;
 import com.sharethyapp.dbclasses.UserTableDB;
+import com.sharethyapp.helper.LoginHelper;
 import java.io.IOException;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -38,22 +39,32 @@ public class ProfileServlet extends HttpServlet {
         if(user!=null)
         {
             request.setAttribute("user", user);
+            request.setAttribute("typeUser", LoginHelper.getTypeOfUser(user.getTypeOfUser()));
             RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/profile.jsp");
             dispatcher.forward(request, response);
             
-            //TODO: profile.jsp
-            //and update welcome and onemore jsp to use SessionHelper
-            //An all catch exception
-            //Image show
-            //Fill contact numbers and show
-            //Fill master book images if possible to show prfile image
-            //TestDemo re run again as email ids all in uppercase
+            //TODO: profile.jsp books if he has all shown
+            //Constraint for entrynumber type : can we write constraint!
+            //inside database in capital so as to have consistency
+            //Fill contact numbers and show use join!
+            //Books fill with thier fancy ids! Phew!
+            //Fill master book images if possible to show profile image
+            //Setup Reshma and setup your lab system
+            //book profile page
+            //will show all info about the book and images! 
+            //and also which books avaliable to borrow.
+            
+            //TODO: may we need to not use materialized view!
+            //may be it is not shadow copying the DB!
+            //When sign up module done, check!
+            
+            //TODO: Do we need to use join for user page, book page, etc.?
         }
         else
         {
             //From now on, global error msgs in errorMsg
             request.setAttribute("errorMsg", "EntryNumber not Valid!<br/>");
-            RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/welcome.jsp");
+            RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/error.jsp");
             dispatcher.forward(request, response);
         }
     }

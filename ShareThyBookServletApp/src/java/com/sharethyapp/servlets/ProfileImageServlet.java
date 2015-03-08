@@ -14,6 +14,7 @@ import java.io.OutputStream;
 import java.io.PrintWriter;
 import javax.imageio.ImageIO;
 import javax.imageio.stream.ImageInputStream;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -39,13 +40,18 @@ public class ProfileImageServlet extends HttpServlet {
         response.setContentType("image/jpeg");
         String entrynum = request.getParameter("entrynumber");
         byte[] photo = new UserTableDB().getImagefromEntryNum(entrynum);
+        
         if (photo == null) {
             request.setAttribute("errorMsg", "EntryNumber not Valid!<br/>");
+            RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/error.jsp");
+            dispatcher.forward(request, response);
+        } else {
+            OutputStream o = response.getOutputStream();
+            o.write(photo);
+            o.flush();
+            o.close();
         }
-        OutputStream o = response.getOutputStream();
-        o.write(photo);
-        o.flush();
-        o.close();
+
     }
 
 // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

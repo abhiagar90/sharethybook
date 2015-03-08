@@ -1,9 +1,9 @@
+<%@page import="com.sharethyapp.helper.LoginHelper"%>
 <article class="hero clearfix">
     <div class="col_100">
         <h1>Login</h1>
-        <%if (!(request.getSession().getAttribute("entrynumber") != null
-                        && !request.getSession().getAttribute("entrynumber").equals("NA"))) {%>
-                   
+        <%if (!LoginHelper.isLoggedIn(request)) {%>
+                 
         <form action="login.do" method="post" class="form">
         
             <p class="col_50">
