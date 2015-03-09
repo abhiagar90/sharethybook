@@ -1,9 +1,10 @@
 CREATE DATABASE library;
+sudo -u postgres psql library
 
 
 CREATE TABLE UserTable(
 EntryNumber VARCHAR(12) PRIMARY KEY,
-Password varchar(1000) NOT NULL,
+Password varchar(1000),
 FirstName CHAR(30) NOT NULL,
 LastName CHAR(30),
 Hosteler BOOLEAN NOT NULL,
@@ -45,7 +46,7 @@ CONSTRAINT RatingCons CHECK(Rating >=0 AND Rating<6)
 //YEAR can have 0 for books which are na, can change to 1800
 update masterbooks set year=1800 where year=0;
 //
- COPY masterbooks from '/home/abhishek/Desktop/database/project1/BX-CSV-Dump2/PhysicalFinal6.csv' with delimiter '|' csv header encoding 'latin1' quote '"';
+ COPY masterbooks from '/home/reshma/Reshma/Sem2/DataBase/Assignments/Project1/sharethybook/ShareThyBookServletApp/PhysicalFinal6.csv' with delimiter '|' csv header encoding 'latin1' quote '"';
 // from works.zip
 
 CREATE TABLE MasterBooksImages(
@@ -96,12 +97,12 @@ Date DATE
 );
 
 CREATE TABLE Messages(
-MessageID VARCHAR(20) PRIMARY KEY,
+MessageID BIGSERIAL PRIMARY KEY,
 FromID VARCHAR(12) REFERENCES UserTable(EntryNumber),
-ToID VARCHAR(12) REFERENCES UserTable(EntryNumber),
+ToID VARCHAR(12) REFERENCES UserTable(EntryNumber) ON DELETE CASCADE,
 Date TIMESTAMP,
 Message VARCHAR(1000),
-Status BOOLEAN
+Status BOOLEAN DEFAULT FALSE
 );
 
 CREATE TABLE Rating(
@@ -113,4 +114,34 @@ CONSTRAINT RatingCons CHECK(Rating BETWEEN 0 AND 5)
 );
 
 Insert into UserTable Values('2010BLZ4623','facbfa7d8f7b43214453db6c205800ec','Aabheer','Acharya','true','SD7','Kumaoun','Hauz khas','New Delhi','110016','BL14623@iitd.ac.in',3,0,NULL)
+
+
+==============================================================TRIGGERS===================================================================
+CREATE OR REPLACE FUNCTION TriggerOnBookInsert() RETURNS TRIGGER AS $TriggerOnBookInsert$
+    BEGIN
+        UPDATE UserTable 
+	SET BooksContributed = BooksContributed +1,
+	    BooksHave=BooksHave+1
+        WHERE EntryNumber = NEW.OwnerID;
+	INSERT INTO Messages
+	SELECT 'NOREPLY',EntryNumber,now(),'This is to notify you that the book'||NEW.ISBN||' added by you in your wishlist is now 		available in our library' FROM	 
+	(SELECT EntryNumber FROM WishList WHERE ISBN ILIKE NEW.ISBN) AS A;
+        RETURN NULL;
+    END;
+$TriggerOnBookInsert$ LANGUAGE plpgsql;
+
+CREATE TRIGGER TriggerOnBookInsert AFTER INSERT ON Books
+    FOR EACH ROW EXECUTE PROCEDURE TriggerOnBookInsert();
+
+CREATE OR REPLACE FUNCTION TriggerOnBookUpdate() RETURNS TRIGGER AS $TriggerOnBookUpdate$
+    BEGIN
+        UPDATE UserTable 
+	SET BooksContributed = BooksContributed +1
+        WHERE EntryNumber = NEW.OwnerID;
+        RETURN NULL;
+    END;
+$TriggerOnBookUpdate$ LANGUAGE plpgsql;
+
+CREATE TRIGGER TriggerOnBookUpdate AFTER UPDATE ON Books
+    FOR EACH ROW EXECUTE PROCEDURE TriggerOnBookUpdate();
 
