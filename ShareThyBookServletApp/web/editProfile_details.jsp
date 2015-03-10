@@ -16,7 +16,8 @@
            
         </p>
 
-        <form action="signup.do" method="post" class="form">
+        <form action="editProfile.do" method="post" class="form">
+            <input type="hidden" name="EntryNumber" id="EntryNumber" value="${newUser.entrynumber}" />
             <div class="col_100">
               
                 <h3>Old User</h3>
@@ -66,7 +67,7 @@
                         <td><input type="text" name="HouseNo" id="HouseNo" value="${newUser.houseNo}" /></td>
                     </tr>
                     <tr>
-                        <td><label for="name">Street Number</label><br/></td>
+                        <td><label for="name">Street Number/Hostel</label><br/></td>
                         <td><input type="text" name="StreetNo" id="StreetNo" value="${newUser.streetNo}" /></td>
                     </tr>
                     <tr>

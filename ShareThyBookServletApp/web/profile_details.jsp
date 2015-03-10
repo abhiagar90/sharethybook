@@ -1,5 +1,8 @@
 <article class="hero clearfix">
     <div class="col_100">
+        <p style="color: #6aa12e">
+            ${infoMsg}
+        </p>
         <h1>${user.entrynumber}</h1>
         <div class="img_floatright">
             <img width="60" height="80" src="profileimage.do?entrynumber=${user.entrynumber}"></img>
@@ -20,14 +23,16 @@
             Number of unread messages: ${user.unreadMsgs} <br/>
             Number of books contributed: ${user.booksContri} <br/>
             Number of books physically having: ${user.booksHave} <br/>
-        
+
         </p>
         <div>
-            <a href="addbook.jsp">Add More Books</a>
-            <a href="editProfile.jsp">Edit Profile Details</a>
+            <a href="addbook.jsp">Contribute a book</a> <br/>
+            <a href="beforeedit.do?entrynumber=${user.entrynumber}">Edit Profile Details</a> <br/>
+            <a href="changePassword.jsp">Change Password <a/> <br/>
+                <a href="editProfileImage.jsp">Edit Profile Image</a> <br/>
         </div>
     </div>
-           
+
 </article>
 
 <br/>

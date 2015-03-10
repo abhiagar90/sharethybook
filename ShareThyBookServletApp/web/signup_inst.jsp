@@ -18,7 +18,7 @@
         <form action="signup.do" method="post" class="form">
             <div class="col_100">
               
-                <h1>New User!!</h1>
+                <h3>New User!!</h3>
                 <table class="table">
                     <tr></tr>
                     <tr>
@@ -75,7 +75,7 @@
                         <td><input type="text" name="HouseNo" id="HouseNo" value="${newUser.houseNo}" /></td>
                     </tr>
                     <tr>
-                        <td><label for="name">Street Number</label><br/></td>
+                        <td><label for="name">Street No./Hostel</label><br/></td>
                         <td><input type="text" name="StreetNo" id="StreetNo" value="${newUser.streetNo}" /></td>
                     </tr>
                     <tr>

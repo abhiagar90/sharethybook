@@ -34,7 +34,13 @@
         <servlet-name>EditProfileServlet</servlet-name>
         <servlet-class>com.sharethyapp.servlets.EditProfileServlet</servlet-class>
     </servlet>
-    <servlet-mapping>
+    <servlet>
+        <servlet-name>BeforeEditProfileServlet</servlet-name>
+        <servlet-class>com.sharethyapp.servlets.BeforeEditProfileServlet</servlet-class>
+    </servlet><servlet>
+        <servlet-name>ChangePasswordServlet</servlet-name>
+        <servlet-class>com.sharethyapp.servlets.ChangePasswordServlet</servlet-class>
+    </servlet><servlet-mapping>
         <servlet-name>DummyServlet</servlet-name>
         <url-pattern>/dummy.do</url-pattern>
     </servlet-mapping>
@@ -66,7 +72,15 @@
     
     <servlet-mapping>
         <servlet-name>EditProfileServlet</servlet-name>
-        <url-pattern>/editprofile.do</url-pattern>
+        <url-pattern>/editProfile.do</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>BeforeEditProfileServlet</servlet-name>
+        <url-pattern>/beforeedit.do</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ChangePasswordServlet</servlet-name>
+        <url-pattern>/changePassword.do</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
