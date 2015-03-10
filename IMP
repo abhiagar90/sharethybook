@@ -4,7 +4,7 @@ sudo -u postgres psql library
 
 CREATE TABLE UserTable(
 EntryNumber VARCHAR(12) PRIMARY KEY,
-Password varchar(1000),
+Password varchar(1000) NOT NULL,
 FirstName CHAR(30) NOT NULL,
 LastName CHAR(30),
 Hosteler BOOLEAN NOT NULL,
@@ -23,8 +23,8 @@ CONSTRAINT PinCode_Cons CHECK(PinCode ~ '[1-9][0-9][0-9][0-9][0-9][0-9]'),
 CONSTRAINT Email_Cons CHECK(EmailID ~ '^[A-Za-z][A-Za-z]*[0-9][0-9][0-9][0-9][0-9]*@iitd.ac.in'), 
 CONSTRAINT UserType_Cons CHECK(TypeOfUser >0 AND TypeOfUser<4));
 
-//For Login table
-create materialized view Login as (select entrynumber, password from usertable);
+//For Login table//check for materailzed
+create view Login as (select entrynumber, password from usertable);
 
 
 CREATE TABLE ContactNumbers(

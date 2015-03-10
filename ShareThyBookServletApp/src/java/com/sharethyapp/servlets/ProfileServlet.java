@@ -14,7 +14,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.swing.ImageIcon;
+
 
 /**
  *
@@ -32,7 +32,7 @@ public class ProfileServlet extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws ServletException,IOException  {
             String entrynum=request.getParameter("entrynumber");
             UserTable user=new UserTableDB().getDetailsfromEntryNum(entrynum);
             
@@ -49,7 +49,6 @@ public class ProfileServlet extends HttpServlet {
             //Fill contact numbers and show use join!
             //Books fill with thier fancy ids! Phew!
             //Fill master book images if possible to show profile image
-            //Setup Reshma and setup your lab system
             //book profile page
             //will show all info about the book and images! 
             //and also which books avaliable to borrow.

@@ -52,13 +52,13 @@ public class TestDemo {
                                                      
                     fis = new FileInputStream(file);
                     
-                    //String EntryNUmber=Randomfetch(possibleYears)+Randomfetch(strEntryCodes)+counter++;
-                    String EntryNUmber="NOREPLY";
+                    String EntryNUmber=Randomfetch(possibleYears)+Randomfetch(strEntryCodes)+counter++;
+                    //String EntryNUmber="NOREPLY";
                     String emailIdtemp= EntryNUmber.substring(4);
-                    int yearOfentry=2000;
-                    //int yearOfentry= Integer.parseInt(EntryNUmber.substring(0,4));
-                    String emailID="NoReply123423@iitd.ac.in";
-                    //String emailID=emailIdtemp.substring(0,emailIdtemp.length()-4)+yearOfentry%100+emailIdtemp.substring(emailIdtemp.length()-4)+"@iitd.ac.in";
+                    //int yearOfentry=2000;
+                    int yearOfentry= Integer.parseInt(EntryNUmber.substring(0,4));
+                    //String emailID="NoReply123423@iitd.ac.in";
+                    String emailID=emailIdtemp.substring(0,emailIdtemp.length()-4)+yearOfentry%100+emailIdtemp.substring(emailIdtemp.length()-4)+"@iitd.ac.in";
                                         
                     String password="abcde";
                     MessageDigest md = MessageDigest.getInstance("MD5");
@@ -100,6 +100,7 @@ public class TestDemo {
                     catch(Exception e)
                     {
                         System.out.println("Exception");
+                        System.out.println(e.getMessage());
                     }
                 }
                  

@@ -10,7 +10,6 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -21,7 +20,7 @@ import java.util.logging.Logger;
  */
 public class SignUp extends DB{
     
-    public Boolean newUser(String firstName,String lastName,String entryNumber,
+    public boolean newUser(String firstName,String lastName,String entryNumber,
               String password,      
               Boolean Hostler,     
               String houseNo,              

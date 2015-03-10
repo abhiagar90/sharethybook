@@ -17,7 +17,7 @@ import java.util.Random;
  * @author reshma
  */
 public class UserContactNUmber {
-    public static void main(String[] args) {
+    public static void main2(String[] args) {
     Connection c = null;
     Connection insConn = null;
        Statement stmt = null;
