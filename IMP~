@@ -4,7 +4,7 @@ sudo -u postgres psql library
 
 CREATE TABLE UserTable(
 EntryNumber VARCHAR(12) PRIMARY KEY,
-Password varchar(1000) NOT NULL,
+Password varchar(1000),
 FirstName CHAR(30) NOT NULL,
 LastName CHAR(30),
 Hosteler BOOLEAN NOT NULL,
@@ -65,17 +65,17 @@ CONSTRAINT BookCondCons CHECK(LastCondition ~* 'D|O|G|E')
 
 CREATE TABLE Authors(
 AuthorID SERIAL NOT NULL UNIQUE,
-AuthorName VARCHAR(300) NOT NULL
+AuthorName VARCHAR(1000) NOT NULL
 );
 
-Use this:COPY Authors from '/home/abhishek/Desktop/database/project1/BX-CSV-Dump/AuthorFinal2.csv' with delimiter '|' csv header encoding 'latin1' quote '"'; 
+Use this:COPY Authors from '/home/reshma/Reshma/Sem2/DataBase/Assignments/Project1/sharethybook/AuthorWork/AuthorFinal2.csv' with delimiter '|' csv header encoding 'latin1' quote '"'; 
 
 CREATE TABLE BooksWrittenBy(
 ISBN VARCHAR(13) REFERENCES MasterBooks(ISBN),
 AuthorID INT REFERENCES Authors(AuthorID)
 );
 
-COPY BooksWrittenBy from '/home/abhishek/Desktop/database/project1/BX-CSV-Dump/ISBNAuthor.csv' with delimiter '|' csv header encoding 'latin1' quote '"';
+COPY BooksWrittenBy from '/home/reshma/Reshma/Sem2/DataBase/Assignments/Project1/sharethybook/AuthorWork/ISBNAuthor.csv' with delimiter '|' csv header encoding 'latin1' quote '"';
 
 CREATE TABLE Transactions(
 TransactionID VARCHAR(30) PRIMARY KEY,

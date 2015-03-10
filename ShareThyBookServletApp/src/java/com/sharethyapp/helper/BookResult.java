@@ -15,6 +15,15 @@ public class BookResult {
     String year;
     String publisher;
     String rating;
+    String authors;
+
+    public String getAuthors() {
+        return authors;
+    }
+
+    public void setAuthors(String authors) {
+        this.authors = authors;
+    }
 
     public String getIsbn() {
         return isbn;
@@ -61,12 +70,13 @@ public class BookResult {
     
     
 
-    public BookResult(String ISBN, String Title, String Year, String Publisher, String Rating) {
+    public BookResult(String ISBN, String Title, String Year, String Publisher, String Rating,String Authors) {
         this.isbn = ISBN;
         this.title = Title;
         this.year = Year;
         this.publisher = Publisher;
         this.rating = Rating;
+        this.authors=Authors;
     }
     
     

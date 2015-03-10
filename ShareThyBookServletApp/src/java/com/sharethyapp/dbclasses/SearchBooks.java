@@ -24,26 +24,23 @@ import java.util.logging.Logger;
  */
 public class SearchBooks extends DB {
     
-     public List<BookResult> SearchBooks(int Mode,String val)  throws NoSuchAlgorithmException //returns null if exception
+     public List<BookResult> SearchBooks(String whereCond)  throws NoSuchAlgorithmException //returns null if exception
     {
         openConnection();
         
         String getSearchRes=null;
-        if(Mode==1)
-        {
-            if(val.trim()!="")
+      
+            if(whereCond.trim()!="")
             {
-                getSearchRes = "select ISBN,Title,Year,Publisher,Rating from MasterBooks where Title ILIKE ?";
-                val=proccessVal(val);
+                getSearchRes = "select M.ISBN,M.Title,M.Year,M.Publisher,M.Rating,A.AuthorName from MasterBooks M,Authors A,BooksWrittenBy B where "+whereCond+" AND M.ISBN=B.ISBN AND B.AuthorID=A.AuthorID";
             }
             else
             {
-                getSearchRes = "select ISBN,Title,Year,Publisher,Rating from MasterBooks";
+                getSearchRes = "select M.ISBN,M.Title,M.Year,M.Publisher,M.Rating,A.AuthorName from MasterBooks M,Authors A,BooksWrittenBy B where M.ISBN=B.ISBN AND B.AuthorID=A.AuthorID";
             }
-        }
+      
         try {
             preparedStatement = conn.prepareStatement(getSearchRes);
-            preparedStatement.setString(1, val);
             ResultSet rs = preparedStatement.executeQuery();
                         
             List<BookResult> bookRes= new ArrayList<BookResult>();
@@ -52,7 +49,7 @@ public class SearchBooks extends DB {
 
                 while(rs.next())  
                 {  
-                  book=new BookResult(rs.getString("isbn"),rs.getString("Title"),rs.getString("Year"),rs.getString("Publisher"),rs.getString("Rating"));  
+                  book=new BookResult(rs.getString("isbn"),rs.getString("Title"),rs.getString("Year"),rs.getString("Publisher"),rs.getString("Rating"),rs.getString("AuthorName"));  
                   bookRes.add(book);
                 }  
             
@@ -67,11 +64,4 @@ public class SearchBooks extends DB {
         
     }
 
-    private String proccessVal(String val) {
-        String[] strArray=val.split(" ");
-        String res="%";
-        for (int i=0;i<strArray.length;i++)
-            res=res+strArray[i].trim()+"%";
-        return res;
-    }
 }
