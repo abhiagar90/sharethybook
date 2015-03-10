@@ -1,3 +1,4 @@
+<%@page import="com.sharethyapp.dbclasses.UserTable"%>
 <%@page import="com.sharethyapp.helper.LoginHelper"%>
 <article class="hero clearfix">
     <div class="col_100">
@@ -10,6 +11,8 @@
             4. Hosteler field has to be selected. <br/>
             5. EmailId cannot be null and should be of iitd.ac.in domain. <br/>
             6. Pincode can be empty or should follow normal picode formats. <br/>
+            
+           
         </p>
 
         <form action="signup.do" method="post" class="form">
@@ -20,15 +23,15 @@
                     <tr></tr>
                     <tr>
                         <td><label for="name">First name*</label><br/></td>
-                        <td><input type="text" name="firstName" id="firstName" value="" /></td>
+                        <td><input type="text" name="firstName" id="firstName" value="${newUser.firstname}" /></td>
                     </tr>
                     <tr>
                         <td><label for="name">Last name</label><br/></td>
-                        <td><input type="text" name="lastName" id="lastName" value="" /></td>
+                        <td><input type="text" name="lastName" id="lastName" value="${newUser.lastname}" /></td>
                     </tr>
                     <tr>
                         <td><label for="name">Entry Number*</label><br/></td>
-                        <td><input type="text" name="EntryNumber" id="EntryNumber" value="" /></td>
+                        <td><input type="text" name="EntryNumber" id="EntryNumber" value="${newUser.entrynumber}" /></td>
                     </tr>
                     <tr>
                         <td><label for="name">Password*</label><br/></td>
@@ -38,6 +41,11 @@
                         <td><label for="name">Retype Password*</label><br/></td>
                         <td><input type="password" name="rePassword" id="rePassword" value="" /></td>
                     </tr>
+                    
+                    <% 
+                        UserTable nayaUser = (UserTable)request.getAttribute("newUser"); 
+                        if(nayaUser == null   || !nayaUser.isIsHosteler()) {
+                    %>
                     <tr>
                         <td><label for="name">Hosteler*</label><br/></td>
                         <td><label for="radio-choice-1">
@@ -48,29 +56,43 @@
                             </label>
                         </td>
                     </tr>
+                    <%} else {%>
+                    <tr>
+                        <td><label for="name">Hosteler*</label><br/></td>
+                        <td><label for="radio-choice-1">
+                                <input type="radio" name="Hosteler" id="Hosteler" tabindex="2" value="choice-1" checked="checked"/> Yes  
+                            </label>
+                            <label for="radio-choice-1">
+                                <input type="radio" name="Hosteler" id="Hosteler" tabindex="2" value="choice-2" /> No
+                            </label>
+                        </td>
+                    </tr>
+                    
+                    <%}%>
+                    
                     <tr>
                         <td><label for="name">House Number</label><br/></td>
-                        <td><input type="text" name="HouseNo" id="HouseNo" value="" /></td>
+                        <td><input type="text" name="HouseNo" id="HouseNo" value="${newUser.houseNo}" /></td>
                     </tr>
                     <tr>
                         <td><label for="name">Street Number</label><br/></td>
-                        <td><input type="text" name="StreetNo" id="StreetNo" value="" /></td>
+                        <td><input type="text" name="StreetNo" id="StreetNo" value="${newUser.streetNo}" /></td>
                     </tr>
                     <tr>
                         <td><label for="name">City</label><br/></td>
-                        <td><input type="text" name="City" id="City" value="" /></td>
+                        <td><input type="text" name="City" id="City" value="${newUser.city}" /></td>
                     </tr>
                     <tr>
                         <td><label for="name">State</label><br/></td>
-                        <td><input type="text" name="State" id="State" value="" /></td>
+                        <td><input type="text" name="State" id="State" value="${newUser.state}" /></td>
                     </tr>
                     <tr>
                         <td><label for="name">Pin Code</label><br/></td>
-                        <td><input type="text" name="PinCode" id="PinCode" value="" /></td>
+                        <td><input type="text" name="PinCode" id="PinCode" value="${newUser.pincode}" /></td>
                     </tr>
                     <tr>
                         <td><label for="name">Email ID*</label><br/></td>
-                        <td><input type="text" name="EmailID" id="EmailID" value="" /></td>
+                        <td><input type="text" name="EmailID" id="EmailID" value="${newUser.emailId}" /></td>
                     </tr>
 
                 </table><br/>

@@ -48,11 +48,10 @@ public class SignUpServlet extends HttpServlet {
 
         String hostelerRadio = UtilitiesHelper.returnNullOrString(request, "Hosteler");
         boolean isHostler = false;
-        if (hostelerRadio != null && hostelerRadio.equals("choice-Yes")) {
+        if (hostelerRadio != null && hostelerRadio.equals("choice-1")) {
             isHostler = true;
         }
         newUser.setIsHosteler(isHostler);
-
         newUser.setHouseNo(UtilitiesHelper.returnNullOrString(request, "HouseNo"));
         newUser.setStreetNo(UtilitiesHelper.returnNullOrString(request, "StreetNo"));
         newUser.setCity(UtilitiesHelper.returnNullOrString(request, "City"));
@@ -63,6 +62,7 @@ public class SignUpServlet extends HttpServlet {
         String password= newUser.getPassword();
         if (!(password != null && rePassword != null && !password.isEmpty() && !rePassword.isEmpty() && password.equals(rePassword))) {
             request.getSession().setAttribute("entrynumber", "NA");
+            request.setAttribute("newUser", newUser);
             request.setAttribute("error", "Passwords do not match or empty!");
             RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/signup.jsp");
             dispatcher.forward(request, response);
@@ -75,6 +75,9 @@ public class SignUpServlet extends HttpServlet {
             } else {
                 request.getSession().setAttribute("entrynumber", "NA");
                 request.setAttribute("error", "Some of the entries violate our DB constraints. Please check instructions above. <br> " + sqlOutput);
+                
+                request.setAttribute("newUser", newUser);
+                
                 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/signup.jsp");
                 dispatcher.forward(request, response);
             }
