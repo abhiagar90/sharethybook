@@ -37,7 +37,7 @@ CONSTRAINT TypeCons CHECK(Type ~* 'W|O|H'));
 CREATE TABLE MasterBooks (
 ISBN VARCHAR(13) PRIMARY KEY,
 Title VARCHAR(1000) NOT NULL,
-YEAR INT,
+Year INT,
 Publisher VARCHAR(300),
 Rating INT DEFAULT 0
 CONSTRAINT RatingCons CHECK(Rating >=0 AND Rating<6)
@@ -122,10 +122,11 @@ CREATE OR REPLACE FUNCTION TriggerOnBookInsert() RETURNS TRIGGER AS $TriggerOnBo
         UPDATE UserTable 
 	SET BooksContributed = BooksContributed +1,
 	    BooksHave=BooksHave+1
-        WHERE EntryNumber = NEW.OwnerID;
+        WHERE EntryNumber = NEW.OwnerID;password
 	INSERT INTO Messages(FromID ,ToID ,Date,Message,Status)
-	SELECT 'NOREPLY',EntryNumber,now(),'This is to notify you that the book'||NEW.ISBN||' added by you in your wishlist is now 		available in our library' FROM	 
+	SELECT 'NOREPLY',EntryNumber,now(),'This is to notify you that the book '||NEW.ISBN||' added by you in your wishlist is now 		available in our library',true FROM	 
 	(SELECT EntryNumber FROM WishList WHERE ISBN ILIKE NEW.ISBN) AS A;
+	DELETE FROM WishList WHERE ISBN ILIKE NEW.ISBN;
         RETURN NULL;
     END;
 $TriggerOnBookInsert$ LANGUAGE plpgsql;

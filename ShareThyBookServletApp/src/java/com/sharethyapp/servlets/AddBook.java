@@ -5,15 +5,15 @@
  */
 package com.sharethyapp.servlets;
 
-import com.sharethyapp.dbclasses.SignUp;
-import com.sharethyapp.helper.LoginHelper;
-
+import com.sharethyapp.dbclasses.SearchBooks;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.security.NoSuchAlgorithmException;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -23,47 +23,38 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author reshma
  */
-public class SignUpServlet extends HttpServlet {
+public class AddBook extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException, NoSuchAlgorithmException {
+            throws ServletException, IOException, NoSuchAlgorithmException, SQLException {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
         try {
-            String firstName = request.getParameter("firstName");
-            String lastName = request.getParameter("lastName");
+              String bookName = request.getParameter("bookName");
+              ResultSet rs = new SearchBooks().SearchBooks(1, bookName);
+              ResultSetMetaData rsmd=rs.getMetaData();  
+              out.print("<table width=50% border=1>");  
+              out.print("<tr>");  
+                for(int i=1;i<=rsmd.getColumnCount();i++)  
+                {  
+                out.print("<th>"+rsmd.getColumnName(i)+"</th>");  
+                }  
 
-            String entryNumber = request.getParameter("EntryNumber");
-            String password = request.getParameter("Password");
+                out.print("</tr>");  
 
-            String hostelerRadio = request.getParameter("Hosteler");
-            boolean isHostler = false;
-            if (hostelerRadio!=null && hostelerRadio.equals("choice-Yes")) {
-                isHostler = true;
-            }
-            
-            String houseNo = request.getParameter("HouseNo");
-            String streetNo = request.getParameter("StreetNo");
-            String city = request.getParameter("City");
-            String state = request.getParameter("State");
-            String pinCode = request.getParameter("PinCode");
-            
-            if (pinCode.trim().equals("")) {
-                pinCode = null;
-            }
-            String emailID = request.getParameter("EmailID");
+                /* Printing result */  
 
-            if (new SignUp().newUser(firstName, lastName, entryNumber, password, isHostler, houseNo, streetNo, city, state, pinCode, emailID)) {
-                request.getSession().setAttribute("entrynumber", entryNumber);
-                RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/welcome.jsp");
-                dispatcher.forward(request, response);
-            } else {
-                request.getSession().setAttribute("entrynumber", "NA");
-                request.setAttribute("error", "Some of the entry details violate our DB constraints.");
-                RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/signup.jsp");
-                dispatcher.forward(request, response);
-            }
+                while(rs.next())  
+                {  
+                    out.print("<tr>");  
+                    for(int i=1;i<=rsmd.getColumnCount();i++)  
+                    {  
+                         out.print("<td>"+rs.getString(i)+"</td>");  
+                    }  
+                    out.print("</tr>");  
+                }  
 
+                out.print("</table>");  
         } finally {
             out.close();
         }
@@ -84,7 +75,9 @@ public class SignUpServlet extends HttpServlet {
         try {
             processRequest(request, response);
         } catch (NoSuchAlgorithmException ex) {
-            Logger.getLogger(SignUpServlet.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(AddBook.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(AddBook.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -102,7 +95,9 @@ public class SignUpServlet extends HttpServlet {
         try {
             processRequest(request, response);
         } catch (NoSuchAlgorithmException ex) {
-            Logger.getLogger(SignUpServlet.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(AddBook.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(AddBook.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
