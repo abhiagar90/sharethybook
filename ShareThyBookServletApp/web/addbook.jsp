@@ -13,7 +13,7 @@
 
 
     <div class="info">
-        <jsp:include page="AddBookDetails.jsp"/>
+        <jsp:include page="addbook_details.jsp"/>
 
 
     </div>

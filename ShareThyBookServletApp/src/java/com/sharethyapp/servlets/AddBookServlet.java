@@ -35,7 +35,7 @@ public class AddBookServlet extends HttpServlet {
         List<BookResult> rs = new SearchBooks().SearchBooks(1, bookName);
         request.setAttribute("listOfBooks", rs);
 
-        RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/AddBook.jsp");
+        RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/addbook.jsp");
         dispatcher.forward(request, response);
 
     }

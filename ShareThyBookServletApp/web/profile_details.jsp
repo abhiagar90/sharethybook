@@ -22,7 +22,10 @@
             Number of books physically having: ${user.booksHave} <br/>
         
         </p>
-        <div><a href="AddBook.jsp">Add More Books</a></div>
+        <div>
+            <a href="addbook.jsp">Add More Books</a>
+            <a href="editProfile.jsp">Edit Profile Details</a>
+        </div>
     </div>
            
 </article>
