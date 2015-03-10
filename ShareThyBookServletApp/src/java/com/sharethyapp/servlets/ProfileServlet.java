@@ -58,10 +58,8 @@ public class ProfileServlet extends HttpServlet {
             //When sign up module done, check!
             
             
-            //Image is never null for us, as while inserting we keep the default one in DB.
-            //So no check required
-            
-            //Hostel set details has not been done for yet.
+           //Search books by name check equalsignore case or substring
+           //then session check reshma code
             
             //TODO: Do we need to use join for user page, book page, etc.?
         }

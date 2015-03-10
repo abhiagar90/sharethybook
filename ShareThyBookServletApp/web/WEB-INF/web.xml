@@ -30,6 +30,10 @@
     </servlet>
     
     
+    <servlet>
+        <servlet-name>EditProfileServlet</servlet-name>
+        <servlet-class>com.sharethyapp.servlets.EditProfileServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>DummyServlet</servlet-name>
         <url-pattern>/dummy.do</url-pattern>
@@ -60,6 +64,10 @@
     </servlet-mapping>
     
     
+    <servlet-mapping>
+        <servlet-name>EditProfileServlet</servlet-name>
+        <url-pattern>/editprofile.do</url-pattern>
+    </servlet-mapping>
     <session-config>
         <session-timeout>
             30

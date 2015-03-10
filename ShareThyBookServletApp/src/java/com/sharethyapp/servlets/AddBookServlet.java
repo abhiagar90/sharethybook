@@ -30,23 +30,14 @@ public class AddBookServlet extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, NoSuchAlgorithmException, SQLException {
-        response.setContentType("text/html;charset=UTF-8");
-        PrintWriter out = response.getWriter();
-        try {
-              String bookName = request.getParameter("bookName");
-              List<BookResult> rs = new SearchBooks().SearchBooks(1, bookName);
-                request.setAttribute("listOfBooks",rs);
-                
-                RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/AddBook.jsp");
-                dispatcher.forward(request, response);
-        }
-        catch(Exception e)
-        {
-            System.out.println("Exception::");
-        }
-        finally {
-            out.close();
-        }
+
+        String bookName = request.getParameter("bookName");
+        List<BookResult> rs = new SearchBooks().SearchBooks(1, bookName);
+        request.setAttribute("listOfBooks", rs);
+
+        RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/AddBook.jsp");
+        dispatcher.forward(request, response);
+
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
