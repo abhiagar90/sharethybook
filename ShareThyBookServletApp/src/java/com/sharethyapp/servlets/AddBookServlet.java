@@ -6,14 +6,17 @@
 package com.sharethyapp.servlets;
 
 import com.sharethyapp.dbclasses.SearchBooks;
+import com.sharethyapp.helper.BookResult;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.security.NoSuchAlgorithmException;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -23,7 +26,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author reshma
  */
-public class AddBook extends HttpServlet {
+public class AddBookServlet extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, NoSuchAlgorithmException, SQLException {
@@ -31,31 +34,17 @@ public class AddBook extends HttpServlet {
         PrintWriter out = response.getWriter();
         try {
               String bookName = request.getParameter("bookName");
-              ResultSet rs = new SearchBooks().SearchBooks(1, bookName);
-              ResultSetMetaData rsmd=rs.getMetaData();  
-              out.print("<table width=50% border=1>");  
-              out.print("<tr>");  
-                for(int i=1;i<=rsmd.getColumnCount();i++)  
-                {  
-                out.print("<th>"+rsmd.getColumnName(i)+"</th>");  
-                }  
-
-                out.print("</tr>");  
-
-                /* Printing result */  
-
-                while(rs.next())  
-                {  
-                    out.print("<tr>");  
-                    for(int i=1;i<=rsmd.getColumnCount();i++)  
-                    {  
-                         out.print("<td>"+rs.getString(i)+"</td>");  
-                    }  
-                    out.print("</tr>");  
-                }  
-
-                out.print("</table>");  
-        } finally {
+              List<BookResult> rs = new SearchBooks().SearchBooks(1, bookName);
+                request.setAttribute("listOfBooks",rs);
+                
+                RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/AddBook.jsp");
+                dispatcher.forward(request, response);
+        }
+        catch(Exception e)
+        {
+            System.out.println("Exception::");
+        }
+        finally {
             out.close();
         }
     }
@@ -75,9 +64,9 @@ public class AddBook extends HttpServlet {
         try {
             processRequest(request, response);
         } catch (NoSuchAlgorithmException ex) {
-            Logger.getLogger(AddBook.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(AddBookServlet.class.getName()).log(Level.SEVERE, null, ex);
         } catch (SQLException ex) {
-            Logger.getLogger(AddBook.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(AddBookServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -95,9 +84,9 @@ public class AddBook extends HttpServlet {
         try {
             processRequest(request, response);
         } catch (NoSuchAlgorithmException ex) {
-            Logger.getLogger(AddBook.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(AddBookServlet.class.getName()).log(Level.SEVERE, null, ex);
         } catch (SQLException ex) {
-            Logger.getLogger(AddBook.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(AddBookServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

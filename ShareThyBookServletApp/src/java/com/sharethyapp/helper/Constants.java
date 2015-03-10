@@ -22,5 +22,9 @@ public class Constants {
     public static final String dburl = "jdbc:postgresql://localhost:5432/library";
     public static final String uname = "postgres";
     public static final String password = "password";
+    public static final String signUpDetials = "1. User already with the primary key.\n"
+            + "2. Email id not of iitd \n" 
+            + "3. Pincode pattern wrong \n" 
+            + "4. ";
 
 }

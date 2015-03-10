@@ -21,8 +21,8 @@
         <servlet-class>com.sharethyapp.servlets.ProfileImageServlet</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>AddBook</servlet-name>
-        <servlet-class>com.sharethyapp.servlets.AddBook</servlet-class>
+        <servlet-name>AddBookServlet</servlet-name>
+        <servlet-class>com.sharethyapp.servlets.AddBookServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>SignUpServlet</servlet-name>
@@ -55,8 +55,8 @@
         <url-pattern>/signup.do</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>AddBook</servlet-name>
-        <url-pattern>/AddBook</url-pattern>
+        <servlet-name>AddBookServlet</servlet-name>
+        <url-pattern>/addbook.do</url-pattern>
     </servlet-mapping>
     
     
@@ -76,4 +76,6 @@
         <exception-type>java.lang.Throwable</exception-type>
         <location>/error.jsp</location>
     </error-page>
-</web-app>
+
+    SignUpServlet
+    </web-app>

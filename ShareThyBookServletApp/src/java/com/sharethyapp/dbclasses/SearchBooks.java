@@ -5,12 +5,16 @@
  */
 package com.sharethyapp.dbclasses;
 
+import com.sharethyapp.helper.BookResult;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.security.NoSuchAlgorithmException;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -20,7 +24,7 @@ import java.util.logging.Logger;
  */
 public class SearchBooks extends DB {
     
-     public ResultSet SearchBooks(int Mode,String val)  throws NoSuchAlgorithmException //returns null if exception
+     public List<BookResult> SearchBooks(int Mode,String val)  throws NoSuchAlgorithmException //returns null if exception
     {
         openConnection();
         
@@ -41,7 +45,18 @@ public class SearchBooks extends DB {
             preparedStatement = conn.prepareStatement(getSearchRes);
             preparedStatement.setString(1, val);
             ResultSet rs = preparedStatement.executeQuery();
-           return rs;
+                        
+            List<BookResult> bookRes= new ArrayList<BookResult>();
+            BookResult book;
+            
+
+                while(rs.next())  
+                {  
+                  book=new BookResult(rs.getString("isbn"),rs.getString("Title"),rs.getString("Year"),rs.getString("Publisher"),rs.getString("Rating"));  
+                  bookRes.add(book);
+                }  
+            
+           return bookRes;
            
         } catch (SQLException ex) {
             Logger.getLogger(LoginDB.class.getName()).log(Level.SEVERE, null, ex);
