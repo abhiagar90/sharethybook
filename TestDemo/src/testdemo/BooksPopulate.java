@@ -24,7 +24,7 @@ public class BooksPopulate {
 
     static int count = 1000;
 
-    public static void main(String[] args) {
+    public static void main2(String[] args) {
         {
             Connection c = null;
             Statement stmt = null;

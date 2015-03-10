@@ -34,7 +34,7 @@ import javax.imageio.ImageIO;
  */
 public class URLImage {
 
-    public static void main(String[] args) throws MalformedURLException, IOException, SQLException {
+    public static void main2(String[] args) throws MalformedURLException, IOException, SQLException {
         URLImage urli = new URLImage();
         byte[][] barr = urli.getAllImages();
         String[][] isbn = urli.readAndConvert2dArrayCsv("ISBN_Image.csv");

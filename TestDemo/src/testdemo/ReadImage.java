@@ -14,7 +14,7 @@ import javax.swing.JLabel;
 
 public class ReadImage {
 
-    public static void main(String[] args) {
+    public static void main2(String[] args) {
         Image image = null;
         try {
             URL url = new URL("http://www.mkyong.com/image/mypic.jpg");

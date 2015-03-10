@@ -9,6 +9,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.servlet.http.HttpServletRequest;
 
 /**
  *
@@ -31,5 +32,15 @@ public class UtilitiesHelper {
             sb1.append(String.format("%02x", b & 0xff));
         }
         return sb1.toString();
+    }
+    
+    public static String returnNullOrString(HttpServletRequest request, String param)
+    {
+        String paramString = request.getParameter(param);
+        if(paramString==null)
+            return null;
+        if(paramString.trim().isEmpty())
+            return null;
+        else return paramString.trim();
     }
 }

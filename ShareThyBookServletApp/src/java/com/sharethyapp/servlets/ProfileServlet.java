@@ -49,7 +49,6 @@ public class ProfileServlet extends HttpServlet {
             //Fill contact numbers and show use join!
             //Books fill with thier fancy ids! Phew!
             //Fill master book images if possible to show profile image
-            //Setup Reshma and setup your lab system
             //book profile page
             //will show all info about the book and images! 
             //and also which books avaliable to borrow.

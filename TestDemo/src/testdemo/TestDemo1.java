@@ -18,7 +18,7 @@ import java.sql.ResultSet;
 
 public class TestDemo1 {
 
-    public static void main(String[] args) {
+    public static void main2(String[] args) {
            Connection c = null;
            Statement stmt = null;
       try {
