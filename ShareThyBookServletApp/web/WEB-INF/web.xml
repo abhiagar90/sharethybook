@@ -56,7 +56,10 @@
         <servlet-name>RateServlet</servlet-name>
         <servlet-class>com.sharethyapp.servlets.RateServlet</servlet-class>
     </servlet>
-    
+    <servlet>
+        <servlet-name>MessageServlet</servlet-name>
+        <servlet-class>com.sharethyapp.servlets.MessageServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>DummyServlet</servlet-name>
         <url-pattern>/dummy.do</url-pattern>
@@ -105,15 +108,17 @@
         <servlet-name>ViewBookServlet</servlet-name>
         <url-pattern>/viewbook.do</url-pattern>
     </servlet-mapping>
-    
     <servlet-mapping>
         <servlet-name>InsertBookDetails</servlet-name>
         <url-pattern>/InsertBookDetails</url-pattern>
     </servlet-mapping>
-    
     <servlet-mapping>
         <servlet-name>RateServlet</servlet-name>
         <url-pattern>/rate.do</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>MessageServlet</servlet-name>
+        <url-pattern>/message.do</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

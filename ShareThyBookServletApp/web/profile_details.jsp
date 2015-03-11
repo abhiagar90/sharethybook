@@ -172,11 +172,41 @@
         %>
         <a name="msg"></a>
         <h3>Say Hi to ${user.firstname}</h3>
-        
-
-        <p><a href="message.do?toid=${user.entrynumber}">Send a message</a></p>
-        
+         
         <!-- Form for message here!! Phew -->
+        <form action="message.do" method="post" class="form">
+
+        <input type="hidden" name="fromid" id="fromid" value="${sessionScope.entrynumber}" />
+        <input type="hidden" name="toid" id="toid" value="${user.entrynumber}"/>
+
+        <div class="col_100">
+
+            <table class="table">
+                <tr></tr>
+
+                <tr>
+                <td><label for="msg">Type Message Here</label><br/></td>
+                <td>
+                    <textarea name="msg" id="msg" rows="4" cols="50" value=""></textarea>               
+                </td>                
+                </tr>
+
+            </table><br/>
+
+
+
+
+        </div>
+        <div>
+            <button type="submit" class="button" onclick="submit">Submit</button>
+        </div>
+
+        <br/>
+        <p class="col_50" style="color: red">
+            ${requestScope.error}
+        </p>
+        <br/>
+    </form>
 
         <%} else { %>
         
