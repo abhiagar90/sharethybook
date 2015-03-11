@@ -108,7 +108,7 @@ Status BOOLEAN DEFAULT FALSE
 CREATE TABLE Rating(
 ISBN VARCHAR(13) REFERENCES MasterBooks(ISBN),
 EntryNumber VARCHAR(12) REFERENCES UserTable(EntryNumber),
-Rating INT,
+Rating INT NOT NULL,
 Review VARCHAR(1000),
 Primary key (ISBN, EntryNumber), 
 CONSTRAINT RatingCons CHECK(Rating BETWEEN 0 AND 5)

@@ -19,7 +19,7 @@
             Title: ${masterbook.title} <br/>
             Year Of Publication: ${masterbook.year} <br/>
             Publisher: ${masterbook.publisher} <br/>
-            Overall Rating: ${masterbook.rating} <br/>
+            Overall Rating: ${masterbook.rating}  computed by ${masterbook.numOfRatings} ratings<br/>
             Authors: ${masterbook.authorList} <br/>
             Reviews: ${masterbook.reviewList}
         </p>

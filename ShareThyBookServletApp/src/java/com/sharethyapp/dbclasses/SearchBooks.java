@@ -116,9 +116,9 @@ public class SearchBooks extends DB {
         }
         return authorList;
     }
-    
-    private final String getAllReviewsSQL = "select review from rating where isbn = ?;";
-    
+
+    private final String getAllReviewsSQL = "select review from rating where isbn = ?; and review is not null";
+
     public List<String> getAllReviewsByISBN(String isbn) {
         List<String> reviewList = null;
 
@@ -141,6 +141,31 @@ public class SearchBooks extends DB {
             closeConnection();
         }
         return reviewList;
+    }
+
+    private final String getAllRatingCountSQL = "select count(*) count from rating where isbn = ?;";
+
+    public String getAllRatingCountByISBN(String isbn) {
+        String ratingCount = null;
+
+        openConnection();
+
+        try {
+            String temp =  null;
+            preparedStatement = conn.prepareStatement(getAllRatingCountSQL);
+            preparedStatement.setString(1, isbn);
+            ResultSet rs = preparedStatement.executeQuery();
+            while (rs.next()) {
+                temp = rs.getString("review");
+            }
+            if(temp!=null && !temp.isEmpty())
+                ratingCount = temp;
+        } catch (SQLException ex) {
+            Logger.getLogger(LoginDB.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            closeConnection();
+        }
+        return ratingCount;
     }
 
 }

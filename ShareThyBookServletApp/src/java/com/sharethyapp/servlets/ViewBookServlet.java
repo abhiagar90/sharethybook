@@ -41,6 +41,7 @@ public class ViewBookServlet extends HttpServlet {
         {
             book.setAuthorList(new SearchBooks().getAllAuthorsByISBN(isbn));
             book.setReviewList(new SearchBooks().getAllReviewsByISBN(isbn));
+            book.setNumOfRatings(new SearchBooks().getAllRatingCountByISBN(isbn));
             request.setAttribute("masterbook", book);
             RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/viewbook.jsp");
             dispatcher.forward(request, response);

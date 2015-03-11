@@ -12,6 +12,7 @@ import java.util.List;
  * @author reshma
  */
 public class BookResult {
+
     String isbn;
     String title;
     String year;
@@ -20,6 +21,19 @@ public class BookResult {
     String authors;
     List<String> authorList;
     List<String> reviewList;
+    String numOfRatings;
+
+    public String getNumOfRatings() {
+        return numOfRatings;
+    }
+
+    public void setNumOfRatings(String numOfRatings) {
+        if (numOfRatings == null || numOfRatings.isEmpty()) {
+            this.numOfRatings = "0";
+        } else {
+            this.numOfRatings = numOfRatings;
+        }
+    }
 
     public List<String> getReviewList() {
         return reviewList;
@@ -85,24 +99,17 @@ public class BookResult {
         this.rating = rating;
     }
 
-    
-    public BookResult()
-    {
-        
-    }
-    
-    
-    
+    public BookResult() {
 
-    public BookResult(String ISBN, String Title, String Year, String Publisher, String Rating,String Authors) {
+    }
+
+    public BookResult(String ISBN, String Title, String Year, String Publisher, String Rating, String Authors) {
         this.isbn = ISBN;
         this.title = Title;
         this.year = Year;
         this.publisher = Publisher;
         this.rating = Rating;
-        this.authors=Authors;
+        this.authors = Authors;
     }
-    
-    
-    
+
 }
