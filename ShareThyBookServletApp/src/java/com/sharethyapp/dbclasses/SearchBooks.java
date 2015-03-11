@@ -6,6 +6,7 @@
 package com.sharethyapp.dbclasses;
 
 import com.sharethyapp.helper.BookResult;
+import com.sharethyapp.helper.BookSearchQueryResult;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -24,12 +25,14 @@ import java.util.logging.Logger;
  */
 public class SearchBooks extends DB {
     
-     public List<BookResult> SearchBooks(String whereCond)  throws NoSuchAlgorithmException //returns null if exception
+     public BookSearchQueryResult SearchBooks(String whereCond,int Mode)  throws NoSuchAlgorithmException //returns null if exception
     {
         openConnection();
         
         String getSearchRes=null;
       
+        if(Mode==1)
+        {
             if(whereCond.trim()!="")
             {
                 getSearchRes = "select M.ISBN,M.Title,M.Year,M.Publisher,M.Rating,A.AuthorName from MasterBooks M,Authors A,BooksWrittenBy B where "+whereCond+" AND M.ISBN=B.ISBN AND B.AuthorID=A.AuthorID";
@@ -38,12 +41,20 @@ public class SearchBooks extends DB {
             {
                 getSearchRes = "select M.ISBN,M.Title,M.Year,M.Publisher,M.Rating,A.AuthorName from MasterBooks M,Authors A,BooksWrittenBy B where M.ISBN=B.ISBN AND B.AuthorID=A.AuthorID";
             }
+        }
+        else
+        {
+            getSearchRes=whereCond;
+        }
       
         try {
             preparedStatement = conn.prepareStatement(getSearchRes);
             ResultSet rs = preparedStatement.executeQuery();
+            
+            BookSearchQueryResult bookQueryRes=new BookSearchQueryResult();
                         
             List<BookResult> bookRes= new ArrayList<BookResult>();
+            
             BookResult book;
             
 
@@ -53,7 +64,9 @@ public class SearchBooks extends DB {
                   bookRes.add(book);
                 }  
             
-           return bookRes;
+           bookQueryRes.setBookRes(bookRes);
+           bookQueryRes.setBookSearchQuery(getSearchRes);
+           return bookQueryRes;
            
         } catch (SQLException ex) {
             Logger.getLogger(LoginDB.class.getName()).log(Level.SEVERE, null, ex);

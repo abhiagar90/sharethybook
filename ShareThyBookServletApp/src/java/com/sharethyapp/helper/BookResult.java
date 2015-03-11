@@ -17,6 +17,7 @@ public class BookResult {
     String rating;
     String authors;
 
+
     public String getAuthors() {
         return authors;
     }

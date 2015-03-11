@@ -39,7 +39,8 @@ ISBN VARCHAR(13) PRIMARY KEY,
 Title VARCHAR(1000) NOT NULL,
 Year INT,
 Publisher VARCHAR(300),
-Rating INT DEFAULT 0
+TotalRating INT DEFAULT 0,
+NoOfUsersRated INT DEFAULT 0
 CONSTRAINT RatingCons CHECK(Rating >=0 AND Rating<6)
 );
 
@@ -122,7 +123,7 @@ CREATE OR REPLACE FUNCTION TriggerOnBookInsert() RETURNS TRIGGER AS $TriggerOnBo
         UPDATE UserTable 
 	SET BooksContributed = BooksContributed +1,
 	    BooksHave=BooksHave+1
-        WHERE EntryNumber = NEW.OwnerID;password
+        WHERE EntryNumber = NEW.OwnerID;
 	INSERT INTO Messages(FromID ,ToID ,Date,Message,Status)
 	SELECT 'NOREPLY',EntryNumber,now(),'This is to notify you that the book '||NEW.ISBN||' added by you in your wishlist is now 		available in our library',true FROM	 
 	(SELECT EntryNumber FROM WishList WHERE ISBN ILIKE NEW.ISBN) AS A;
@@ -136,6 +137,31 @@ CREATE TRIGGER TriggerOnBookInsert AFTER INSERT ON Books
 
 //Trigger For message.......................updating NoofunRead messages of user
 //Trigger for Review........................updating mastertable review
+
+CREATE OR REPLACE FUNCTION TriggerOnMessagesInsert() RETURNS TRIGGER AS $TriggerOnMessagesInsert$
+    BEGIN
+        UPDATE UserTable 
+	SET UnreadMessages = UnreadMessages +1
+        WHERE EntryNumber = NEW.ToID;
+        RETURN NULL;
+    END;
+$TriggerOnMessagesInsert$ LANGUAGE plpgsql;
+
+CREATE TRIGGER TriggerOnMessagesInsert AFTER INSERT ON Messages
+    FOR EACH ROW EXECUTE PROCEDURE TriggerOnMessagesInsert();
+
+CREATE OR REPLACE FUNCTION TriggerOnRatingInsert() RETURNS TRIGGER AS $TriggerOnRatingInsert$
+    BEGIN
+        UPDATE MasterBooks 
+	SET TotalRating = TotalRating +NEW.Rating,
+	NoOfUsersRated=NoOfUsersRated+1
+        WHERE ISBN = NEW.ISBN;
+        RETURN NULL;
+    END;
+$TriggerOnRatingInsert$ LANGUAGE plpgsql;
+
+CREATE TRIGGER TriggerOnRatingInsert AFTER INSERT ON Rating
+    FOR EACH ROW EXECUTE PROCEDURE TriggerOnRatingInsert();
 
 CREATE OR REPLACE FUNCTION TriggerOnBookUpdate() RETURNS TRIGGER AS $TriggerOnBookUpdate$
     BEGIN

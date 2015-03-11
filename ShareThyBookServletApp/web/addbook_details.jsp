@@ -1,3 +1,4 @@
+
 <%@page import="java.util.List"%>
 <%@page import="com.sharethyapp.helper.BookResult"%>
 
@@ -35,17 +36,20 @@
             <%
                 List<BookResult> rs = (List<BookResult>) request.getAttribute("listOfBooks");
                 if (rs != null) {
-
-
+                    if(rs.isEmpty()){
+                            
             %>
+            <div>No Result Fetched.</div> 
+            <%} else { %>
             <table width="100%">
                 <tr>
-                <th>ISBN</th>
-                <th>Title</th>
-                <th>Authors</th>
-                <th>Publisher</th>
-                <th>Year</th>
-                <th>Rating</th>
+                <th><a href="addbook.do?Order=ISBN">ISBN</a></th>
+                <th><a href="addbook.do?Order=Title">Title</a></th>
+                <th><a href="addbook.do?Order=AuthorName">Authors</a></th>
+                <th><a href="addbook.do?Order=Publisher">Publisher</a></th>
+                <th><a href="addbook.do?Order=Year">Year</a></th>
+                <th><a href="addbook.do?Order=Rating">Rating</a></th>
+                <th>Add Book</th>
                 </tr>
                 <% for (BookResult bt : rs) {
                         pageContext.setAttribute("record", bt);
@@ -58,13 +62,13 @@
                 <td align="center">${record.publisher }</td>
                 <td align="center">${record.year }</td>
                 <td align="center">${record.rating }</td>
-
+                <td><a href="addphysicalbook.do?ISBN=${record.isbn}">Contribute</a></td>
                 </tr>
                 <%}%>
             </table>
             <%}%>
-            
-            <input type="hidden" name="searchQuery" value="select M.ISBN,M.Title,M.Year,M.Publisher,M.Rating,A.AuthorName from MasterBooks M,Authors A,BooksWrittenBy B where M.ISBN=B.ISBN AND B.AuthorID=A.AuthorID">
+            <%}%>
+       
         </form>
     </div>
             
