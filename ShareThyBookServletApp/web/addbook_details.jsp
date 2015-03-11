@@ -41,7 +41,7 @@
             %>
             <div>No Result Fetched.</div> 
             <%} else { %>
-            <table width="100%">
+            <table width="100%" class="table">
                 <tr>
                 <th><a href="addbook.do?Order=ISBN">ISBN</a></th>
                 <th><a href="addbook.do?Order=Title">Title</a></th>
@@ -56,7 +56,7 @@
                 %>
 
                 <tr>
-                <td align="center">${record.isbn }</td>
+                <td align="center"><a href="viewbook.do?isbn=${record.isbn}">${record.isbn }</a></td>
                 <td align="center">${record.title }</td>
                 <td align="center">${record.authors }</td>
                 <td align="center">${record.publisher }</td>

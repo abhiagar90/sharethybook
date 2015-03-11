@@ -1,124 +1,115 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
-    <servlet>
-        <servlet-name>DummyServlet</servlet-name>
-        <servlet-class>com.sharethyapp.servlets.DummyServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>LoginServlet</servlet-name>
-        <servlet-class>com.sharethyapp.servlets.LoginServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>LogoutServlet</servlet-name>
-        <servlet-class>com.sharethyapp.servlets.LogoutServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>ProfileServlet</servlet-name>
-        <servlet-class>com.sharethyapp.servlets.ProfileServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>ProfileImageServlet</servlet-name>
-        <servlet-class>com.sharethyapp.servlets.ProfileImageServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>AddBookServlet</servlet-name>
-        <servlet-class>com.sharethyapp.servlets.AddBookServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>SignUpServlet</servlet-name>
-        <servlet-class>com.sharethyapp.servlets.SignUpServlet</servlet-class>
-    </servlet>
-    
-    
-    <servlet>
-        <servlet-name>EditProfileServlet</servlet-name>
-        <servlet-class>com.sharethyapp.servlets.EditProfileServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>BeforeEditProfileServlet</servlet-name>
-        <servlet-class>com.sharethyapp.servlets.BeforeEditProfileServlet</servlet-class>
-    </servlet><servlet>
-        <servlet-name>ChangePasswordServlet</servlet-name>
-        <servlet-class>com.sharethyapp.servlets.ChangePasswordServlet</servlet-class>
-<<<<<<< HEAD
-    </servlet>
-    <servlet>
-        <servlet-name>AddPhysicalBookServlet</servlet-name>
-        <servlet-class>com.sharethyapp.servlets.AddPhysicalBookServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-=======
-    </servlet><servlet>
-        <servlet-name>ViewBookServlet</servlet-name>
-        <servlet-class>com.sharethyapp.servlets.ViewBookServlet</servlet-class>
-    </servlet><servlet-mapping>
->>>>>>> f904c7b2610e4a242455cdbe49e006b5c669ca06
-        <servlet-name>DummyServlet</servlet-name>
-        <url-pattern>/dummy.do</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>LoginServlet</servlet-name>
-        <url-pattern>/login.do</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>LogoutServlet</servlet-name>
-        <url-pattern>/logout.do</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>ProfileServlet</servlet-name>
-        <url-pattern>/profile.do</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>ProfileImageServlet</servlet-name>
-        <url-pattern>/profileimage.do</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>SignUpServlet</servlet-name>
-        <url-pattern>/signup.do</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>AddBookServlet</servlet-name>
-        <url-pattern>/addbook.do</url-pattern>
-    </servlet-mapping>
-    
-    
-    <servlet-mapping>
-        <servlet-name>EditProfileServlet</servlet-name>
-        <url-pattern>/editProfile.do</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>BeforeEditProfileServlet</servlet-name>
-        <url-pattern>/beforeedit.do</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>ChangePasswordServlet</servlet-name>
-        <url-pattern>/changePassword.do</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-<<<<<<< HEAD
-        <servlet-name>AddPhysicalBookServlet</servlet-name>
-        <url-pattern>/addphysicalbook.do</url-pattern>
-=======
-        <servlet-name>ViewBookServlet</servlet-name>
-        <url-pattern>/viewbook.do</url-pattern>
->>>>>>> f904c7b2610e4a242455cdbe49e006b5c669ca06
-    </servlet-mapping>
-    <session-config>
-        <session-timeout>
-            30
-        </session-timeout>
-    </session-config>
-    <welcome-file-list>
-        <welcome-file>welcome.jsp</welcome-file>
-    </welcome-file-list>
-    <error-page>
-        <error-code>404</error-code>
-        <location>/error.jsp</location>
-    </error-page>
-    <error-page>
-        <exception-type>java.lang.Throwable</exception-type>
-        <location>/error.jsp</location>
-    </error-page>
-
-    SignUpServlet
-    </web-app>
+<servlet>
+<servlet-name>DummyServlet</servlet-name>
+<servlet-class>com.sharethyapp.servlets.DummyServlet</servlet-class>
+</servlet>
+<servlet>
+<servlet-name>LoginServlet</servlet-name>
+<servlet-class>com.sharethyapp.servlets.LoginServlet</servlet-class>
+</servlet>
+<servlet>
+<servlet-name>LogoutServlet</servlet-name>
+<servlet-class>com.sharethyapp.servlets.LogoutServlet</servlet-class>
+</servlet>
+<servlet>
+<servlet-name>ProfileServlet</servlet-name>
+<servlet-class>com.sharethyapp.servlets.ProfileServlet</servlet-class>
+</servlet>
+<servlet>
+<servlet-name>ProfileImageServlet</servlet-name>
+<servlet-class>com.sharethyapp.servlets.ProfileImageServlet</servlet-class>
+</servlet>
+<servlet>
+<servlet-name>AddBookServlet</servlet-name>
+<servlet-class>com.sharethyapp.servlets.AddBookServlet</servlet-class>
+</servlet>
+<servlet>
+<servlet-name>SignUpServlet</servlet-name>
+<servlet-class>com.sharethyapp.servlets.SignUpServlet</servlet-class>
+</servlet>
+<servlet>
+<servlet-name>EditProfileServlet</servlet-name>
+<servlet-class>com.sharethyapp.servlets.EditProfileServlet</servlet-class>
+</servlet>
+<servlet>
+<servlet-name>BeforeEditProfileServlet</servlet-name>
+<servlet-class>com.sharethyapp.servlets.BeforeEditProfileServlet</servlet-class>
+</servlet>
+<servlet>
+<servlet-name>ChangePasswordServlet</servlet-name>
+<servlet-class>com.sharethyapp.servlets.ChangePasswordServlet</servlet-class>
+</servlet>
+<servlet>
+<servlet-name>AddPhysicalBookServlet</servlet-name>
+<servlet-class>com.sharethyapp.servlets.AddPhysicalBookServlet</servlet-class>
+</servlet>
+<servlet>
+<servlet-name>ViewBookServlet</servlet-name>
+<servlet-class>com.sharethyapp.servlets.ViewBookServlet</servlet-class>
+</servlet>
+<servlet-mapping>
+<servlet-name>DummyServlet</servlet-name>
+<url-pattern>/dummy.do</url-pattern>
+</servlet-mapping>
+<servlet-mapping>
+<servlet-name>LoginServlet</servlet-name>
+<url-pattern>/login.do</url-pattern>
+</servlet-mapping>
+<servlet-mapping>
+<servlet-name>LogoutServlet</servlet-name>
+<url-pattern>/logout.do</url-pattern>
+</servlet-mapping>
+<servlet-mapping>
+<servlet-name>ProfileServlet</servlet-name>
+<url-pattern>/profile.do</url-pattern>
+</servlet-mapping>
+<servlet-mapping>
+<servlet-name>ProfileImageServlet</servlet-name>
+<url-pattern>/profileimage.do</url-pattern>
+</servlet-mapping>
+<servlet-mapping>
+<servlet-name>SignUpServlet</servlet-name>
+<url-pattern>/signup.do</url-pattern>
+</servlet-mapping>
+<servlet-mapping>
+<servlet-name>AddBookServlet</servlet-name>
+<url-pattern>/addbook.do</url-pattern>
+</servlet-mapping>
+<servlet-mapping>
+<servlet-name>EditProfileServlet</servlet-name>
+<url-pattern>/editProfile.do</url-pattern>
+</servlet-mapping>
+<servlet-mapping>
+<servlet-name>BeforeEditProfileServlet</servlet-name>
+<url-pattern>/beforeedit.do</url-pattern>
+</servlet-mapping>
+<servlet-mapping>
+<servlet-name>ChangePasswordServlet</servlet-name>
+<url-pattern>/changePassword.do</url-pattern>
+</servlet-mapping>
+<servlet-mapping>
+<servlet-name>AddPhysicalBookServlet</servlet-name>
+<url-pattern>/addphysicalbook.do</url-pattern>
+</servlet-mapping>
+<servlet-mapping>
+<servlet-name>ViewBookServlet</servlet-name>
+<url-pattern>/viewbook.do</url-pattern>
+</servlet-mapping>
+<session-config>
+<session-timeout>
+30
+</session-timeout>
+</session-config>
+<welcome-file-list>
+<welcome-file>welcome.jsp</welcome-file>
+</welcome-file-list>
+<error-page>
+<error-code>404</error-code>
+<location>/error.jsp</location>
+</error-page>
+<error-page>
+<exception-type>java.lang.Throwable</exception-type>
+<location>/error.jsp</location>
+</error-page>
+</web-app>

@@ -114,8 +114,41 @@ END;
 $TriggerOnBookInsert$ LANGUAGE plpgsql;
 CREATE TRIGGER TriggerOnBookInsert AFTER INSERT ON Books
 FOR EACH ROW EXECUTE PROCEDURE TriggerOnBookInsert();
+
 //Trigger For message.......................updating NoofunRead messages of user
 //Trigger for Review........................updating mastertable review
+
+CREATE TRIGGER TriggerOnBookInsert AFTER INSERT ON Books
+    FOR EACH ROW EXECUTE PROCEDURE TriggerOnBookInsert();
+
+//Trigger For message.......................updating NoofunRead messages of user
+//Trigger for Review........................updating mastertable review
+
+CREATE OR REPLACE FUNCTION TriggerOnMessagesInsert() RETURNS TRIGGER AS $TriggerOnMessagesInsert$
+    BEGIN
+        UPDATE UserTable 
+	SET UnreadMessages = UnreadMessages +1
+        WHERE EntryNumber = NEW.ToID;
+        RETURN NULL;
+    END;
+$TriggerOnMessagesInsert$ LANGUAGE plpgsql;
+
+CREATE TRIGGER TriggerOnMessagesInsert AFTER INSERT ON Messages
+    FOR EACH ROW EXECUTE PROCEDURE TriggerOnMessagesInsert();
+
+CREATE OR REPLACE FUNCTION TriggerOnRatingInsert() RETURNS TRIGGER AS $TriggerOnRatingInsert$
+    BEGIN
+        UPDATE MasterBooks 
+	SET TotalRating = TotalRating +NEW.Rating,
+	NoOfUsersRated=NoOfUsersRated+1
+        WHERE ISBN = NEW.ISBN;
+        RETURN NULL;
+    END;
+$TriggerOnRatingInsert$ LANGUAGE plpgsql;
+
+CREATE TRIGGER TriggerOnRatingInsert AFTER INSERT ON Rating
+    FOR EACH ROW EXECUTE PROCEDURE TriggerOnRatingInsert();
+
 CREATE OR REPLACE FUNCTION TriggerOnBookUpdate() RETURNS TRIGGER AS $TriggerOnBookUpdate$
 BEGIN
 UPDATE UserTable
