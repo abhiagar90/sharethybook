@@ -43,14 +43,14 @@ public class AddPhysicalBookServlet extends HttpServlet {
                
             
 
-                RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/contributeBook.jsp");
+                RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/contributeBook.jsp?ISBN="+isbn);
                 dispatcher.forward(request, response);
             }
             else
             {
                // request.getSession().setAttribute("Query", rs.getBookSearchQuery());
 
-                RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/contributeBook.jsp");
+                RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/contributeBook.jsp?ISBN="+isbn);
                 dispatcher.forward(request, response);
             }
             
