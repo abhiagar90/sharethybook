@@ -68,7 +68,7 @@
 
         <%
             BookResult newTemp = ((BookResult) request.getAttribute("masterbook"));
-            if (newTemp.getRateReviewList()!= null) {
+            if (newTemp.getRateReviewList() != null) {
                 for (RateAndReview review : newTemp.getRateReviewList()) {
                     pageContext.setAttribute("review", review);
         %>
@@ -120,7 +120,50 @@
     <br/>
 
     <h3>Rate and review!</h3>
+    <form action="rate.do" method="post" class="form">
 
+        <input type="hidden" name="entrynumber" id="entrynumber" value="${sessionScope.entrynumber}" />
+        <input type="hidden" name="isbn" id="isbn" value="${masterbook.isbn}"/>
+
+        <div class="col_100">
+
+            <table class="table">
+                <tr></tr>
+
+                <tr>
+                <td><label for="rate">Rate</label><br/></td>
+                <td><select name="rate" id="rate">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                    </select>
+                </td>
+                </tr>
+
+                <tr>
+                <td><label for="review">Review</label><br/></td>
+                <td><textarea name="review" id="review" rows="4" cols="50" value=""></textarea></td>
+                </tr>
+
+
+            </table><br/>
+
+
+
+
+        </div>
+        <div>
+            <button type="submit" class="button" onclick="submit">Submit</button>
+        </div>
+
+        <br/>
+        <p class="col_50" style="color: red">
+            ${requestScope.error}
+        </p>
+        <br/>
+    </form>
     <!--
     <div>
         <a href="addbook.jsp">Contribute a book</a> <br/>
