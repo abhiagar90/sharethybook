@@ -6,6 +6,8 @@
 package com.sharethyapp.dbclasses;
 
 import com.sharethyapp.helper.BookResult;
+import com.sharethyapp.helper.PhysicalBooks;
+import com.sharethyapp.helper.RateAndReview;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -77,7 +79,7 @@ public class SearchBooks extends DB {
                 temp.setIsbn(rs.getString("isbn"));
                 temp.setPublisher(rs.getString("publisher"));
                 temp.setRating(rs.getString("rating"));
-                temp.setAuthors(rs.getString("year"));
+                temp.setYear(rs.getString("year"));
                 temp.setTitle(rs.getString("title"));
                 book = temp;
             }
@@ -90,57 +92,64 @@ public class SearchBooks extends DB {
         return book;
     }
 
-    private final String getAuthorsDetailsSQL = "select a.authorname from authors a, bookswrittenby b "
-            + "where a.authorid=b.authorid and b.isbn=?;";
+        private final String getAuthorsDetailsSQL = "select a.authorname from authors a, bookswrittenby b "
+                + "where a.authorid=b.authorid and b.isbn=?;";
 
-    public List<String> getAllAuthorsByISBN(String isbn) {
-        List<String> authorList = null;
+        public List<String> getAllAuthorsByISBN(String isbn) {
+            List<String> authorList = null;
+
+            openConnection();
+
+            try {
+                List<String> temp = new LinkedList<String>();
+                preparedStatement = conn.prepareStatement(getAuthorsDetailsSQL);
+                preparedStatement.setString(1, isbn);
+                ResultSet rs = preparedStatement.executeQuery();
+                while (rs.next()) {
+                    temp.add(rs.getString("authorname"));
+                }
+                if (!temp.isEmpty()) {
+                    authorList = temp;
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(LoginDB.class.getName()).log(Level.SEVERE, null, ex);
+            } finally {
+                closeConnection();
+            }
+            return authorList;
+        }
+
+    
+    private final String getAllReviewsRatesSQL = "select * from rating where isbn = ?";
+
+    public List<RateAndReview> getAllReviewsRatesByISBN(String isbn) {
+        List<RateAndReview> rateReviewList = null;
 
         openConnection();
 
         try {
-            List<String> temp = new LinkedList<String>();
-            preparedStatement = conn.prepareStatement(getAuthorsDetailsSQL);
+            List<RateAndReview> temp = new LinkedList<RateAndReview>();
+            preparedStatement = conn.prepareStatement(getAllReviewsRatesSQL);
             preparedStatement.setString(1, isbn);
             ResultSet rs = preparedStatement.executeQuery();
             while (rs.next()) {
-                temp.add(rs.getString("authorname"));
+                RateAndReview rr = new RateAndReview();
+                rr.setEntrynumber(rs.getString("entrynumber"));
+                rr.setRating(rs.getString("rating"));
+                rr.setReview(rs.getString("review"));
+                if (rr.getEntrynumber() != null) {
+                    temp.add(rr);
+                }                
             }
             if (!temp.isEmpty()) {
-                authorList = temp;
+                rateReviewList = temp;
             }
         } catch (SQLException ex) {
             Logger.getLogger(LoginDB.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             closeConnection();
         }
-        return authorList;
-    }
-
-    private final String getAllReviewsSQL = "select review from rating where isbn = ?; and review is not null";
-
-    public List<String> getAllReviewsByISBN(String isbn) {
-        List<String> reviewList = null;
-
-        openConnection();
-
-        try {
-            List<String> temp = new LinkedList<String>();
-            preparedStatement = conn.prepareStatement(getAllReviewsSQL);
-            preparedStatement.setString(1, isbn);
-            ResultSet rs = preparedStatement.executeQuery();
-            while (rs.next()) {
-                temp.add(rs.getString("review"));
-            }
-            if (!temp.isEmpty()) {
-                reviewList = temp;
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(LoginDB.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-            closeConnection();
-        }
-        return reviewList;
+        return rateReviewList;
     }
 
     private final String getAllRatingCountSQL = "select count(*) count from rating where isbn = ?;";
@@ -156,7 +165,7 @@ public class SearchBooks extends DB {
             preparedStatement.setString(1, isbn);
             ResultSet rs = preparedStatement.executeQuery();
             while (rs.next()) {
-                temp = rs.getString("review");
+                temp = rs.getString("count");
             }
             if(temp!=null && !temp.isEmpty())
                 ratingCount = temp;
@@ -167,5 +176,5 @@ public class SearchBooks extends DB {
         }
         return ratingCount;
     }
-
+    
 }

@@ -5,7 +5,7 @@
  */
 package com.sharethyapp.servlets;
 
-import com.sharethyapp.dbclasses.SignUp;
+import com.sharethyapp.dbclasses.SignUpDB;
 import com.sharethyapp.dbclasses.UserTable;
 import com.sharethyapp.dbclasses.UserTableDB;
 import com.sharethyapp.helper.UtilitiesHelper;

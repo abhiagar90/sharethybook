@@ -5,10 +5,13 @@
  */
 package com.sharethyapp.servlets;
 
+import com.sharethyapp.dbclasses.PhysicalBooksDB;
 import com.sharethyapp.dbclasses.UserTable;
 import com.sharethyapp.dbclasses.UserTableDB;
 import com.sharethyapp.helper.LoginHelper;
+import com.sharethyapp.helper.PhysicalBooks;
 import java.io.IOException;
+import java.util.List;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -40,6 +43,12 @@ public class ProfileServlet extends HttpServlet {
         {
             request.setAttribute("user", user);
             request.setAttribute("typeUser", LoginHelper.getTypeOfUser(user.getTypeOfUser()));
+            
+            //also get detials about books own and books has
+            List<PhysicalBooks> ownList = new PhysicalBooksDB().getOwnedBooksDetails(entrynum);
+            List<PhysicalBooks> havingList = new PhysicalBooksDB().getHavingBooksDetails(entrynum);
+            request.setAttribute("ownlist", ownList);
+            request.setAttribute("havinglist", havingList);
             RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/profile.jsp");
             dispatcher.forward(request, response);
             

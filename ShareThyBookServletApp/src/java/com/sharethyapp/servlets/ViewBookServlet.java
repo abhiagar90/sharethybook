@@ -5,11 +5,12 @@
  */
 package com.sharethyapp.servlets;
 
+import com.sharethyapp.dbclasses.PhysicalBooksDB;
 import com.sharethyapp.dbclasses.SearchBooks;
 import com.sharethyapp.helper.BookResult;
-import com.sharethyapp.helper.LoginHelper;
+import com.sharethyapp.helper.PhysicalBooks;
 import java.io.IOException;
-import java.io.PrintWriter;
+import java.util.List;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -36,19 +37,23 @@ public class ViewBookServlet extends HttpServlet {
         String isbn = request.getParameter("isbn");
         //now we need to query the databse for the book
         BookResult book = new SearchBooks().getMasterBookDetailsByISBN(isbn);
-       
-        if(book!=null)
-        {
+
+        if (book != null) {
             book.setAuthorList(new SearchBooks().getAllAuthorsByISBN(isbn));
-            book.setReviewList(new SearchBooks().getAllReviewsByISBN(isbn));
+            //book.setReviewList(new SearchBooks().getAllReviewsByISBN(isbn));
+            book.setRateReviewList(new SearchBooks().getAllReviewsRatesByISBN(isbn));
             book.setNumOfRatings(new SearchBooks().getAllRatingCountByISBN(isbn));
+            
+            //now get the physical copies of the books from the tables
+            List<PhysicalBooks> physicalList = new PhysicalBooksDB().getPhysicalBooksDetailsByISBN(isbn);
             request.setAttribute("masterbook", book);
+            if (physicalList != null && !physicalList.isEmpty()) {
+                request.setAttribute("physicalList", physicalList);
+            }
             RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/viewbook.jsp");
             dispatcher.forward(request, response);
-            
-        }
-        else
-        {
+
+        } else {
             //From now on, global error msgs in errorMsg
             //will see about redirection
             request.setAttribute("errorMsg", "ISBN not Valid!<br/>");

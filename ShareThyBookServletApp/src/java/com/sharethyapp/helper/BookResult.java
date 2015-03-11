@@ -21,8 +21,17 @@ public class BookResult {
     String authors;
     List<String> authorList;
     List<String> reviewList;
+    List<RateAndReview> rateReviewList;
     String numOfRatings;
 
+    public List<RateAndReview> getRateReviewList() {
+        return rateReviewList;
+    }
+
+    public void setRateReviewList(List<RateAndReview> rateReviewList) {
+        this.rateReviewList = rateReviewList;
+    }
+    
     public String getNumOfRatings() {
         return numOfRatings;
     }

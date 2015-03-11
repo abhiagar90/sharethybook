@@ -18,7 +18,7 @@ import java.util.logging.Logger;
  *
  * @author reshma
  */
-public class SignUp extends DB{
+public class SignUpDB extends DB{
     
     public boolean newUser(String firstName,String lastName,String entryNumber,
               String password,      
