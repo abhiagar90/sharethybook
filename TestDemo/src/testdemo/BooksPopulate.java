@@ -42,7 +42,7 @@ public class BooksPopulate {
                 stmt1 = c.createStatement();
                 System.out.println("EntryNumber");
 
-                String prepQuery = "Insert into Books Values(?,?,?,?,?,?)";
+                String prepQuery = "Insert into Books(ISBN,OwnerID,HolderID,HoldingDate,LastCondition) Values(?,?,?,?,?)";
 
                 int i = 0;
                 int MAXCOUNT = 5000;
@@ -64,15 +64,15 @@ public class BooksPopulate {
                     i++;
                     try {
                         PreparedStatement ps = c.prepareStatement(prepQuery);
-                        ps.setString(1, bookID);
-                        ps.setString(2, ISBN);
+                       // ps.setString(1, bookID);
+                        ps.setString(1, ISBN);
+                        ps.setString(2, entryNumber);
                         ps.setString(3, entryNumber);
-                        ps.setString(4, entryNumber);
                         DateFormat formatter;
                         Calendar calendar = Calendar.getInstance();
                         java.sql.Date ourJavaDateObject = new java.sql.Date(calendar.getTime().getTime());
-                        ps.setDate(5, ourJavaDateObject);
-                        ps.setString(6, RandomGenerateBookCond());
+                        ps.setDate(4, ourJavaDateObject);
+                        ps.setString(5, RandomGenerateBookCond());
 
                         ps.executeUpdate();
                         ps.close();

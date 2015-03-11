@@ -6,13 +6,8 @@
 package com.sharethyapp.servlets;
 
 import com.sharethyapp.dbclasses.PhysicalBooksDB;
-import com.sharethyapp.dbclasses.SearchBooks;
-import com.sharethyapp.helper.BookResult;
-import com.sharethyapp.helper.PhysicalBooks;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.List;
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -22,40 +17,19 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author reshma
  */
-public class AddPhysicalBookServlet extends HttpServlet {
+public class InsertBookDetails extends HttpServlet {
+
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-       try {
-            String isbn=request.getParameter("ISBN");
-         
-            BookResult book = new SearchBooks().getMasterBookDetailsByISBN(isbn);
-
-            if (book != null) {
-                book.setAuthorList(new SearchBooks().getAllAuthorsByISBN(isbn));
-                book.setRateReviewList(new SearchBooks().getAllReviewsRatesByISBN(isbn));
-                book.setNumOfRatings(new SearchBooks().getAllRatingCountByISBN(isbn));
-
-                request.setAttribute("masterbook", book);
-           // }
-               //if(new PhysicalBooksDB().InsertPhysicalBook(request.getParameter("ISBN"),request.getSession().getAttribute("entrynumber").toString(),"G")) 
-           // {
-               
-            
-
-                RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/contributeBook.jsp");
-                dispatcher.forward(request, response);
-            }
-            else
-            {
-               // request.getSession().setAttribute("Query", rs.getBookSearchQuery());
-
-                RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/contributeBook.jsp");
-                dispatcher.forward(request, response);
-            }
-            
+   
+        try {
+          if(new PhysicalBooksDB().InsertPhysicalBook(request.getParameter("ISBN"),request.getSession().getAttribute("entrynumber").toString(),"G")) 
+          {
+              
+          }
         } finally {
-         
+  
         }
     }
 

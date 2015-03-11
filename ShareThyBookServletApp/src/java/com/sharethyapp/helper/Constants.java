@@ -26,5 +26,5 @@ public class Constants {
             + "2. Email id not of iitd \n" 
             + "3. Pincode pattern wrong \n" 
             + "4. ";
-
+    public static final int bookCountStart=3000;
 }

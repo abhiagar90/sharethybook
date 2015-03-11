@@ -5,13 +5,18 @@
  */
 package com.sharethyapp.dbclasses;
 
+import com.sharethyapp.helper.Constants;
 import com.sharethyapp.helper.PhysicalBooks;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.util.Calendar;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.eclipse.jdt.internal.compiler.impl.Constant;
 
 /**
  *
@@ -123,4 +128,34 @@ public class PhysicalBooksDB extends DB {
         }
         return bookList;
     }
+    
+    private final String insertPhysicalDetailsSQL = "Insert into Books(ISBN,OwnerID,HolderID,HoldingDate,LastCondition) Values(?,?,?,?,?)";
+     public Boolean InsertPhysicalBook(String isbn,String entryNumber,String condition) {
+  
+        openConnection();
+
+        try {
+            preparedStatement = conn.prepareStatement(insertPhysicalDetailsSQL);
+            preparedStatement.setString(1, isbn);
+            preparedStatement.setString(2, entryNumber);
+            preparedStatement.setString(3, entryNumber);
+            DateFormat formatter;
+            Calendar calendar = Calendar.getInstance();
+            java.sql.Date ourJavaDateObject = new java.sql.Date(calendar.getTime().getTime());
+            preparedStatement.setDate(4, ourJavaDateObject);
+            preparedStatement.setString(5, condition);
+
+            preparedStatement.executeUpdate();
+            preparedStatement.close();
+            return true;
+        } catch (SQLException ex) {
+            Logger.getLogger(LoginDB.class.getName()).log(Level.SEVERE, null, ex);
+             return false;
+        } finally {
+            closeConnection();
+        }
+       
+     }
+     
+
 }
