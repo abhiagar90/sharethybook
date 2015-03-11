@@ -68,6 +68,11 @@
             </table>
             <%}%>
             <%}%>
+            <br/>
+            <br/>
+            <div>
+                <label for="name">In case you don't find book to be added in our master repository. <a href="suggestBook.jsp">Suggest us </a>the book and our moderator will verify it. </label>
+            </div>
        
         </form>
     </div>

@@ -6,20 +6,20 @@
     <%if (LoginHelper.isLoggedIn(request)) {%>
     <h1>${masterbook.title}</h1>
 
-    <!--
-    TODO: Image work
-    <div class="img_floatright">    
-        <img width="60" height="80" src="profileimage.do?entrynumber=user.entrynumber"></img>
-    </div>
-    -->
 
-<form action="signup.do" method="post" class="form">
+<form action="InsertBookDetails.do" method="post" class="form">
+        <p style="color: #6aa12e">
+            ${requestScope.Message}
+        </p>
+        <p class="col_50" style="color: red">
+            ${requestScope.Error}
+        </p>
     <h3>Title Details</h3>
     <table class="table">
 
         <tr>
         <td>ISBN</td>
-        <td><label for="ISBN">${masterbook.isbn}</label> <br/></td>
+        <td>${masterbook.isbn}<br/></td>
         </tr>
 
         <tr>
@@ -53,7 +53,7 @@
                                 <input type="radio" name="Condition" id="Condition" tabindex="2" value="G" /> Good
                             </label>
                             <label for="radio-choice-1">
-                                <input type="radio" name="Condition" id="Condition" tabindex="2" value="O" checked="checked"/> Okay  
+                                <input type="radio" name="Condition" id="Condition" tabindex="2" value="O"/> Okay  
                             </label>
                             <label for="radio-choice-1">
                                 <input type="radio" name="Condition" id="Condition" tabindex="2" value="D" /> Damaged
@@ -63,6 +63,8 @@
         <div>
                 <button type="submit" class="button" onclick="submit">Contribute</button>
             </div>
+    <br/>
+    <input type="hidden" name="ISBN" id="ISBN" value="${masterbook.isbn}"/>
 </form>
     <%}%>
     </article>

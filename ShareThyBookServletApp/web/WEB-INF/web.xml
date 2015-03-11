@@ -60,6 +60,10 @@
         <servlet-name>MessageServlet</servlet-name>
         <servlet-class>com.sharethyapp.servlets.MessageServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>SuggestBookServlet</servlet-name>
+        <servlet-class>com.sharethyapp.servlets.SuggestBookServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>DummyServlet</servlet-name>
         <url-pattern>/dummy.do</url-pattern>
@@ -110,11 +114,15 @@
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>InsertBookDetails</servlet-name>
-        <url-pattern>/InsertBookDetails</url-pattern>
+        <url-pattern>/InsertBookDetails.do</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>RateServlet</servlet-name>
         <url-pattern>/rate.do</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SuggestBookServlet</servlet-name>
+        <url-pattern>/suggestbookservlet.do</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>MessageServlet</servlet-name>
