@@ -22,5 +22,6 @@ public class Constants {
     public static final String dburl = "jdbc:postgresql://localhost:5432/library";
     public static final String uname = "postgres";
     public static final String password = "password";
+    public static final int bookCountStart=3000;
 
 }

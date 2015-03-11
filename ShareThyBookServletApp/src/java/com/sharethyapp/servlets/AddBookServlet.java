@@ -50,7 +50,7 @@ public class AddBookServlet extends HttpServlet {
         try {
             order = request.getParameter("Order").trim();            
             searchQuery = request.getSession().getAttribute("Query").toString();
-            System.out.println("AAAAAAAAAAAAAAAA : " + searchQuery);
+            
         } catch (Exception e) {
 
         }

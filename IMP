@@ -38,7 +38,7 @@ ISBN VARCHAR(13) PRIMARY KEY,
 Title VARCHAR(1000) NOT NULL,
 Year INT,
 Publisher VARCHAR(300),
-Rating INT DEFAULT 0
+Rating decimal(6,2) DEFAULT 0
 CONSTRAINT RatingCons CHECK(Rating >=0 AND Rating<6)
 );
 
@@ -154,7 +154,7 @@ $TriggerOnRatingInsert$ LANGUAGE plpgsql;
 
 CREATE TRIGGER TriggerOnRatingInsert AFTER INSERT ON Rating
     FOR EACH ROW EXECUTE PROCEDURE TriggerOnRatingInsert();
-
+    
 CREATE OR REPLACE FUNCTION TriggerOnBookUpdate() RETURNS TRIGGER AS $TriggerOnBookUpdate$
 BEGIN
 UPDATE UserTable
@@ -165,3 +165,5 @@ END;
 $TriggerOnBookUpdate$ LANGUAGE plpgsql;
 CREATE TRIGGER TriggerOnBookUpdate AFTER UPDATE ON Books
 FOR EACH ROW EXECUTE PROCEDURE TriggerOnBookUpdate();
+
+alter table masterbooks alter column rating set data type decimal(3,2);
