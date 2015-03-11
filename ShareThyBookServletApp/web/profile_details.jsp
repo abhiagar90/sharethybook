@@ -1,3 +1,4 @@
+<%@page import="com.sharethyapp.dbclasses.UserTable"%>
 <%@page import="com.sharethyapp.helper.LoginHelper"%>
 <%@page import="java.util.List"%>
 <%@page import="com.sharethyapp.helper.PhysicalBooks"%>
@@ -11,6 +12,17 @@
         <div class="img_floatright">
             <img width="60" height="80" src="profileimage.do?entrynumber=${user.entrynumber}"></img>
         </div>
+        <%
+            String sessionEntry = (String) request.getSession().getAttribute("entrynumber");
+            UserTable usertable = (UserTable) request.getAttribute("user");
+            String userEntry = usertable.getEntrynumber();
+            if (!sessionEntry.equals(userEntry)) {
+        %>
+        <div class="img_floatright">
+            <p><a href="#msg">Send a message</a></p>
+        </div>
+        <%}%>
+
         <p>
 
         <h3>Profile Details</h3>
@@ -98,10 +110,10 @@
             </tr>
 
             <%
-             List<PhysicalBooks> ownListTemp= (List<PhysicalBooks>) request.getAttribute("ownlist");
-             if(ownListTemp!=null)
-             for (PhysicalBooks tempbook : (List<PhysicalBooks>) request.getAttribute("ownlist")) {
-                    pageContext.setAttribute("tempbook", tempbook);
+                List<PhysicalBooks> ownListTemp = (List<PhysicalBooks>) request.getAttribute("ownlist");
+                if (ownListTemp != null)
+                    for (PhysicalBooks tempbook : (List<PhysicalBooks>) request.getAttribute("ownlist")) {
+                        pageContext.setAttribute("tempbook", tempbook);
             %>
             <tr>
             <td>${tempbook.bookidPhysical}</td>
@@ -132,10 +144,10 @@
             </tr>
 
             <%
-             List<PhysicalBooks> phyListTemp= (List<PhysicalBooks>) request.getAttribute("havinglist");
-             if(phyListTemp!=null)
-                for (PhysicalBooks tempbook : (List<PhysicalBooks>) request.getAttribute("havinglist")) {
-                    pageContext.setAttribute("tempbook", tempbook);
+                List<PhysicalBooks> phyListTemp = (List<PhysicalBooks>) request.getAttribute("havinglist");
+                if (phyListTemp != null)
+                    for (PhysicalBooks tempbook : (List<PhysicalBooks>) request.getAttribute("havinglist")) {
+                        pageContext.setAttribute("tempbook", tempbook);
             %>
             <tr>
             <td>${tempbook.bookidPhysical}</td>
@@ -155,15 +167,29 @@
 
         <h3>Books Requested By You</h3>
         <h3>Books Requested From You</h3>
+        <%
+           if (!sessionEntry.equals(userEntry)) {
+        %>
+        <a name="msg"></a>
+        <h3>Say Hi to ${user.firstname}</h3>
+        
 
+        <p><a href="message.do?toid=${user.entrynumber}">Send a message</a></p>
+        
+        <!-- Form for message here!! Phew -->
+
+        <%} else { %>
+        
+        <h3>Settings and features</h3>
         <div>
             <a href="addbook.jsp">Contribute a book</a> <br/>
             <a href="beforeedit.do?entrynumber=${user.entrynumber}">Edit Profile Details</a> <br/>
             <a href="changePassword.jsp">Change Password <a/> <br/>
                 <a href="editProfileImage.jsp">Edit Profile Image</a> <br/>
         </div>
+        <%}%>
     </div>
-            <%} else {%>
+    <%} else {%>
     <p class="col_50" style="color: #444">
         Not logged in. Please login.
     </p>
