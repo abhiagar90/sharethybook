@@ -38,7 +38,7 @@ ISBN VARCHAR(13) PRIMARY KEY,
 Title VARCHAR(1000) NOT NULL,
 Year INT,
 Publisher VARCHAR(300),
-Rating DECIMAl DEFAULT 0
+Rating decimal(6,2) DEFAULT 0
 CONSTRAINT RatingCons CHECK(Rating >=0 AND Rating<6)
 );
 
