@@ -52,6 +52,11 @@
         <servlet-name>InsertBookDetails</servlet-name>
         <servlet-class>com.sharethyapp.servlets.InsertBookDetails</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>RateServlet</servlet-name>
+        <servlet-class>com.sharethyapp.servlets.RateServlet</servlet-class>
+    </servlet>
+    
     <servlet-mapping>
         <servlet-name>DummyServlet</servlet-name>
         <url-pattern>/dummy.do</url-pattern>
@@ -100,14 +105,20 @@
         <servlet-name>ViewBookServlet</servlet-name>
         <url-pattern>/viewbook.do</url-pattern>
     </servlet-mapping>
+    
     <servlet-mapping>
         <servlet-name>InsertBookDetails</servlet-name>
         <url-pattern>/InsertBookDetails</url-pattern>
     </servlet-mapping>
+    
+    <servlet-mapping>
+        <servlet-name>RateServlet</servlet-name>
+        <url-pattern>/rate.do</url-pattern>
+    </servlet-mapping>
     <session-config>
         <session-timeout>
-30
-</session-timeout>
+            30
+        </session-timeout>
     </session-config>
     <welcome-file-list>
         <welcome-file>welcome.jsp</welcome-file>

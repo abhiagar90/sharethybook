@@ -42,8 +42,14 @@ public class ViewBookServlet extends HttpServlet {
             book.setAuthorList(new SearchBooks().getAllAuthorsByISBN(isbn));
             //book.setReviewList(new SearchBooks().getAllReviewsByISBN(isbn));
             book.setRateReviewList(new SearchBooks().getAllReviewsRatesByISBN(isbn));
-            book.setNumOfRatings(new SearchBooks().getAllRatingCountByISBN(isbn));
-            
+            if (book.getRateReviewList() != null) {
+                book.setNumOfRatings(""+book.getRateReviewList().size());
+            }
+            else
+            {
+                book.setNumOfRatings("0");
+            }
+
             //now get the physical copies of the books from the tables
             List<PhysicalBooks> physicalList = new PhysicalBooksDB().getPhysicalBooksDetailsByISBN(isbn);
             request.setAttribute("masterbook", book);

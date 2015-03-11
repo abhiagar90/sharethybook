@@ -5,21 +5,23 @@
  */
 package com.sharethyapp.servlets;
 
+import com.sharethyapp.dbclasses.RateAndReviewDB;
 import com.sharethyapp.dbclasses.UserTableDB;
+import com.sharethyapp.helper.RateAndReview;
 import com.sharethyapp.helper.UtilitiesHelper;
 import java.io.IOException;
-import java.io.PrintWriter;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.swing.text.Utilities;
 
 /**
  *
  * @author abhishek
  */
-public class ChangePasswordServlet extends HttpServlet {
+public class RateServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -32,31 +34,23 @@ public class ChangePasswordServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String oldpass = UtilitiesHelper.returnNullOrString(request, "oldpass");
-        String newpass = UtilitiesHelper.returnNullOrString(request, "newpass");
-        String repass = UtilitiesHelper.returnNullOrString(request, "repass");
+        RateAndReview newrating = new RateAndReview();
+        newrating.setEntrynumber(UtilitiesHelper.returnNullOrString(request, "entrynumber"));
+        newrating.setIsbn(UtilitiesHelper.returnNullOrString(request, "isbn"));
+        newrating.setReview(UtilitiesHelper.returnNullOrString(request, "review"));
+        newrating.setRating(UtilitiesHelper.returnNullOrString(request, "rate"));
+        String sqlOutput = new RateAndReviewDB().insertNewRating(newrating);
 
-        if (oldpass == null || newpass == null || repass == null || !newpass.equals(repass)) {
-            request.setAttribute("error", "Passwords do not match or empty!");
-            RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/changePassword.jsp");
+        if (sqlOutput.equals("true")) {
+            request.setAttribute("infoMsg", "Inserted rating successfully");
+            RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/viewbook.do?isbn="
+                    + newrating.getIsbn());
             dispatcher.forward(request, response);
         } else {
-            String oldhash = UtilitiesHelper.getMD5Hash(oldpass);
-            String newhash = UtilitiesHelper.getMD5Hash(newpass);
-
-            String sqlOutput = new UserTableDB().updatePassword((String) request.getSession().getAttribute("entrynumber"),
-                    newhash, oldhash);
-            
-            if (sqlOutput.equals("true")) {
-                request.setAttribute("infoMsg", "Password successfully changed");
-                RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/profile.do?entrynumber="
-                        + (String) request.getSession().getAttribute("entrynumber"));
-                dispatcher.forward(request, response);
-            } else {
-                request.setAttribute("error", "Some of the entries violate our DB constraints. Please check instructions above. <br> " + sqlOutput);
-                RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/changePassword.jsp");
-                dispatcher.forward(request, response);
-            }
+            request.setAttribute("error", "Some of the entries violate our DB constraints. Please check instructions above. <br> " + sqlOutput);
+            RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/viewbook.do?isbn="
+                    + newrating.getIsbn());
+            dispatcher.forward(request, response);
         }
     }
 
