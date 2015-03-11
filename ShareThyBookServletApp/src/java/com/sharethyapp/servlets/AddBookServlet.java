@@ -7,6 +7,7 @@ package com.sharethyapp.servlets;
 
 import com.sharethyapp.dbclasses.SearchBooks;
 import com.sharethyapp.helper.BookResult;
+import com.sharethyapp.helper.BookSearchQueryResult;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.security.NoSuchAlgorithmException;
@@ -31,80 +32,110 @@ public class AddBookServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, NoSuchAlgorithmException, SQLException {
 
-        String bookName = request.getParameter("bookName").trim();
-        String authorName=request.getParameter("authorName").trim();
-        String publisherName=request.getParameter("publisherName").trim();
-        String isbn=request.getParameter("ISBN");
-        try{
+        String bookName = "";
+        String authorName = "";
+        String publisherName = "";
+        String isbn = "";
+        String searchQuery = "";
+        String order = "";
+        try {
+            bookName = request.getParameter("bookName").trim();
+            authorName = request.getParameter("authorName").trim();
+            publisherName = request.getParameter("publisherName").trim();
+            isbn = request.getParameter("ISBN").trim();
             
-        
-        String searchCond="";
-        if(bookName!="")
-        {
-            searchCond=" Title ILIKE '"+proccessVal(bookName)+"'";
-        }
-        if(authorName!="")
-        {
-            if(searchCond!="")
-                searchCond=searchCond+" AND AuthorName ILIKE '"+proccessVal(authorName)+"'";
-            else
-                searchCond=" AuthorName ILIKE '"+proccessVal(authorName)+"'";
-        }
-        if(publisherName!="")
-        {
-              if(searchCond!="")
-                searchCond=searchCond+" AND Publisher ILIKE '"+proccessVal(publisherName)+"'";
-            else
-                searchCond=" Publisher ILIKE '"+proccessVal(publisherName)+"'";
-        }
-        int  toYear;
-        int fromYear;
-        
-         if(isbn!="")
-        {
-              if(searchCond!="")
-                searchCond=searchCond+" AND M.ISBN ILIKE '"+proccessVal(isbn)+"'";
-            else
-                searchCond=" M.ISBN ILIKE '"+proccessVal(isbn)+"'";
-        }
-         
-           if(request.getParameter("fromYear").trim()!="")
-        {
-            fromYear=Integer.parseInt(request.getParameter("fromYear"));
-              if(searchCond!="")
-                searchCond=searchCond+" AND Year >= "+fromYear;
-            else
-                searchCond=" Year >="+fromYear;
-        }
-           if(request.getParameter("toYear").trim()!="")
-        {
-            toYear=Integer.parseInt(request.getParameter("toYear"));
-              if(searchCond!="")
-                searchCond=searchCond+" AND Year <= "+toYear;
-            else
-                searchCond=" Year <= "+toYear;
-        }
-        
-        List<BookResult> rs = new SearchBooks().SearchBooks(searchCond);
-        request.setAttribute("listOfBooks", rs);
-       
+        } catch (Exception e) {
 
-        RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/addbook.jsp");
-        dispatcher.forward(request, response);
         }
-        catch(Exception e)
-        {
-            request.setAttribute("error", "Error Occurred While Submitting Search Request."+e.getMessage());
+        try {
+            order = request.getParameter("Order").trim();            
+            searchQuery = request.getSession().getAttribute("Query").toString();
+            System.out.println("AAAAAAAAAAAAAAAA : " + searchQuery);
+        } catch (Exception e) {
+
+        }
+        try {
+
+            String searchCond = "";
+
+            if (order.trim() != "") {
+                if (searchQuery.contains("Order By")) {
+                    
+                    searchCond=proccessOrderRequest(searchQuery,order);
+                    //searchCond = searchQuery + " ," + order;
+                } else {
+                    searchCond = searchQuery + " Order By " + order+" ASC";
+                }
+            } else {
+                if (bookName != "") {
+                    searchCond = " Title ILIKE '" + proccessVal(bookName) + "'";
+                }
+                if (authorName != "") {
+                    if (searchCond != "") {
+                        searchCond = searchCond + " AND AuthorName ILIKE '" + proccessVal(authorName) + "'";
+                    } else {
+                        searchCond = " AuthorName ILIKE '" + proccessVal(authorName) + "'";
+                    }
+                }
+                if (publisherName != "") {
+                    if (searchCond != "") {
+                        searchCond = searchCond + " AND Publisher ILIKE '" + proccessVal(publisherName) + "'";
+                    } else {
+                        searchCond = " Publisher ILIKE '" + proccessVal(publisherName) + "'";
+                    }
+                }
+                int toYear;
+                int fromYear;
+
+                if (isbn != "") {
+                    if (searchCond != "") {
+                        searchCond = searchCond + " AND M.ISBN ILIKE '" + proccessVal(isbn) + "'";
+                    } else {
+                        searchCond = " M.ISBN ILIKE '" + proccessVal(isbn) + "'";
+                    }
+                }
+
+                if (request.getParameter("fromYear").trim() != "") {
+                    fromYear = Integer.parseInt(request.getParameter("fromYear"));
+                    if (searchCond != "") {
+                        searchCond = searchCond + " AND Year >= " + fromYear;
+                    } else {
+                        searchCond = " Year >=" + fromYear;
+                    }
+                }
+                if (request.getParameter("toYear").trim() != "") {
+                    toYear = Integer.parseInt(request.getParameter("toYear"));
+                    if (searchCond != "") {
+                        searchCond = searchCond + " AND Year <= " + toYear;
+                    } else {
+                        searchCond = " Year <= " + toYear;
+                    }
+                }
+            }
+            BookSearchQueryResult rs;
+            if (order != "") {
+                rs = new SearchBooks().SearchBooks(searchCond, 2);
+            } else {
+                rs = new SearchBooks().SearchBooks(searchCond, 1);
+            }
+            request.setAttribute("listOfBooks", rs.getBookRes());
+            request.getSession().setAttribute("Query", rs.getBookSearchQuery());
+
+            RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/addbook.jsp");
+            dispatcher.forward(request, response);
+        } catch (Exception e) {
+            request.setAttribute("error", "Error Occurred While Submitting Search Request." + e.getMessage());
             RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/addbook.jsp");
             dispatcher.forward(request, response);
         }
     }
-    
-      private String proccessVal(String val) {
-        String[] strArray=val.split(" ");
-        String res="%";
-        for (int i=0;i<strArray.length;i++)
-            res=res+strArray[i].trim()+"%";
+
+    private String proccessVal(String val) {
+        String[] strArray = val.split(" ");
+        String res = "%";
+        for (int i = 0; i < strArray.length; i++) {
+            res = res + strArray[i].trim() + "%";
+        }
         return res;
     }
 
@@ -158,5 +189,35 @@ public class AddBookServlet extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
+
+    private String proccessOrderRequest(String searchQuery, String order) {
+       String orderClause= searchQuery.substring(searchQuery.indexOf("Order By")+8).trim();
+       String res=searchQuery.substring(0,searchQuery.indexOf("Order By")+8);
+       
+       String[] orderPhrases=orderClause.split(",");
+       
+       int flag=0;
+       for(String op:orderPhrases)
+       {
+           String[] opSplits=op.trim().split(" ");
+           if(opSplits[0].trim().equals(order))
+           {
+               flag=1;
+               res=res+" "+opSplits[0].trim();
+               if(opSplits[1].trim().equals("ASC"))
+                   res=res+" DESC,";
+               else
+                   res =res+" ASC,";
+           }
+           else
+           {
+               res=res+" "+op.trim()+",";
+           }
+       }
+       if(flag==0)
+            return res+order+" ASC";
+       else
+           return res.substring(0,res.length()-1);
+    }
 
 }

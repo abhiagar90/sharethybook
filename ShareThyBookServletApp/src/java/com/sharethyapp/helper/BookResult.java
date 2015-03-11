@@ -60,6 +60,7 @@ public class BookResult {
         this.authorList = authorList;
     }
 
+
     public String getAuthors() {
         return authors;
     }
