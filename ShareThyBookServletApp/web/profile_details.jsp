@@ -98,7 +98,9 @@
             </tr>
 
             <%
-                for (PhysicalBooks tempbook : (List<PhysicalBooks>) request.getAttribute("ownlist")) {
+             List<PhysicalBooks> ownListTemp= (List<PhysicalBooks>) request.getAttribute("ownlist");
+             if(ownListTemp!=null)
+             for (PhysicalBooks tempbook : (List<PhysicalBooks>) request.getAttribute("ownlist")) {
                     pageContext.setAttribute("tempbook", tempbook);
             %>
             <tr>
@@ -130,6 +132,8 @@
             </tr>
 
             <%
+             List<PhysicalBooks> phyListTemp= (List<PhysicalBooks>) request.getAttribute("havinglist");
+             if(phyListTemp!=null)
                 for (PhysicalBooks tempbook : (List<PhysicalBooks>) request.getAttribute("havinglist")) {
                     pageContext.setAttribute("tempbook", tempbook);
             %>

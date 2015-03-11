@@ -34,14 +34,23 @@ public class UtilitiesHelper {
         }
         return sb1.toString();
     }
-    
-    public static String returnNullOrString(HttpServletRequest request, String param)
-    {
+
+    public static String returnNullOrString(HttpServletRequest request, String param) {
         String paramString = request.getParameter(param);
-        if(paramString==null)
+        if (paramString == null) {
             return null;
-        if(paramString.trim().isEmpty())
+        }
+        if (paramString.trim().isEmpty()) {
             return null;
-        else return paramString.trim();
+        } else {
+            return paramString.trim();
+        }
+    }
+
+    public static java.sql.Timestamp getCurrentTimeStamp() {
+
+        java.util.Date today = new java.util.Date();
+        return new java.sql.Timestamp(today.getTime());
+
     }
 }
