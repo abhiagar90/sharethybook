@@ -3,6 +3,7 @@
 <%@page import="java.util.List"%>
 <%@page import="com.sharethyapp.helper.BookResult"%>
 <%@page import="com.sharethyapp.helper.LoginHelper"%>
+
 <article class="hero clearfix">
 
     <p style="color: #6aa12e">
@@ -10,7 +11,8 @@
     </p>
     <%if (LoginHelper.isLoggedIn(request)) {%>
     <h1>${masterbook.title}</h1>
-
+    
+    <h5 style="float: right"><a style="" href="#">Contribute this book</a></h5>
     <!--
     TODO: Image work
     <div class="img_floatright">    
