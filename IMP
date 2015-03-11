@@ -113,7 +113,7 @@ SET BooksContributed = BooksContributed +1,
 BooksHave=BooksHave+1
 WHERE EntryNumber = NEW.OwnerID;
 INSERT INTO Messages(FromID ,ToID ,Date,Message,Status)
-SELECT 'NOREPLY',EntryNumber,now(),'This is to notify you that the book '||NEW.ISBN||' added by you in your wishlist is now available in our library',true FROM
+SELECT 'NOREPLY',EntryNumber,now(),'This is to notify you that the book '||NEW.ISBN||' added by you in your wishlist is now available in our library',false FROM
 (SELECT EntryNumber FROM WishList WHERE ISBN ILIKE NEW.ISBN) AS A;
 DELETE FROM WishList WHERE ISBN ILIKE NEW.ISBN;
 RETURN NULL;
