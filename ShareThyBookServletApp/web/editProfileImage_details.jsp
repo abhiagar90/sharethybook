@@ -10,7 +10,7 @@
             2. New Password and its re-type should match case wise. <br/>
         </p>
 
-        <form action="changePassword.do" method="post" class="form">
+        <form action="changePassword.do" method="post" class="form" enctype="multipart/form-data">
             <input type="hidden" name="EntryNumber" id="EntryNumber" value="${sessionScope.entrynumber}" />
             <div class="col_100">
 
@@ -18,17 +18,10 @@
                 <table class="table">
                     
                     <tr>
-                    <td><label for="oldpass">Old Password*</label><br/></td>
-                    <td><input type="password" name="oldpass" id="oldpass"/></td>
+                    <td><label for="photo">New Image</label><br/></td>
+                    <td><input type="file" name="photo" id="photo" accept="image/*" size="50"/></td>
                     </tr>
-                    <tr>
-                    <td><label for="newpass">New Password*</label><br/></td>
-                    <td><input type="password" name="newpass" id="newpass"/></td>
-                    </tr>
-                    <tr>
-                    <td><label for="repass">Re-type New Password*</label><br/></td>
-                    <td><input type="password" name="repass" id="repass"/></td>
-                    </tr>
+                    
 
                 </table><br/>
 
