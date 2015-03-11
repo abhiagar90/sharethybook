@@ -40,12 +40,19 @@
     </servlet><servlet>
         <servlet-name>ChangePasswordServlet</servlet-name>
         <servlet-class>com.sharethyapp.servlets.ChangePasswordServlet</servlet-class>
+<<<<<<< HEAD
     </servlet>
     <servlet>
         <servlet-name>AddPhysicalBookServlet</servlet-name>
         <servlet-class>com.sharethyapp.servlets.AddPhysicalBookServlet</servlet-class>
     </servlet>
     <servlet-mapping>
+=======
+    </servlet><servlet>
+        <servlet-name>ViewBookServlet</servlet-name>
+        <servlet-class>com.sharethyapp.servlets.ViewBookServlet</servlet-class>
+    </servlet><servlet-mapping>
+>>>>>>> f904c7b2610e4a242455cdbe49e006b5c669ca06
         <servlet-name>DummyServlet</servlet-name>
         <url-pattern>/dummy.do</url-pattern>
     </servlet-mapping>
@@ -88,8 +95,13 @@
         <url-pattern>/changePassword.do</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
+<<<<<<< HEAD
         <servlet-name>AddPhysicalBookServlet</servlet-name>
         <url-pattern>/addphysicalbook.do</url-pattern>
+=======
+        <servlet-name>ViewBookServlet</servlet-name>
+        <url-pattern>/viewbook.do</url-pattern>
+>>>>>>> f904c7b2610e4a242455cdbe49e006b5c669ca06
     </servlet-mapping>
     <session-config>
         <session-timeout>

@@ -5,17 +5,51 @@
  */
 package com.sharethyapp.helper;
 
+import java.util.List;
+
 /**
  *
  * @author reshma
  */
 public class BookResult {
+
     String isbn;
     String title;
     String year;
     String publisher;
     String rating;
     String authors;
+    List<String> authorList;
+    List<String> reviewList;
+    String numOfRatings;
+
+    public String getNumOfRatings() {
+        return numOfRatings;
+    }
+
+    public void setNumOfRatings(String numOfRatings) {
+        if (numOfRatings == null || numOfRatings.isEmpty()) {
+            this.numOfRatings = "0";
+        } else {
+            this.numOfRatings = numOfRatings;
+        }
+    }
+
+    public List<String> getReviewList() {
+        return reviewList;
+    }
+
+    public void setReviewList(List<String> reviewList) {
+        this.reviewList = reviewList;
+    }
+
+    public List<String> getAuthorList() {
+        return authorList;
+    }
+
+    public void setAuthorList(List<String> authorList) {
+        this.authorList = authorList;
+    }
 
 
     public String getAuthors() {
@@ -66,20 +100,17 @@ public class BookResult {
         this.rating = rating;
     }
 
-    
-    
-    
-    
+    public BookResult() {
 
-    public BookResult(String ISBN, String Title, String Year, String Publisher, String Rating,String Authors) {
+    }
+
+    public BookResult(String ISBN, String Title, String Year, String Publisher, String Rating, String Authors) {
         this.isbn = ISBN;
         this.title = Title;
         this.year = Year;
         this.publisher = Publisher;
         this.rating = Rating;
-        this.authors=Authors;
+        this.authors = Authors;
     }
-    
-    
-    
+
 }
