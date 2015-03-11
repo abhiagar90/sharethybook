@@ -40,6 +40,9 @@
     </servlet><servlet>
         <servlet-name>ChangePasswordServlet</servlet-name>
         <servlet-class>com.sharethyapp.servlets.ChangePasswordServlet</servlet-class>
+    </servlet><servlet>
+        <servlet-name>ViewBookServlet</servlet-name>
+        <servlet-class>com.sharethyapp.servlets.ViewBookServlet</servlet-class>
     </servlet><servlet-mapping>
         <servlet-name>DummyServlet</servlet-name>
         <url-pattern>/dummy.do</url-pattern>
@@ -81,6 +84,10 @@
     <servlet-mapping>
         <servlet-name>ChangePasswordServlet</servlet-name>
         <url-pattern>/changePassword.do</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ViewBookServlet</servlet-name>
+        <url-pattern>/viewbook.do</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

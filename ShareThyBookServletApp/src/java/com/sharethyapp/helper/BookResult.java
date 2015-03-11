@@ -5,6 +5,8 @@
  */
 package com.sharethyapp.helper;
 
+import java.util.List;
+
 /**
  *
  * @author reshma
@@ -16,6 +18,24 @@ public class BookResult {
     String publisher;
     String rating;
     String authors;
+    List<String> authorList;
+    List<String> reviewList;
+
+    public List<String> getReviewList() {
+        return reviewList;
+    }
+
+    public void setReviewList(List<String> reviewList) {
+        this.reviewList = reviewList;
+    }
+
+    public List<String> getAuthorList() {
+        return authorList;
+    }
+
+    public void setAuthorList(List<String> authorList) {
+        this.authorList = authorList;
+    }
 
     public String getAuthors() {
         return authors;
@@ -66,6 +86,10 @@ public class BookResult {
     }
 
     
+    public BookResult()
+    {
+        
+    }
     
     
     

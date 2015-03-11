@@ -109,7 +109,8 @@ CREATE TABLE Rating(
 ISBN VARCHAR(13) REFERENCES MasterBooks(ISBN),
 EntryNumber VARCHAR(12) REFERENCES UserTable(EntryNumber),
 Rating INT,
-Review VARCHAR(1000)
+Review VARCHAR(1000).
+Primary key (ISBN, EntryNumber),
 CONSTRAINT RatingCons CHECK(Rating BETWEEN 0 AND 5)
 );
 
@@ -133,6 +134,9 @@ $TriggerOnBookInsert$ LANGUAGE plpgsql;
 
 CREATE TRIGGER TriggerOnBookInsert AFTER INSERT ON Books
     FOR EACH ROW EXECUTE PROCEDURE TriggerOnBookInsert();
+
+//Trigger For message.......................updating NoofunRead messages of user
+//Trigger for Review........................updating mastertable review
 
 CREATE OR REPLACE FUNCTION TriggerOnBookUpdate() RETURNS TRIGGER AS $TriggerOnBookUpdate$
     BEGIN
