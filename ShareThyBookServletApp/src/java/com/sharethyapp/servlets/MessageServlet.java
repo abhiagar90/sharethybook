@@ -36,7 +36,7 @@ public class MessageServlet extends HttpServlet {
         msg.setFromid(UtilitiesHelper.returnNullOrString(request, "fromid"));
         msg.setToid(UtilitiesHelper.returnNullOrString(request, "toid"));
         msg.setMessage(UtilitiesHelper.returnNullOrString(request, "msg"));
-        String sqlOutput = new MessagesDB().insertNewRating(msg);
+        String sqlOutput = new MessagesDB().insertNewMessage(msg);
 
         if (sqlOutput.equals("true")) {
             request.setAttribute("infoMsg", "Sent message successfully");

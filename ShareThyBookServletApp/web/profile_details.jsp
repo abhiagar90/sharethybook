@@ -165,57 +165,59 @@
 
         </table>
 
-        <h3>Books Requested By You</h3>
-        <h3>Books Requested From You</h3>
+        <h3>Books Requested By ${user.firstname}</h3>
+        <h3>Books Requested From ${user.firstname}</h3>
+        <h3>${user.firstname}'s Wish List</h3>
         <%
-           if (!sessionEntry.equals(userEntry)) {
+            if (!sessionEntry.equals(userEntry)) {
         %>
         <a name="msg"></a>
         <h3>Say Hi to ${user.firstname}</h3>
-         
+
         <!-- Form for message here!! Phew -->
         <form action="message.do" method="post" class="form">
 
-        <input type="hidden" name="fromid" id="fromid" value="${sessionScope.entrynumber}" />
-        <input type="hidden" name="toid" id="toid" value="${user.entrynumber}"/>
+            <input type="hidden" name="fromid" id="fromid" value="${sessionScope.entrynumber}" />
+            <input type="hidden" name="toid" id="toid" value="${user.entrynumber}"/>
 
-        <div class="col_100">
+            <div class="col_100">
 
-            <table class="table">
-                <tr></tr>
+                <table class="table">
+                    <tr></tr>
 
-                <tr>
-                <td><label for="msg">Type Message Here</label><br/></td>
-                <td>
-                    <textarea name="msg" id="msg" rows="4" cols="50" value=""></textarea>               
-                </td>                
-                </tr>
+                    <tr>
+                    <td><label for="msg">Type Message Here</label><br/></td>
+                    <td>
+                        <textarea name="msg" id="msg" rows="4" cols="50" value=""></textarea>               
+                    </td>                
+                    </tr>
 
-            </table><br/>
-
-
+                </table><br/>
 
 
-        </div>
-        <div>
-            <button type="submit" class="button" onclick="submit">Submit</button>
-        </div>
 
-        <br/>
-        <p class="col_50" style="color: red">
-            ${requestScope.error}
-        </p>
-        <br/>
-    </form>
+
+            </div>
+            <div>
+                <button type="submit" class="button" onclick="submit">Submit</button>
+            </div>
+
+            <br/>
+            <p class="col_50" style="color: red">
+                ${requestScope.error}
+            </p>
+            <br/>
+        </form>
 
         <%} else { %>
-        
+
         <h3>Settings and features</h3>
         <div>
             <a href="addbook.jsp">Contribute a book</a> <br/>
             <a href="beforeedit.do?entrynumber=${user.entrynumber}">Edit Profile Details</a> <br/>
             <a href="changePassword.jsp">Change Password <a/> <br/>
-                <a href="editProfileImage.jsp">Edit Profile Image</a> <br/>
+            <a href="editProfileImage.jsp">Edit Profile Image</a> <br/>
+            <a href="allmsgsview.do">View messages</a> <br/>
         </div>
         <%}%>
     </div>

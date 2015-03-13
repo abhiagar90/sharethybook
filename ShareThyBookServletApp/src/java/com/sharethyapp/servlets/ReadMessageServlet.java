@@ -1,11 +1,12 @@
-package com.sharethyapp.servlets;
-
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-import com.sharethyapp.helper.LoginHelper;
+package com.sharethyapp.servlets;
+
+import com.sharethyapp.dbclasses.MessagesDB;
+import com.sharethyapp.helper.Messages;
 import java.io.IOException;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -17,7 +18,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author abhishek
  */
-public class LoginServlet extends HttpServlet {
+public class ReadMessageServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -30,17 +31,35 @@ public class LoginServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String entrynum = request.getParameter("entrynumber").toUpperCase();
-        String passwd = request.getParameter("passwd");
+        String entrynumber = (String) request.getSession().getAttribute("entrynumber");
+        if (entrynumber != null && !entrynumber.isEmpty()) {
+            Object mid = request.getParameter("mid");
+            if (mid != null) {
+                Messages msg = new MessagesDB().getSpecificMessage((String) mid,
+                        (String) request.getSession().getAttribute("entrynumber"));
+                if (msg != null) {
+                    if(!msg.isStatus())
+                    {
+                        new MessagesDB().updateMsgStatus(msg.getMessageid(), entrynumber);
+                        msg.setStatus(true);
+                    }                    
+                    request.setAttribute("msg", msg);
+                    RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/viewmsg.jsp");
+                    dispatcher.forward(request, response);
+                } else {
+                    request.setAttribute("errorMsg", "Message not for you. <br/>");
+                    RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/error.jsp");
+                    dispatcher.forward(request, response);
+                }
 
-        if (LoginHelper.verifyLogin(entrynum, passwd)) {
-            request.getSession().setAttribute("entrynumber", entrynum);
-            RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/welcome.jsp");
-            dispatcher.forward(request, response);
+            } else {
+                request.setAttribute("errorMsg", "Message id wrong. <br/>");
+                RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/error.jsp");
+                dispatcher.forward(request, response);
+            }
         } else {
-            request.getSession().setAttribute("entrynumber", "NA");
-            request.setAttribute("error", "Entrynumber or password incorrect");
-            RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/login.jsp");
+            request.setAttribute("errorMsg", "Not in session. Please log in. <br/>");
+            RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/error.jsp");
             dispatcher.forward(request, response);
         }
 

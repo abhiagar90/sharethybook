@@ -64,6 +64,14 @@
         <servlet-name>SuggestBookServlet</servlet-name>
         <servlet-class>com.sharethyapp.servlets.SuggestBookServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>MessageViewAllServlet</servlet-name>
+        <servlet-class>com.sharethyapp.servlets.MessageViewAllServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ReadMessageServlet</servlet-name>
+        <servlet-class>com.sharethyapp.servlets.ReadMessageServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>DummyServlet</servlet-name>
         <url-pattern>/dummy.do</url-pattern>
@@ -128,6 +136,14 @@
         <servlet-name>MessageServlet</servlet-name>
         <url-pattern>/message.do</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>MessageViewAllServlet</servlet-name>
+        <url-pattern>/allmsgsview.do</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ReadMessageServlet</servlet-name>
+        <url-pattern>/readmsg.do</url-pattern>
+    </servlet-mapping>
     <session-config>
         <session-timeout>
             30
@@ -144,4 +160,6 @@
         <exception-type>java.lang.Throwable</exception-type>
         <location>/error.jsp</location>
     </error-page>
+
+    --&gt;
 </web-app>
