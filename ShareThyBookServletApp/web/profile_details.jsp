@@ -1,3 +1,4 @@
+<%@page import="com.sharethyapp.helper.TransactionHistory"%>
 <%@page import="com.sharethyapp.dbclasses.UserTable"%>
 <%@page import="com.sharethyapp.helper.LoginHelper"%>
 <%@page import="java.util.List"%>
@@ -106,7 +107,7 @@
             <th>HolderID</th>
             <th>HoldingDate</th>
             <th>Last Condition</th>
-            <th>Request from Holder</th>
+            <th>Revoke Book</th>
             </tr>
 
             <%
@@ -121,7 +122,7 @@
             <td><a href="profile.do?entrynumber=${tempbook.holderid}">${tempbook.holderid}</a></td>
             <td>${tempbook.holdingdate}</td>
             <td>${tempbook.lastCondition}</td>
-            <td>Request</td>
+            <td>Revoke</td>
             </tr>
             <%
                 }
@@ -132,7 +133,7 @@
 
         <h3>Books Having Physically</h3>
 
-        <table class="table">
+        <table class="table" width="100%">
 
             <tr>
             <th>BookID</th>
@@ -140,7 +141,6 @@
             <th>OwnerID</th>
             <th>HoldingDate</th>
             <th>Last Condition</th>
-            <th>Request from Holder</th>
             </tr>
 
             <%
@@ -155,7 +155,6 @@
             <td><a href="profile.do?entrynumber=${tempbook.ownerid}">${tempbook.ownerid}</a></td>
             <td>${tempbook.holdingdate}</td>
             <td>${tempbook.lastCondition}</td>
-            <td>Request</td>
             </tr>
             <%
                 }
@@ -165,9 +164,48 @@
 
         </table>
 
+
         <h3>Books Requested By ${user.firstname}</h3>
+        
+         <table class="table" width="100%">
+
+            <tr>
+            <th>TransactionID</th>
+            <th>Requested To</th>
+            <th>BookID</th>
+            <th>Start Date</th>
+            <th>Last Update</th>
+            <th>Status</th>
+            <th>Condition</th>
+            </tr>
+
+            <%
+                List<TransactionHistory> reqBooks = (List<TransactionHistory>) request.getAttribute("booksRequested");
+                if (reqBooks != null)
+                    for (TransactionHistory tempbook : (List<TransactionHistory>) request.getAttribute("booksRequested")) {
+                        pageContext.setAttribute("tempbook", tempbook);
+            %>
+            <tr>
+            <td>${tempbook.TransactionID}</td>
+            <td>${tempbook.ToID}</td>
+            <td>${tempbook.BookID}</td>
+            <td>${tempbook.TransStartDate}</td>
+            <td>${tempbook.LastUpdate}</td>
+             <td>${tempbook.Status}</td>
+            <td>${tempbook.BookCondition}</td>
+            </tr>
+            <%
+                }
+            %>
+
+
+
+        </table>
+
+        
         <h3>Books Requested From ${user.firstname}</h3>
-        <h3>${user.firstname}'s Wish List</h3>
+        <h3>${user.firstname}'s Wish-list!</h3>
+
         <%
             if (!sessionEntry.equals(userEntry)) {
         %>

@@ -76,6 +76,8 @@
                 <label for="name">In case you don't find book to be added in our master repository. <a href="suggestBook.jsp">Suggest us </a>the book and our moderator will verify it. </label>
             </div>
 
+            <input type="hidden" value="Add" name="Page"/>
+
         </form>
     </div>
 
