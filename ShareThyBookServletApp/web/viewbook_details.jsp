@@ -20,7 +20,6 @@
     </div>
     -->
 
-
     <h3>Title Details</h3>
     <table class="table">
 
@@ -101,7 +100,7 @@
         <%
             Object phylist = request.getAttribute("physicalList");
 
-            if (phylist != null) {
+            if (phylist != null && !((List<PhysicalBooks>) phylist).isEmpty()) {
                 for (PhysicalBooks physical : (List<PhysicalBooks>) phylist) {
                     pageContext.setAttribute("tempbook", physical);
         %>
@@ -112,12 +111,17 @@
         <td><a href="profile.do?entrynumber=${tempbook.holderid}">${tempbook.holderid}</a></td>
         <td>${tempbook.holdingdate}</td>
         <td>${tempbook.lastCondition}</td>
-        <td>Request</td>
+        <td><a href="requestbook.do?bookID=${tempbook.bookidPhysical}&&ISBN=${tempbook.isbn}&&oid=${tempbook.ownerid}&&hid=${tempbook.holderid}"> Request</a></td>
         </tr>
         <%
                 }
-            }
-        %>
+            }else{%>
+            <tr>
+            <td>
+                <a href="addwishlist.do?ISBN=${masterbook.isbn}">Add to wish-list</a>
+            </td>
+            </tr>
+            <%}%>
     </table>
     <br/>
 
@@ -146,7 +150,7 @@
 
                 <tr>
                 <td><label for="review">Review</label><br/></td>
-                <td><textarea name="review" id="review" rows="4" cols="50" value=""></textarea></td>
+                <td><textarea name="review" id="review" rows="4" cols="50" ></textarea></td>
                 </tr>
 
 
@@ -161,10 +165,9 @@
         </div>
 
         <br/>
-        <p class="col_50" style="color: red">
-            ${requestScope.error}
-        </p>
+    
         <br/>
+        
     </form>
     <!--
     <div>

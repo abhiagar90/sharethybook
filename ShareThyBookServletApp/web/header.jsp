@@ -14,7 +14,7 @@
             <%}%>
             
             <li class="active"><a href="welcome.jsp">Home</a></li>
-            <li class="active"><a href="">Search books</a></li>
+            <li class="active"><a href="SearchBookInlibrary.jsp">Search books</a></li>
             <li class="active"><a href="">About us</a></li>
         </ul>
     </nav>

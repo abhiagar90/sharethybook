@@ -38,11 +38,15 @@ public class AddBookServlet extends HttpServlet {
         String isbn = "";
         String searchQuery = "";
         String order = "";
+        String pageType="";
+        pageType=request.getParameter("Page");
+        
         try {
             bookName = request.getParameter("bookName").trim();
             authorName = request.getParameter("authorName").trim();
             publisherName = request.getParameter("publisherName").trim();
             isbn = request.getParameter("ISBN").trim();
+            
             
         } catch (Exception e) {
 
@@ -120,9 +124,17 @@ public class AddBookServlet extends HttpServlet {
             }
             request.setAttribute("listOfBooks", rs.getBookRes());
             request.getSession().setAttribute("Query", rs.getBookSearchQuery());
-
+            
+            if(pageType.equals("Search"))
+            {
+            RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/SearchBookInlibrary.jsp");
+            dispatcher.forward(request, response);
+            }
+            else if(pageType.equals("Add"))
+            {
             RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/addbook.jsp");
             dispatcher.forward(request, response);
+            }
         } catch (Exception e) {
             request.setAttribute("error", "Error Occurred While Submitting Search Request." + e.getMessage());
             RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/addbook.jsp");

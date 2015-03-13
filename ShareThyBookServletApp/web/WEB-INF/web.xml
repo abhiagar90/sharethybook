@@ -64,6 +64,14 @@
         <servlet-name>SuggestBookServlet</servlet-name>
         <servlet-class>com.sharethyapp.servlets.SuggestBookServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>AddWishListServlet</servlet-name>
+        <servlet-class>com.sharethyapp.servlets.AddWishListServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>RequestBookServlet</servlet-name>
+        <servlet-class>com.sharethyapp.servlets.RequestBookServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>DummyServlet</servlet-name>
         <url-pattern>/dummy.do</url-pattern>
@@ -128,10 +136,18 @@
         <servlet-name>MessageServlet</servlet-name>
         <url-pattern>/message.do</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AddWishListServlet</servlet-name>
+        <url-pattern>/addwishlist.do</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>RequestBookServlet</servlet-name>
+        <url-pattern>/requestbook.do</url-pattern>
+    </servlet-mapping>
     <session-config>
         <session-timeout>
-            30
-        </session-timeout>
+30
+</session-timeout>
     </session-config>
     <welcome-file-list>
         <welcome-file>welcome.jsp</welcome-file>

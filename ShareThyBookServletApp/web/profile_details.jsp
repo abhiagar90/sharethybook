@@ -106,7 +106,7 @@
             <th>HolderID</th>
             <th>HoldingDate</th>
             <th>Last Condition</th>
-            <th>Request from Holder</th>
+            <th>Revoke Book</th>
             </tr>
 
             <%
@@ -121,7 +121,7 @@
             <td><a href="profile.do?entrynumber=${tempbook.holderid}">${tempbook.holderid}</a></td>
             <td>${tempbook.holdingdate}</td>
             <td>${tempbook.lastCondition}</td>
-            <td>Request</td>
+            <td>Revoke</td>
             </tr>
             <%
                 }
@@ -132,7 +132,7 @@
 
         <h3>Books Having Physically</h3>
 
-        <table class="table">
+        <table class="table" width="100%">
 
             <tr>
             <th>BookID</th>
@@ -140,7 +140,6 @@
             <th>OwnerID</th>
             <th>HoldingDate</th>
             <th>Last Condition</th>
-            <th>Request from Holder</th>
             </tr>
 
             <%
@@ -155,7 +154,6 @@
             <td><a href="profile.do?entrynumber=${tempbook.ownerid}">${tempbook.ownerid}</a></td>
             <td>${tempbook.holdingdate}</td>
             <td>${tempbook.lastCondition}</td>
-            <td>Request</td>
             </tr>
             <%
                 }

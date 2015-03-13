@@ -61,21 +61,26 @@ HoldingDate DATE NOT NULL,
 LastCondition Char(1)
 CONSTRAINT BookCondCons CHECK(LastCondition ~* 'D|O|G|E')
 );
+
 CREATE TABLE Authors(
 AuthorID SERIAL NOT NULL UNIQUE,
 AuthorName VARCHAR(1000) NOT NULL
 );
+
 Use this:COPY Authors from '/home/reshma/Reshma/Sem2/DataBase/Assignments/Project1/sharethybook/AuthorWork/AuthorFinal2.csv' with delimiter '|' csv header encoding 'latin1' quote '"';
+
 CREATE TABLE BooksWrittenBy(
 ISBN VARCHAR(13) REFERENCES MasterBooks(ISBN),
 AuthorID INT REFERENCES Authors(AuthorID)
 );
+
 COPY BooksWrittenBy from '/home/reshma/Reshma/Sem2/DataBase/Assignments/Project1/sharethybook/AuthorWork/ISBNAuthor.csv' with delimiter '|' csv header encoding 'latin1' quote '"';
+
 CREATE TABLE Transactions(
-TransactionID VARCHAR(30) PRIMARY KEY,
+TransactionID BIGSERIAL PRIMARY KEY,
 FromID VARCHAR(12) REFERENCES UserTable(EntryNumber),
 ToID VARCHAR(12) REFERENCES UserTable(EntryNumber),
-BookID VARCHAR(15) REFERENCES Books(BookID),
+BookID BIGINT REFERENCES Books(BookID),
 TransStartDate TIMESTAMP,
 LastUpdate TIMESTAMP,
 Status CHAR(1),
@@ -83,11 +88,13 @@ BookCondition Char(1)
 CONSTRAINT StatusCons CHECK(Status ~* 'R|T|H|E|C'),
 CONSTRAINT BookCondCons CHECK(BookCondition ~* 'D|O|G|E')
 );
+
 CREATE TABLE WishList(
 EntryNumber VARCHAR(12) REFERENCES UserTable(EntryNumber) ON DELETE CASCADE,
 ISBN VARCHAR(13) REFERENCES MasterBooks(ISBN),
 Date DATE
 );
+
 CREATE TABLE Messages(
 MessageID BIGSERIAL PRIMARY KEY,
 FromID VARCHAR(12) REFERENCES UserTable(EntryNumber),
@@ -96,6 +103,7 @@ Date TIMESTAMP,
 Message VARCHAR(1000) NOT NULL,
 Status BOOLEAN DEFAULT FALSE
 );
+
 CREATE TABLE Rating(
 ISBN VARCHAR(13) REFERENCES MasterBooks(ISBN),
 EntryNumber VARCHAR(12) REFERENCES UserTable(EntryNumber),
@@ -104,6 +112,7 @@ Review VARCHAR(1000),
 Primary key (ISBN, EntryNumber),
 CONSTRAINT RatingCons CHECK(Rating BETWEEN 0 AND 5)
 );
+
 Insert into UserTable Values('2010BLZ4623','facbfa7d8f7b43214453db6c205800ec','Aabheer','Acharya','true','SD7','Kumaoun','Hauz khas','New Delhi','110016','BL14623@iitd.ac.in',3,0,NULL)
 ==============================================================TRIGGERS===================================================================
 CREATE OR REPLACE FUNCTION TriggerOnBookInsert() RETURNS TRIGGER AS $TriggerOnBookInsert$

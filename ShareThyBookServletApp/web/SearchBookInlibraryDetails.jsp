@@ -1,3 +1,9 @@
+<%-- 
+    Document   : SearchBookInlibraryDetails
+    Created on : Mar 13, 2015, 2:15:44 PM
+    Author     : reshma
+--%>
+
 
 <%@page import="java.util.List"%>
 <%@page import="com.sharethyapp.helper.BookResult"%>
@@ -8,7 +14,7 @@
         <p>Keep Adding...Keep Reading</p>
         <p>Some more details</p>
 
-        <form action="addbook.do" method="get" class="form">
+        <form action="addbook.do?Page=Search" method="get" class="form">
            
             <table border="2" width="100%">
                     <tr>
@@ -49,7 +55,6 @@
                 <th><a href="addbook.do?Order=Publisher">Publisher</a></th>
                 <th><a href="addbook.do?Order=Year">Year</a></th>
                 <th><a href="addbook.do?Order=Rating">Rating</a></th>
-                <th>Add Book</th>
                 </tr>
                 <% for (BookResult bt : rs) {
                         pageContext.setAttribute("record", bt);
@@ -62,7 +67,6 @@
                 <td align="center">${record.publisher }</td>
                 <td align="center">${record.year }</td>
                 <td align="center">${record.rating }</td>
-                <td><a href="addphysicalbook.do?ISBN=${record.isbn}">Contribute</a></td>
                 </tr>
                 <%}%>
             </table>
@@ -70,10 +74,8 @@
             <%}%>
             <br/>
             <br/>
-            <div>
-                <label for="name">In case you don't find book to be added in our master repository. <a href="suggestBook.jsp">Suggest us </a>the book and our moderator will verify it. </label>
-            </div>
-            <input type="hidden" value="Add" name="Page"/>
+        <input type="hidden" value="Search" name="Page"/>
+       
         </form>
     </div>
             
