@@ -1,3 +1,4 @@
+<%@page import="com.sharethyapp.helper.TransactionHistory"%>
 <%@page import="com.sharethyapp.dbclasses.UserTable"%>
 <%@page import="com.sharethyapp.helper.LoginHelper"%>
 <%@page import="java.util.List"%>
@@ -164,6 +165,42 @@
         </table>
 
         <h3>Books Requested By You</h3>
+        
+         <table class="table" width="100%">
+
+            <tr>
+            <th>TransactionID</th>
+            <th>Requested To</th>
+            <th>BookID</th>
+            <th>Start Date</th>
+            <th>Last Update</th>
+            <th>Status</th>
+            <th>Condition</th>
+            </tr>
+
+            <%
+                List<TransactionHistory> reqBooks = (List<TransactionHistory>) request.getAttribute("booksRequested");
+                if (reqBooks != null)
+                    for (TransactionHistory tempbook : (List<TransactionHistory>) request.getAttribute("booksRequested")) {
+                        pageContext.setAttribute("tempbook", tempbook);
+            %>
+            <tr>
+            <td>${tempbook.TransactionID}</td>
+            <td>${tempbook.ToID}</td>
+            <td>${tempbook.BookID}</td>
+            <td>${tempbook.TransStartDate}</td>
+            <td>${tempbook.LastUpdate}</td>
+             <td>${tempbook.Status}</td>
+            <td>${tempbook.BookCondition}</td>
+            </tr>
+            <%
+                }
+            %>
+
+
+
+        </table>
+        
         <h3>Books Requested From You</h3>
         <%
            if (!sessionEntry.equals(userEntry)) {

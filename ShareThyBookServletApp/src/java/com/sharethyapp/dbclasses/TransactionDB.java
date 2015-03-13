@@ -5,12 +5,17 @@
  */
 package com.sharethyapp.dbclasses;
 
+import com.sharethyapp.helper.BookResult;
 import com.sharethyapp.helper.Messages;
 import com.sharethyapp.helper.UtilitiesHelper;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.RequestDispatcher;
+import com.sharethyapp.helper.TransactionHistory;
+import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -49,4 +54,40 @@ public class TransactionDB  extends DB{
         return "true";
     }
     
+       public List<TransactionHistory> getBooksRequested(String requester)
+       {
+           
+           String getBooksRequestedDetails="select * from Transactions where FromID=?;";
+           List<TransactionHistory> booksRequested=new ArrayList<TransactionHistory>();
+           
+            openConnection();
+
+
+        try {
+            BookResult temp = new BookResult();
+            preparedStatement = conn.prepareStatement(getBooksRequestedDetails);
+            preparedStatement.setString(1, requester.trim());
+            ResultSet rs = preparedStatement.executeQuery();
+            while (rs.next()) {
+                temp.setIsbn(rs.getString("isbn"));
+                TransactionHistory trans=new TransactionHistory();
+                trans.setTransactionID(rs.getLong("TransactionID"));
+                trans.setFromID(rs.getString("FromID"));
+                trans.setToID(rs.getString("ToID"));
+                trans.setBookID(rs.getLong("BookID"));
+                trans.setTransStartDate(rs.getTimestamp("TransStartDate"));
+                trans.setLastUpdate(rs.getTimestamp("LastUpdate"));
+                trans.setStatus(rs.getString("Status"));
+                trans.setBookCondition(rs.getString("BookCondition"));
+                booksRequested.add(trans);
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(LoginDB.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            closeConnection();
+        }
+        
+        return booksRequested;
+       }
 }
