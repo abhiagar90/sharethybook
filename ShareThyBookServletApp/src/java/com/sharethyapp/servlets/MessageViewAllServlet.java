@@ -1,12 +1,14 @@
-package com.sharethyapp.servlets;
-
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-import com.sharethyapp.helper.LoginHelper;
+package com.sharethyapp.servlets;
+
+import com.sharethyapp.dbclasses.MessagesDB;
+import com.sharethyapp.helper.Messages;
 import java.io.IOException;
+import java.util.List;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -17,7 +19,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author abhishek
  */
-public class LoginServlet extends HttpServlet {
+public class MessageViewAllServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -30,20 +32,25 @@ public class LoginServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String entrynum = request.getParameter("entrynumber").toUpperCase();
-        String passwd = request.getParameter("passwd");
-
-        if (LoginHelper.verifyLogin(entrynum, passwd)) {
-            request.getSession().setAttribute("entrynumber", entrynum);
-            RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/welcome.jsp");
+        String entrynumber = (String) request.getSession().getAttribute("entrynumber");
+        if (entrynumber != null && !entrynumber.isEmpty()) {
+            //let's work first for receivedmsgs
+            List<Messages> recvdMsgsList = new MessagesDB().getReceivedMsgsByEntryNumber(entrynumber);
+            request.setAttribute("rcvd", recvdMsgsList);
+            //now for sent msgs
+            List<Messages> sentMsgList = new MessagesDB().getSentMsgsByEntryNumber(entrynumber);
+            request.setAttribute("sent", sentMsgList);
+            
+            RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/msgsall.jsp");
             dispatcher.forward(request, response);
-        } else {
-            request.getSession().setAttribute("entrynumber", "NA");
-            request.setAttribute("error", "Entrynumber or password incorrect");
-            RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/login.jsp");
+            
+        }else
+        {
+            //From now on, global error msgs in errorMsg
+            request.setAttribute("errorMsg", "Not in session. Please log in. <br/>");
+            RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/error.jsp");
             dispatcher.forward(request, response);
         }
-
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

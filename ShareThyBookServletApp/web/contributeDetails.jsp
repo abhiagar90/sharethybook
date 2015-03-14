@@ -3,9 +3,9 @@
 <%@page import="com.sharethyapp.helper.LoginHelper"%>
 <article class="hero clearfix">
 
+    
+    <h1>Contribute a Book! :)</h1>
     <%if (LoginHelper.isLoggedIn(request)) {%>
-    <h1>${masterbook.title}</h1>
-
 
 <form action="InsertBookDetails.do" method="post" class="form">
         <p style="color: #6aa12e">
@@ -66,5 +66,10 @@
     <br/>
     <input type="hidden" name="ISBN" id="ISBN" value="${masterbook.isbn}"/>
 </form>
-    <%}%>
+    <%}else{%>
+    <p class="col_50" style="color: #444">
+            Not logged in. Please login.
+        </p>
+        <br/>
+        <%}%>
     </article>

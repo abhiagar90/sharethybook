@@ -44,7 +44,7 @@ public class SuggestBookServlet extends HttpServlet {
             msg.setFromid(request.getSession().getAttribute("entrynumber").toString());
             msg.setToid("MODR10001");
             msg.setMessage("Book Suggessted :: ISBN-"+isbn+" Name- "+Title+" Author- "+Author+" Publisher- "+ Publisher+" Year-"+Year);
-            String res= new MessagesDB().insertNewRating(msg);
+            String res= new MessagesDB().insertNewMessage(msg);
             
             if(res.trim().equals("true"))
             {

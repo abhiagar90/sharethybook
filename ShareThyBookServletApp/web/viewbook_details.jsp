@@ -12,7 +12,7 @@
     <%if (LoginHelper.isLoggedIn(request)) {%>
     <h1>${masterbook.title}</h1>
     
-    <h5 style="float: right"><a style="" href="#">Contribute this book</a></h5>
+    <h5 style="float: right"><a style="" href="addphysicalbook.do?ISBN=${masterbook.isbn}">Contribute this book</a></h5>
     <!--
     TODO: Image work
     <div class="img_floatright">    
