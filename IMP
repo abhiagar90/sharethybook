@@ -49,7 +49,10 @@ update masterbooks set year=1800 where year=0;
 COPY masterbooks from '/home/reshma/Reshma/Sem2/DataBase/Assignments/Project1/sharethybook/ShareThyBookServletApp/PhysicalFinal6.csv' with delimiter '|' csv header encoding 'latin1' quote '"';
 // from works.zip
 
-CREATE TABLE MasterBooksImages(
+
+//why keeping a serial pk
+//http://stackoverflow.com/questions/2317766/postgresql-bytea-primary-key
+CREATE TABLE MasterBooksImages(imageid bigserial primary key,
 ISBN varchar(13) REFERENCES MasterBooks(ISBN) ON DELETE CASCADE,
 Image Bytea);
 
