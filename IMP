@@ -1,5 +1,6 @@
 CREATE DATABASE library;
 sudo -u postgres psql library
+
 CREATE TABLE UserTable(
 EntryNumber VARCHAR(12) PRIMARY KEY,
 Password varchar(1000),
@@ -20,14 +21,18 @@ Photo BYTEA
 CONSTRAINT PinCode_Cons CHECK(PinCode ~ '[1-9][0-9][0-9][0-9][0-9][0-9]'),
 CONSTRAINT Email_Cons CHECK(EmailID ~ '^[A-Za-z][A-Za-z]*[0-9][0-9][0-9][0-9][0-9]*@iitd.ac.in'),
 CONSTRAINT UserType_Cons CHECK(TypeOfUser >0 AND TypeOfUser<4));
+
 //For Login table
 create materialized view Login as (select entrynumber, password from usertable);
+
 CREATE TABLE ContactNumbers(
 EntryNumber varchar(12) REFERENCES UserTable(EntryNumber) ON DELETE CASCADE,
 MobileNumber char(10),
-Type char(1)
+Type char(1),
+PRIMARY KEY(EntryNumber, MobileNumber),
 CONSTRAINT PhoneNoCons CHECK(MobileNumber ~ '[7-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]'),
 CONSTRAINT TypeCons CHECK(Type ~* 'W|O|H'));
+
 CREATE TABLE MasterBooks (
 ISBN VARCHAR(13) PRIMARY KEY,
 Title VARCHAR(1000) NOT NULL,
@@ -36,11 +41,14 @@ Publisher VARCHAR(300),
 Rating decimal(6,2) DEFAULT 0
 CONSTRAINT RatingCons CHECK(Rating >=0 AND Rating<6)
 );
+
 //YEAR can have 0 for books which are na, can change to 1800
 update masterbooks set year=1800 where year=0;
 //
+
 COPY masterbooks from '/home/reshma/Reshma/Sem2/DataBase/Assignments/Project1/sharethybook/ShareThyBookServletApp/PhysicalFinal6.csv' with delimiter '|' csv header encoding 'latin1' quote '"';
 // from works.zip
+
 CREATE TABLE MasterBooksImages(
 ISBN varchar(13) REFERENCES MasterBooks(ISBN) ON DELETE CASCADE,
 Image Bytea);
