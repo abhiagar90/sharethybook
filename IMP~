@@ -1,6 +1,7 @@
 
 CREATE DATABASE library;
 sudo -u postgres psql library
+
 CREATE TABLE UserTable(
 EntryNumber VARCHAR(12) PRIMARY KEY,
 Password varchar(1000),
@@ -61,6 +62,7 @@ HoldingDate DATE NOT NULL,
 LastCondition Char(1)
 CONSTRAINT BookCondCons CHECK(LastCondition ~* 'D|O|G|E')
 );
+
 CREATE TABLE Authors(
 AuthorID SERIAL NOT NULL UNIQUE,
 AuthorName VARCHAR(1000) NOT NULL
@@ -163,15 +165,18 @@ $TriggerOnRatingInsert$ LANGUAGE plpgsql;
 CREATE TRIGGER TriggerOnRatingInsert AFTER INSERT ON Rating
     FOR EACH ROW EXECUTE PROCEDURE TriggerOnRatingInsert();
     
-CREATE OR REPLACE FUNCTION TriggerOnBookUpdate() RETURNS TRIGGER AS $TriggerOnBookUpdate$
+CREATE OR REPLACE FUNCTION TriggerOnUserTable() RETURNS TRIGGER AS $TriggerOnUserTable$
 BEGIN
-UPDATE UserTable
-SET BooksContributed = BooksContributed +1
-WHERE EntryNumber = NEW.OwnerID;
+ 	IF (TG_OP = 'DELETE') THEN
+		DELETE FROM Login WHERE EntryNumber = New.EntryNumber;
+	ELSIF (TG_OP = 'INSERT') THEN
+		INSERT INTO Login VALUES(New.EntryNumber,New.Password) ;
+	END IF;
 RETURN NULL;
 END;
-$TriggerOnBookUpdate$ LANGUAGE plpgsql;
-CREATE TRIGGER TriggerOnBookUpdate AFTER UPDATE ON Books
-FOR EACH ROW EXECUTE PROCEDURE TriggerOnBookUpdate();
+$TriggerOnUserTable$ LANGUAGE plpgsql;
+
+CREATE TRIGGER TriggerOnUserTable AFTER INSERT OR DELETE ON UserTable
+FOR EACH ROW EXECUTE PROCEDURE TriggerOnUserTable();
 
 alter table masterbooks alter column rating set data type decimal(3,2);
