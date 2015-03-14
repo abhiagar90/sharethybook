@@ -151,6 +151,20 @@ $TriggerOnMessagesInsert$ LANGUAGE plpgsql;
 
 CREATE TRIGGER TriggerOnMessagesInsert AFTER INSERT ON Messages
     FOR EACH ROW EXECUTE PROCEDURE TriggerOnMessagesInsert();
+    
+    CREATE OR REPLACE FUNCTION TriggerOnMessagesUpdate() RETURNS TRIGGER AS $TriggerOnMessagesUpdate$
+    BEGIN
+        IF NEW.Status = TRUE THEN
+             	UPDATE UserTable 
+		SET UnreadMessages = UnreadMessages -1
+		WHERE EntryNumber = NEW.ToID; 
+        END IF;
+        RETURN NULL;
+    END;
+$TriggerOnMessagesUpdate$ LANGUAGE plpgsql;
+
+CREATE TRIGGER TriggerOnMessagesUpdate AFTER UPDATE ON Messages
+    FOR EACH ROW EXECUTE PROCEDURE TriggerOnMessagesUpdate();
 
 CREATE OR REPLACE FUNCTION TriggerOnRatingInsert() RETURNS TRIGGER AS $TriggerOnRatingInsert$
     BEGIN
