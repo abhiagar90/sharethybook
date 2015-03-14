@@ -176,3 +176,10 @@ CREATE TRIGGER TriggerOnBookUpdate AFTER UPDATE ON Books
 FOR EACH ROW EXECUTE PROCEDURE TriggerOnBookUpdate();
 
 alter table masterbooks alter column rating set data type decimal(3,2);
+
+
+#####################INDEXES###############################
+CREATE INDEX authorname_idx ON authors USING gin(to_tsvector('english',authorname));
+CREATE INDEX booktitle_idx ON masterbooks USING gin(to_tsvector('english',title));
+CREATE INDEX publisher_idx ON masterbooks USING gin(to_tsvector('english',publisher));
+CREATE INDEX year_idx ON masterbooks(year);
