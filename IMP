@@ -52,6 +52,7 @@ COPY masterbooks from '/home/reshma/Reshma/Sem2/DataBase/Assignments/Project1/sh
 CREATE TABLE MasterBooksImages(
 ISBN varchar(13) REFERENCES MasterBooks(ISBN) ON DELETE CASCADE,
 Image Bytea);
+
 CREATE TABLE Books(
 BookID BIGSERIAL PRIMARY KEY,
 ISBN VARCHAR(13) REFERENCES MasterBooks(ISBN) ON DELETE CASCADE ON UPDATE CASCADE,
@@ -61,16 +62,20 @@ HoldingDate DATE NOT NULL,
 LastCondition Char(1)
 CONSTRAINT BookCondCons CHECK(LastCondition ~* 'D|O|G|E')
 );
+
 CREATE TABLE Authors(
 AuthorID SERIAL NOT NULL UNIQUE,
 AuthorName VARCHAR(1000) NOT NULL
 );
+
 Use this:COPY Authors from '/home/reshma/Reshma/Sem2/DataBase/Assignments/Project1/sharethybook/AuthorWork/AuthorFinal2.csv' with delimiter '|' csv header encoding 'latin1' quote '"';
 CREATE TABLE BooksWrittenBy(
 ISBN VARCHAR(13) REFERENCES MasterBooks(ISBN),
 AuthorID INT REFERENCES Authors(AuthorID)
 );
+
 COPY BooksWrittenBy from '/home/reshma/Reshma/Sem2/DataBase/Assignments/Project1/sharethybook/AuthorWork/ISBNAuthor.csv' with delimiter '|' csv header encoding 'latin1' quote '"';
+
 CREATE TABLE Transactions(
 TransactionID BIGSERIAL PRIMARY KEY,
 FromID VARCHAR(12) REFERENCES UserTable(EntryNumber),
@@ -83,10 +88,12 @@ BookCondition Char(1)
 CONSTRAINT StatusCons CHECK(Status ~* 'R|T|H|E|C'),
 CONSTRAINT BookCondCons CHECK(BookCondition ~* 'D|O|G|E')
 );
+
 CREATE TABLE WishList(
 EntryNumber VARCHAR(12) REFERENCES UserTable(EntryNumber) ON DELETE CASCADE,
 ISBN VARCHAR(13) REFERENCES MasterBooks(ISBN),
-Date DATE
+Date DATE,
+primary key (entrynumber, isbn)
 );
 CREATE TABLE Messages(
 MessageID BIGSERIAL PRIMARY KEY,
