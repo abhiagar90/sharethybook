@@ -129,12 +129,16 @@ DELETE FROM WishList WHERE ISBN ILIKE NEW.ISBN;
 RETURN NULL;
 END;
 $TriggerOnBookInsert$ LANGUAGE plpgsql;
+
 CREATE TRIGGER TriggerOnBookInsert AFTER INSERT ON Books
 FOR EACH ROW EXECUTE PROCEDURE TriggerOnBookInsert();
+
 //Trigger For message.......................updating NoofunRead messages of user
 //Trigger for Review........................updating mastertable review
 CREATE TRIGGER TriggerOnBookInsert AFTER INSERT ON Books
 FOR EACH ROW EXECUTE PROCEDURE TriggerOnBookInsert();
+
+
 //Trigger For message.......................updating NoofunRead messages of user
 //Trigger for Review........................updating mastertable review
 CREATE OR REPLACE FUNCTION TriggerOnMessagesInsert() RETURNS TRIGGER AS $TriggerOnMessagesInsert$
@@ -145,8 +149,12 @@ WHERE EntryNumber = NEW.ToID;
 RETURN NULL;
 END;
 $TriggerOnMessagesInsert$ LANGUAGE plpgsql;
+
 CREATE TRIGGER TriggerOnMessagesInsert AFTER INSERT ON Messages
 FOR EACH ROW EXECUTE PROCEDURE TriggerOnMessagesInsert();
+
+
+
 CREATE OR REPLACE FUNCTION TriggerOnMessagesUpdate() RETURNS TRIGGER AS $TriggerOnMessagesUpdate$
 BEGIN
 IF NEW.Status = TRUE THEN
@@ -157,8 +165,12 @@ END IF;
 RETURN NULL;
 END;
 $TriggerOnMessagesUpdate$ LANGUAGE plpgsql;
+
+
 CREATE TRIGGER TriggerOnMessagesUpdate AFTER UPDATE ON Messages
 FOR EACH ROW EXECUTE PROCEDURE TriggerOnMessagesUpdate();
+
+
 CREATE OR REPLACE FUNCTION TriggerOnRatingInsert() RETURNS TRIGGER AS $TriggerOnRatingInsert$
 BEGIN
 UPDATE MasterBooks
@@ -167,17 +179,25 @@ WHERE ISBN = NEW.ISBN;
 RETURN NULL;
 END;
 $TriggerOnRatingInsert$ LANGUAGE plpgsql;
+
+
 CREATE TRIGGER TriggerOnRatingInsert AFTER INSERT ON Rating
 FOR EACH ROW EXECUTE PROCEDURE TriggerOnRatingInsert();
+
+
 CREATE OR REPLACE FUNCTION TriggerOnUserTable() RETURNS TRIGGER AS $TriggerOnUserTable$
 BEGIN
 REFRESH MATERIALIZED VIEW login ;
 RETURN NULL;
 END;
 $TriggerOnUserTable$ LANGUAGE plpgsql;
+
+
 CREATE TRIGGER TriggerOnUserTable AFTER INSERT OR DELETE ON UserTable
 FOR EACH ROW EXECUTE PROCEDURE TriggerOnUserTable();
 alter table masterbooks alter column rating set data type decimal(3,2);
+
+
 #####################INDEXES###############################
 CREATE INDEX authorname_idx ON authors USING gin(to_tsvector('english',authorname));
 CREATE INDEX booktitle_idx ON masterbooks USING gin(to_tsvector('english',title));
