@@ -166,11 +166,7 @@ CREATE TRIGGER TriggerOnRatingInsert AFTER INSERT ON Rating
     
 CREATE OR REPLACE FUNCTION TriggerOnUserTable() RETURNS TRIGGER AS $TriggerOnUserTable$
 BEGIN
- 	IF (TG_OP = 'DELETE') THEN
-		DELETE FROM Login WHERE EntryNumber = New.EntryNumber;
-	ELSIF (TG_OP = 'INSERT') THEN
-		INSERT INTO Login VALUES(New.EntryNumber,New.Password) ;
-	END IF;
+ 	REFRESH MATERIALIZED VIEW login ;
 RETURN NULL;
 END;
 $TriggerOnUserTable$ LANGUAGE plpgsql;
