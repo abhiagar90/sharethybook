@@ -198,6 +198,28 @@ $TriggerOnUserTable$ LANGUAGE plpgsql;
 
 CREATE TRIGGER TriggerOnUserTable AFTER INSERT OR DELETE ON UserTable
 FOR EACH ROW EXECUTE PROCEDURE TriggerOnUserTable();
+
+CREATE OR REPLACE FUNCTION TriggerOnTransactionUpdate() RETURNS TRIGGER AS $TriggerOnTransactionUpdate$
+BEGIN
+IF NEW.Status = 'E' THEN
+UPDATE UserTable
+SET BooksHave = BooksHave +1
+WHERE EntryNumber = NEW.FromID;
+UPDATE UserTable
+SET BooksHave = BooksHave -1
+WHERE EntryNumber = NEW.ToID;
+UPDATE Books
+SET LastCondition=New.BookCondition
+WHERE BookID=New.BookID;
+END IF;
+RETURN NULL;
+END;
+$TriggerOnTransactionUpdate$ LANGUAGE plpgsql;
+
+CREATE TRIGGER TriggerOnTransactionUpdate AFTER UPDATE ON Transactions
+FOR EACH ROW EXECUTE PROCEDURE TriggerOnTransactionUpdate();
+
+
 alter table masterbooks alter column rating set data type decimal(3,2);
 
 
