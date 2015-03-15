@@ -7,6 +7,7 @@ package com.sharethyapp.dbclasses;
 
 import com.sharethyapp.helper.BookResult;
 import com.sharethyapp.helper.Messages;
+import com.sharethyapp.helper.WishList;
 import com.sharethyapp.helper.UtilitiesHelper;
 import java.sql.SQLException;
 import java.util.logging.Level;
@@ -54,7 +55,7 @@ public class TransactionDB  extends DB{
         return "true";
     }
     
-       public List<TransactionHistory> getBooksRequested(String requester)
+       public List<TransactionHistory> getBooksRequestedBy(String requester)
        {
            
            String getBooksRequestedDetails="select * from Transactions where FromID=?;";
@@ -64,12 +65,12 @@ public class TransactionDB  extends DB{
 
 
         try {
-            BookResult temp = new BookResult();
+           
             preparedStatement = conn.prepareStatement(getBooksRequestedDetails);
             preparedStatement.setString(1, requester.trim());
             ResultSet rs = preparedStatement.executeQuery();
             while (rs.next()) {
-                temp.setIsbn(rs.getString("isbn"));
+                
                 TransactionHistory trans=new TransactionHistory();
                 trans.setTransactionID(rs.getLong("TransactionID"));
                 trans.setFromID(rs.getString("FromID"));
@@ -89,5 +90,73 @@ public class TransactionDB  extends DB{
         }
         
         return booksRequested;
+       }
+       
+       public List<TransactionHistory> getBooksRequestedFrom(String requestees)
+       {
+           
+           String getBooksRequestedDetails="select * from Transactions where ToID=?;";
+           List<TransactionHistory> booksRequested=new ArrayList<TransactionHistory>();
+           
+            openConnection();
+
+
+        try {
+           
+            preparedStatement = conn.prepareStatement(getBooksRequestedDetails);
+            preparedStatement.setString(1, requestees.trim());
+            ResultSet rs = preparedStatement.executeQuery();
+            while (rs.next()) {
+                TransactionHistory trans=new TransactionHistory();
+                trans.setTransactionID(rs.getLong("TransactionID"));
+                trans.setFromID(rs.getString("FromID"));
+                trans.setToID(rs.getString("ToID"));
+                trans.setBookID(rs.getLong("BookID"));
+                trans.setTransStartDate(rs.getTimestamp("TransStartDate"));
+                trans.setLastUpdate(rs.getTimestamp("LastUpdate"));
+                trans.setStatus(rs.getString("Status"));
+                trans.setBookCondition(rs.getString("BookCondition"));
+                booksRequested.add(trans);
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(LoginDB.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            closeConnection();
+        }
+        
+        return booksRequested;
+       }
+       
+       public List<WishList> getMyWishList(String entryNum)
+       {
+           
+           String getWishListDetails="select * from WishList,MasterBooks where EntryNumber =? AND MasterBooks.ISBN=WishList.ISBN;";
+           List<WishList> booksWished=new ArrayList<WishList>();
+           
+            openConnection();
+
+
+        try {
+           
+            preparedStatement = conn.prepareStatement(getWishListDetails);
+            preparedStatement.setString(1, entryNum.trim());
+            ResultSet rs = preparedStatement.executeQuery();
+            while (rs.next()) {
+                WishList wish=new WishList();
+                wish.setIsbn(rs.getString("ISBN"));
+                wish.setDate(rs.getDate("Date"));
+                wish.setTitle(rs.getString("Title"));
+                
+                booksWished.add(wish);
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(LoginDB.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            closeConnection();
+        }
+        
+        return booksWished;
        }
 }

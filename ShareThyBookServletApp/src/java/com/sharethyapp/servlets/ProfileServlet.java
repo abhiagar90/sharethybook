@@ -12,6 +12,7 @@ import com.sharethyapp.dbclasses.TransactionDB;
 import com.sharethyapp.helper.LoginHelper;
 import com.sharethyapp.helper.PhysicalBooks;
 import com.sharethyapp.helper.TransactionHistory;
+import com.sharethyapp.helper.WishList;
 import java.io.IOException;
 import java.util.List;
 import javax.servlet.RequestDispatcher;
@@ -50,11 +51,15 @@ public class ProfileServlet extends HttpServlet {
             List<PhysicalBooks> ownList = new PhysicalBooksDB().getOwnedBooksDetails(entrynum);
             List<PhysicalBooks> havingList = new PhysicalBooksDB().getHavingBooksDetails(entrynum);
             
-            List<TransactionHistory> booksRequested=(new TransactionDB()).getBooksRequested(entrynum);
+            List<TransactionHistory> booksRequested=(new TransactionDB()).getBooksRequestedBy(entrynum);
+            List<TransactionHistory> booksReqPending=(new TransactionDB()).getBooksRequestedFrom(entrynum);
+            List<WishList> booksWished=(new TransactionDB()).getMyWishList(entrynum);
             
             request.setAttribute("ownlist", ownList);
             request.setAttribute("havinglist", havingList);
             request.setAttribute("booksRequested", booksRequested);
+            request.setAttribute("booksReqPending", booksReqPending);
+            request.setAttribute("booksWished", booksWished);
             RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/profile.jsp");
             dispatcher.forward(request, response);
             

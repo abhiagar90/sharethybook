@@ -65,21 +65,20 @@
         <servlet-class>com.sharethyapp.servlets.SuggestBookServlet</servlet-class>
     </servlet>
     <servlet>
-<<<<<<< HEAD
         <servlet-name>MessageViewAllServlet</servlet-name>
         <servlet-class>com.sharethyapp.servlets.MessageViewAllServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>ReadMessageServlet</servlet-name>
         <servlet-class>com.sharethyapp.servlets.ReadMessageServlet</servlet-class>
-=======
+    </servlet>
+    <servlet>
         <servlet-name>AddWishListServlet</servlet-name>
         <servlet-class>com.sharethyapp.servlets.AddWishListServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>RequestBookServlet</servlet-name>
         <servlet-class>com.sharethyapp.servlets.RequestBookServlet</servlet-class>
->>>>>>> aaf97b4726f0c6b9b920e0c685f8a498b0d79f1d
     </servlet>
     <servlet-mapping>
         <servlet-name>DummyServlet</servlet-name>
@@ -146,21 +145,20 @@
         <url-pattern>/message.do</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-<<<<<<< HEAD
         <servlet-name>MessageViewAllServlet</servlet-name>
         <url-pattern>/allmsgsview.do</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>ReadMessageServlet</servlet-name>
         <url-pattern>/readmsg.do</url-pattern>
-=======
+    </servlet-mapping>
+    <servlet-mapping>
         <servlet-name>AddWishListServlet</servlet-name>
         <url-pattern>/addwishlist.do</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>RequestBookServlet</servlet-name>
         <url-pattern>/requestbook.do</url-pattern>
->>>>>>> aaf97b4726f0c6b9b920e0c685f8a498b0d79f1d
     </servlet-mapping>
     <session-config>
         <session-timeout>
@@ -179,5 +177,4 @@
         <location>/error.jsp</location>
     </error-page>
 
-    --&gt;
 </web-app>

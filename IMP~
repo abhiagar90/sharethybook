@@ -25,7 +25,8 @@ create materialized view Login as (select entrynumber, password from usertable);
 CREATE TABLE ContactNumbers(
 EntryNumber varchar(12) REFERENCES UserTable(EntryNumber) ON DELETE CASCADE,
 MobileNumber char(10),
-Type char(1)
+Type char(1),
+PRIMARY KEY(EntryNumber, MobileNumber),
 CONSTRAINT PhoneNoCons CHECK(MobileNumber ~ '[7-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]'),
 CONSTRAINT TypeCons CHECK(Type ~* 'W|O|H'));
 CREATE TABLE MasterBooks (
@@ -41,7 +42,9 @@ update masterbooks set year=1800 where year=0;
 //
 COPY masterbooks from '/home/reshma/Reshma/Sem2/DataBase/Assignments/Project1/sharethybook/ShareThyBookServletApp/PhysicalFinal6.csv' with delimiter '|' csv header encoding 'latin1' quote '"';
 // from works.zip
-CREATE TABLE MasterBooksImages(
+//why keeping a serial pk
+//http://stackoverflow.com/questions/2317766/postgresql-bytea-primary-key
+CREATE TABLE MasterBooksImages(imageid bigserial primary key,
 ISBN varchar(13) REFERENCES MasterBooks(ISBN) ON DELETE CASCADE,
 Image Bytea);
 CREATE TABLE Books(
@@ -58,6 +61,8 @@ AuthorID SERIAL NOT NULL UNIQUE,
 AuthorName VARCHAR(1000) NOT NULL
 );
 Use this:COPY Authors from '/home/reshma/Reshma/Sem2/DataBase/Assignments/Project1/sharethybook/AuthorWork/AuthorFinal2.csv' with delimiter '|' csv header encoding 'latin1' quote '"';
+SELECT setval('authors_authorid_seq', (SELECT MAX(authorid) FROM authors));
+select nextval('authors_authorid_seq');
 CREATE TABLE BooksWrittenBy(
 ISBN VARCHAR(13) REFERENCES MasterBooks(ISBN),
 AuthorID INT REFERENCES Authors(AuthorID)
@@ -78,7 +83,8 @@ CONSTRAINT BookCondCons CHECK(BookCondition ~* 'D|O|G|E')
 CREATE TABLE WishList(
 EntryNumber VARCHAR(12) REFERENCES UserTable(EntryNumber) ON DELETE CASCADE,
 ISBN VARCHAR(13) REFERENCES MasterBooks(ISBN),
-Date DATE
+Date DATE,
+primary key (entrynumber, isbn)
 );
 CREATE TABLE Messages(
 MessageID BIGSERIAL PRIMARY KEY,
@@ -128,7 +134,6 @@ RETURN NULL;
 END;
 $TriggerOnMessagesInsert$ LANGUAGE plpgsql;
 CREATE TRIGGER TriggerOnMessagesInsert AFTER INSERT ON Messages
-<<<<<<< HEAD
 FOR EACH ROW EXECUTE PROCEDURE TriggerOnMessagesInsert();
 CREATE OR REPLACE FUNCTION TriggerOnMessagesUpdate() RETURNS TRIGGER AS $TriggerOnMessagesUpdate$
 BEGIN
@@ -142,24 +147,6 @@ END;
 $TriggerOnMessagesUpdate$ LANGUAGE plpgsql;
 CREATE TRIGGER TriggerOnMessagesUpdate AFTER UPDATE ON Messages
 FOR EACH ROW EXECUTE PROCEDURE TriggerOnMessagesUpdate();
-=======
-    FOR EACH ROW EXECUTE PROCEDURE TriggerOnMessagesInsert();
-    
-    CREATE OR REPLACE FUNCTION TriggerOnMessagesUpdate() RETURNS TRIGGER AS $TriggerOnMessagesUpdate$
-    BEGIN
-        IF NEW.Status = TRUE THEN
-             	UPDATE UserTable 
-		SET UnreadMessages = UnreadMessages -1
-		WHERE EntryNumber = NEW.ToID; 
-        END IF;
-        RETURN NULL;
-    END;
-$TriggerOnMessagesUpdate$ LANGUAGE plpgsql;
-
-CREATE TRIGGER TriggerOnMessagesUpdate AFTER UPDATE ON Messages
-    FOR EACH ROW EXECUTE PROCEDURE TriggerOnMessagesUpdate();
-
->>>>>>> bbbc3a6c43f5f3f5edbe484095c6474cfdf0dac6
 CREATE OR REPLACE FUNCTION TriggerOnRatingInsert() RETURNS TRIGGER AS $TriggerOnRatingInsert$
 BEGIN
 UPDATE MasterBooks
@@ -169,7 +156,6 @@ RETURN NULL;
 END;
 $TriggerOnRatingInsert$ LANGUAGE plpgsql;
 CREATE TRIGGER TriggerOnRatingInsert AFTER INSERT ON Rating
-<<<<<<< HEAD
 FOR EACH ROW EXECUTE PROCEDURE TriggerOnRatingInsert();
 CREATE OR REPLACE FUNCTION TriggerOnUserTable() RETURNS TRIGGER AS $TriggerOnUserTable$
 BEGIN
@@ -179,24 +165,25 @@ END;
 $TriggerOnUserTable$ LANGUAGE plpgsql;
 CREATE TRIGGER TriggerOnUserTable AFTER INSERT OR DELETE ON UserTable
 FOR EACH ROW EXECUTE PROCEDURE TriggerOnUserTable();
-alter table masterbooks alter column rating set data type decimal(3,2);
-=======
-    FOR EACH ROW EXECUTE PROCEDURE TriggerOnRatingInsert();
-    
-CREATE OR REPLACE FUNCTION TriggerOnUserTable() RETURNS TRIGGER AS $TriggerOnUserTable$
+CREATE OR REPLACE FUNCTION TriggerOnTransactionUpdate() RETURNS TRIGGER AS $TriggerOnTransactionUpdate$
 BEGIN
- 	REFRESH MATERIALIZED VIEW login ;
+IF NEW.Status = 'E' THEN
+UPDATE UserTable
+SET BooksHave = BooksHave +1
+WHERE EntryNumber = NEW.FromID;
+UPDATE UserTable
+SET BooksHave = BooksHave -1
+WHERE EntryNumber = NEW.ToID;
+UPDATE Books
+SET LastCondition=New.BookCondition
+WHERE BookID=New.BookID;
+END IF;
 RETURN NULL;
 END;
-$TriggerOnUserTable$ LANGUAGE plpgsql;
-
-CREATE TRIGGER TriggerOnUserTable AFTER INSERT OR DELETE ON UserTable
-FOR EACH ROW EXECUTE PROCEDURE TriggerOnUserTable();
-
+$TriggerOnTransactionUpdate$ LANGUAGE plpgsql;
+CREATE TRIGGER TriggerOnTransactionUpdate AFTER UPDATE ON Transactions
+FOR EACH ROW EXECUTE PROCEDURE TriggerOnTransactionUpdate();
 alter table masterbooks alter column rating set data type decimal(3,2);
-
-
->>>>>>> bbbc3a6c43f5f3f5edbe484095c6474cfdf0dac6
 #####################INDEXES###############################
 CREATE INDEX authorname_idx ON authors USING gin(to_tsvector('english',authorname));
 CREATE INDEX booktitle_idx ON masterbooks USING gin(to_tsvector('english',title));

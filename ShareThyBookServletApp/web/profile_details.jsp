@@ -1,3 +1,4 @@
+<%@page import="com.sharethyapp.helper.WishList"%>
 <%@page import="com.sharethyapp.helper.TransactionHistory"%>
 <%@page import="com.sharethyapp.dbclasses.UserTable"%>
 <%@page import="com.sharethyapp.helper.LoginHelper"%>
@@ -182,17 +183,17 @@
             <%
                 List<TransactionHistory> reqBooks = (List<TransactionHistory>) request.getAttribute("booksRequested");
                 if (reqBooks != null)
-                    for (TransactionHistory tempbook : (List<TransactionHistory>) request.getAttribute("booksRequested")) {
+                    for (TransactionHistory tempbook : reqBooks) {
                         pageContext.setAttribute("tempbook", tempbook);
             %>
             <tr>
-            <td>${tempbook.TransactionID}</td>
-            <td>${tempbook.ToID}</td>
-            <td>${tempbook.BookID}</td>
-            <td>${tempbook.TransStartDate}</td>
-            <td>${tempbook.LastUpdate}</td>
-             <td>${tempbook.Status}</td>
-            <td>${tempbook.BookCondition}</td>
+            <td>${tempbook.getTransactionID()}</td>
+            <td>${tempbook.getToID()}</td>
+            <td>${tempbook.getBookID()}</td>
+            <td>${tempbook.getTransStartDate()}</td>
+            <td>${tempbook.getLastUpdate()}</td>
+             <td>${tempbook.getStatus()}</td>
+            <td>${tempbook.getBookCondition()}</td>
             </tr>
             <%
                 }
@@ -201,10 +202,73 @@
 
 
         </table>
+        
 
         
         <h3>Books Requested From ${user.firstname}</h3>
+        
+        <table class="table" width="100%">
+
+            <tr>
+            <th>TransactionID</th>
+            <th>Requested To</th>
+            <th>BookID</th>
+            <th>Start Date</th>
+            <th>Last Update</th>
+            <th>Status</th>
+            <th>Condition</th>
+            </tr>
+
+            <%
+                List<TransactionHistory> reqBooksPending = (List<TransactionHistory>) request.getAttribute("booksReqPending");
+                if (reqBooksPending != null)
+                    for (TransactionHistory tempbook : reqBooksPending) {
+                        pageContext.setAttribute("tempbook", tempbook);
+            %>
+            <tr>
+            <td>${tempbook.getTransactionID()}</td>
+            <td>${tempbook.getFromID()}</td>
+            <td>${tempbook.getBookID()}</td>
+            <td>${tempbook.getTransStartDate()}</td>
+            <td>${tempbook.getLastUpdate()}</td>
+             <td>${tempbook.getStatus()}</td>
+            <td>${tempbook.getBookCondition()}</td>
+            </tr>
+            <%
+                }
+            %>
+
+
+
+        </table>
         <h3>${user.firstname}'s Wish-list!</h3>
+        
+        <table class="table" width="100%">
+
+            <tr>
+            <th>ISBN</th>
+            <th>Title</th>
+            <th>Date</th>
+            </tr>
+
+            <%
+                List<WishList> booksWished = (List<WishList>) request.getAttribute("booksWished");
+                if (booksWished != null)
+                    for (WishList tempbook : booksWished) {
+                        pageContext.setAttribute("tempbook", tempbook);
+            %>
+            <tr>
+            <td>${tempbook.getIsbn()}</td>
+            <td>${tempbook.getTitle()}</td>
+            <td>${tempbook.getDate()}</td>
+            </tr>
+            <%
+                }
+            %>
+
+
+
+        </table>
 
         <%
             if (!sessionEntry.equals(userEntry)) {
@@ -253,7 +317,7 @@
         <div>
             <a href="addbook.jsp">Contribute a book</a> <br/>
             <a href="beforeedit.do?entrynumber=${user.entrynumber}">Edit Profile Details</a> <br/>
-            <a href="changePassword.jsp">Change Password <a/> <br/>
+            <a href="changePassword.jsp">Change Password </a> <br/>
             <a href="editProfileImage.jsp">Edit Profile Image</a> <br/>
             <a href="allmsgsview.do">View messages</a> <br/>
         </div>
