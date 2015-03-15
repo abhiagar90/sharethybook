@@ -72,6 +72,9 @@ AuthorName VARCHAR(1000) NOT NULL
 );
 
 Use this:COPY Authors from '/home/reshma/Reshma/Sem2/DataBase/Assignments/Project1/sharethybook/AuthorWork/AuthorFinal2.csv' with delimiter '|' csv header encoding 'latin1' quote '"';
+SELECT setval('authors_authorid_seq', (SELECT MAX(authorid) FROM authors));
+select nextval('authors_authorid_seq');
+
 CREATE TABLE BooksWrittenBy(
 ISBN VARCHAR(13) REFERENCES MasterBooks(ISBN),
 AuthorID INT REFERENCES Authors(AuthorID)
