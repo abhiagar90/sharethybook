@@ -209,7 +209,9 @@ UPDATE UserTable
 SET BooksHave = BooksHave -1
 WHERE EntryNumber = NEW.ToID;
 UPDATE Books
-SET LastCondition=New.BookCondition
+SET LastCondition=New.BookCondition,
+HolderID=New.FromID,
+HoldingDate=now()
 WHERE BookID=New.BookID;
 END IF;
 RETURN NULL;
