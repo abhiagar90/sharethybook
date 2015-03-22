@@ -230,3 +230,20 @@ CREATE INDEX authorname_idx ON authors USING gin(to_tsvector('english',authornam
 CREATE INDEX booktitle_idx ON masterbooks USING gin(to_tsvector('english',title));
 CREATE INDEX publisher_idx ON masterbooks USING gin(to_tsvector('english',publisher));
 CREATE INDEX year_idx ON masterbooks(year);
+
+
+###############Admin and MOD #########################
+
+library=# Insert into UserTable Values('MOD1','ab56b4d92b40713acc5af89985d4b786','Aman','','true','','','Hauz khas','New Delhi','110016','mod00001@iitd.ac.in',2,0,NULL);
+INSERT 0 1
+library=# Insert into UserTable Values('MOD2','ab56b4d92b40713acc5af89985d4b786','Aastha','Verma','true','','','Hauz khas','New Delhi','110016','mod00002@iitd.ac.in',2,0,NULL);
+INSERT 0 1
+library=# Insert into UserTable Values('MOD3','ab56b4d92b40713acc5af89985d4b786','Aastha','Sharma','true','','','Hauz khas','New Delhi','110016','mod00003@iitd.ac.in',2,0,NULL);
+INSERT 0 1
+library=# Insert into UserTable Values('MOD4','ab56b4d92b40713acc5af89985d4b786','Anamika','','true','','','Hauz khas','New Delhi','110016','mod00004@iitd.ac.in',2,0,NULL);
+INSERT 0 1
+library=# select * from usertable where typeofuser=2;
+library=# Insert into UserTable Values('ADMIN','ab56b4d92b40713acc5af89985d4b786','Admin','','true','','','Hauz khas','New Delhi','110016','admin12345@iitd.ac.in',1,0,NULL);
+
+
+
