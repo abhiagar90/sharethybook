@@ -19,7 +19,7 @@ import java.sql.SQLException;
 
 public class TestDemo {
 
-    public static void main(String[] args) {
+    public static void main2(String[] args) {
            Connection c = null;
            Statement stmt = null;
       try {

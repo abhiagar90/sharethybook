@@ -5,16 +5,12 @@
  */
 package testdemo;
 
-import java.awt.Image;
-import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.net.InetSocketAddress;
 import java.net.MalformedURLException;
 import java.net.Proxy;
@@ -24,9 +20,6 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.imageio.ImageIO;
 
 /**
  *
@@ -34,7 +27,8 @@ import javax.imageio.ImageIO;
  */
 public class URLImage {
 
-    public static void main2(String[] args) throws MalformedURLException, IOException, SQLException {
+    public static void main(String[] args) throws MalformedURLException, IOException, SQLException {
+        long start = System.currentTimeMillis();
         URLImage urli = new URLImage();
         byte[][] barr = urli.getAllImages();
         String[][] isbn = urli.readAndConvert2dArrayCsv("ISBN_Image.csv");
@@ -42,11 +36,12 @@ public class URLImage {
         System.out.println(barr.length);
         System.out.println(isbn.length);
         urli.setup();
-        for(int i=0;i<isbn.length;i++)
-        {
+        for (int i = 0; i < isbn.length; i++) {
             urli.insertIntoDB(isbn[i][0], barr[i]);
         }
         urli.closeConnection();
+        long end = System.currentTimeMillis();
+        System.out.println(end - start);
     }
 
     public Connection conn = null;
@@ -100,22 +95,20 @@ public class URLImage {
             }
         }
     }
-    
-    public void setup() throws SQLException
-    {
+
+    public void setup() throws SQLException {
         openConnection();
 
-        String prepQuery = "insert into masterbooksimages values(?,?)";
+        String prepQuery = "insert into masterbooksimages(isbn, image) values(?,?)";
         preparedStatement = conn.prepareStatement(prepQuery);
     }
 
     public boolean insertIntoDB(String ISBN, byte[] image) throws SQLException {
-       
+
         preparedStatement.setString(1, ISBN);
         preparedStatement.setBytes(2, image);
         preparedStatement.executeUpdate();
 
-        
         return false;
     }
 
