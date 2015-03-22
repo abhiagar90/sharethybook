@@ -20,7 +20,7 @@ import java.util.logging.Logger;
 public class UserTableDB extends DB {
 
     //Login is the materialized view we have created
-    private final String getAllDetailsSQL = "select * from UserTable where entrynumber=?";
+    private final String getAllDetailsSQL = "select * from UserTable where entrynumber ilike ?";
    
     public UserTable getDetailsfromEntryNum(String entryNum) //returns null if exception
     {

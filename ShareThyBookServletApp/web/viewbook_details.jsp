@@ -1,3 +1,5 @@
+<%@page import="com.sharethyapp.dbclasses.UserTable"%>
+<%@page import="com.sharethyapp.dbclasses.UserTableDB"%>
 <%@page import="com.sharethyapp.helper.RateAndReview"%>
 <%@page import="com.sharethyapp.helper.PhysicalBooks"%>
 <%@page import="java.util.List"%>
@@ -11,7 +13,7 @@
     </p>
     <%if (LoginHelper.isLoggedIn(request)) {%>
     <h1>${masterbook.title}</h1>
-    
+
     <h5 style="float: right"><a style="" href="addphysicalbook.do?ISBN=${masterbook.isbn}">Contribute this book</a></h5>
     <!--
     TODO: Image work
@@ -111,17 +113,32 @@
         <td><a href="profile.do?entrynumber=${tempbook.holderid}">${tempbook.holderid}</a></td>
         <td>${tempbook.holdingdate}</td>
         <td>${tempbook.lastCondition}</td>
-        <td><a href="requestbook.do?bookID=${tempbook.bookidPhysical}&&ISBN=${tempbook.isbn}&&oid=${tempbook.ownerid}&&hid=${tempbook.holderid}"> Request</a></td>
+        <td>
+            <% if (!physical.getHolderid().equals((String) request.getSession().getAttribute("entrynumber"))) {%>
+            <%
+                //get books contributed!!
+                UserTable user = new UserTableDB().getDetailsfromEntryNum((String) request.getSession().getAttribute("entrynumber"));
+                if (user.getBooksContri() >= 2) {
+            %>
+            <a href="requestbook.do?bookID=${tempbook.bookidPhysical}&&ISBN=${tempbook.isbn}&&oid=${tempbook.ownerid}&&hid=${tempbook.holderid}"> Request</a>
+            <%} else {%>
+            Contribute two books first!
+            <%}
+            } else {%>
+            You hold this!
+            <%}%>
+        </td>
+
         </tr>
         <%
-                }
-            }else{%>
-            <tr>
-            <td>
-                <a href="addwishlist.do?ISBN=${masterbook.isbn}">Add to wish-list</a>
-            </td>
-            </tr>
-            <%}%>
+            }
+        } else {%>
+        <tr>
+        <td>
+            <a href="addwishlist.do?ISBN=${masterbook.isbn}">Add to wish-list</a>
+        </td>
+        </tr>
+        <%}%>
     </table>
     <br/>
 
@@ -165,9 +182,9 @@
         </div>
 
         <br/>
-    
+
         <br/>
-        
+
     </form>
     <!--
     <div>

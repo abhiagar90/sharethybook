@@ -1,3 +1,6 @@
+<%@page import="java.util.concurrent.TimeUnit"%>
+<%@page import="java.text.SimpleDateFormat"%>
+<%@page import="java.util.Calendar"%>
 <%@page import="com.sharethyapp.helper.WishList"%>
 <%@page import="com.sharethyapp.helper.TransactionHistory"%>
 <%@page import="com.sharethyapp.dbclasses.UserTable"%>
@@ -164,20 +167,22 @@
 
 
         </table>
-
+        <%
+            if (sessionEntry.equals(userEntry)) {
+        %>
 
         <h3>Books Requested By ${user.firstname}</h3>
-        
-         <table class="table" width="100%">
+
+        <table class="table" width="100%">
 
             <tr>
             <th>TransactionID</th>
-            <th>Requested To</th>
+            <th>Requested From</th>
             <th>BookID</th>
             <th>Start Date</th>
             <th>Last Update</th>
-            <th>Status</th>
-            <th>Condition</th>
+            <th>Status</th>            
+            <th>Action</th>
             </tr>
 
             <%
@@ -188,12 +193,24 @@
             %>
             <tr>
             <td>${tempbook.getTransactionID()}</td>
-            <td>${tempbook.getToID()}</td>
+            <td><a href="profile.do?entrynumber=${tempbook.getToID()}">${tempbook.getToID()}</a></td>
             <td>${tempbook.getBookID()}</td>
             <td>${tempbook.getTransStartDate()}</td>
             <td>${tempbook.getLastUpdate()}</td>
-             <td>${tempbook.getStatus()}</td>
-            <td>${tempbook.getBookCondition()}</td>
+            <td>${tempbook.getStatus()}</td>           
+            <td>
+                <%if (tempbook.getStatus().equals("R")) {%>
+                Waiting
+                <%} else if (tempbook.getStatus().equals("C")) { %>
+                Canceled
+                <%} else if (tempbook.getStatus().equals("T")) {%>
+                In Transit
+                <%} else if (tempbook.getStatus().equals("H")) { %>
+                <a href="accept.do?tid=${tempbook.getTransactionID()}&status=E">I have Borrowed</a>
+                <% } else if (tempbook.getStatus().equals("E")) { %>
+                Ended
+                <% } %>
+            </td>
             </tr>
             <%
                 }
@@ -202,21 +219,21 @@
 
 
         </table>
-        
 
-        
+
+
         <h3>Books Requested From ${user.firstname}</h3>
-        
+
         <table class="table" width="100%">
 
             <tr>
             <th>TransactionID</th>
-            <th>Requested To</th>
+            <th>Requested By</th>
             <th>BookID</th>
             <th>Start Date</th>
             <th>Last Update</th>
-            <th>Status</th>
-            <th>Condition</th>
+            <th>Status</th>            
+            <th>Action</th>
             </tr>
 
             <%
@@ -227,12 +244,59 @@
             %>
             <tr>
             <td>${tempbook.getTransactionID()}</td>
-            <td>${tempbook.getFromID()}</td>
+            <td><a href="profile.do?entrynumber=${tempbook.getFromID()}">${tempbook.getFromID()}</a></td>
             <td>${tempbook.getBookID()}</td>
             <td>${tempbook.getTransStartDate()}</td>
             <td>${tempbook.getLastUpdate()}</td>
-             <td>${tempbook.getStatus()}</td>
-            <td>${tempbook.getBookCondition()}</td>
+            <td>${tempbook.getStatus()}</td>           
+            <td>
+                <%if (tempbook.getStatus().equals("R")) {%>
+                <a href="accept.do?tid=${tempbook.getTransactionID()}&status=T">Accept</a> 
+
+                <%
+                    boolean rejectable = true;
+                    if (phyListTemp != null) {
+                        PhysicalBooks phyBooktemp = null;
+                        for (PhysicalBooks temp : phyListTemp) {
+                            if (temp.getBookidPhysical().equals(tempbook.getBookID() + "")) {
+                                phyBooktemp = temp;
+                                break;
+                            }
+                        }
+                        if (phyBooktemp != null) {
+                            Calendar calendar = Calendar.getInstance();
+                            java.util.Date today = calendar.getTime();
+
+                            System.out.println("AAAAAAAAAAA " + today);
+                            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+                            String dateInString = phyBooktemp.getHoldingdate();
+                            java.util.Date thatday = formatter.parse(dateInString);
+
+                            System.out.println("AAAAAAAAAAAA " + thatday);
+
+                            long duration = today.getTime() - thatday.getTime();
+                            long days = TimeUnit.MILLISECONDS.toDays(duration);
+                            if (days > 20) {
+                                rejectable = false;
+                            }
+
+                            System.out.println("AAAAAAAAAAAAAA" + days);
+                        }
+                    }
+                    if (rejectable) {
+                %>
+                <a href="accept.do?tid=${tempbook.getTransactionID()}&status=C">Reject</a>
+                <%}%>
+                <%} else if (tempbook.getStatus().equals("C")) { %>
+                Canceled
+                <%} else if (tempbook.getStatus().equals("T")) {%>
+                <a href="accept.do?tid=${tempbook.getTransactionID()}&status=H">I have Lent</a>
+                <%} else if (tempbook.getStatus().equals("H")) { %>
+                Waiting
+                <% } else {%>
+                Ended
+                <%}%>
+            </td>
             </tr>
             <%
                 }
@@ -242,7 +306,7 @@
 
         </table>
         <h3>${user.firstname}'s Wish-list!</h3>
-        
+
         <table class="table" width="100%">
 
             <tr>
@@ -263,16 +327,39 @@
             <td>${tempbook.getDate()}</td>
             </tr>
             <%
-                }
+                    }
             %>
 
 
 
         </table>
 
-        <%
-            if (!sessionEntry.equals(userEntry)) {
-        %>
+        <h3>Settings and features</h3>
+        <div>
+            <a href="addbook.jsp">Contribute a book</a> <br/>
+            <a href="beforeedit.do?entrynumber=${user.entrynumber}">Edit Profile Details</a> <br/>
+            <a href="changePassword.jsp">Change Password </a> <br/>
+            <a href="editProfileImage.jsp">Edit Profile Image</a> <br/>
+            <a href="allmsgsview.do">View messages</a> <br/>
+        </div>
+            
+            
+        <!-- ADMIN WORK -->
+        <% if(usertable.getTypeOfUser()==1){%>
+        <h3>ADMIN Stuff</h3>
+        <a href="admin.do">See all wishlist!</a> <br/>
+            See all canceled transactions <br/>
+            See all completed transactions <br/>
+            See all incomplete transactions <br/>
+        <%}%>
+
+
+
+        <%} else { %>
+
+
+
+
         <a name="msg"></a>
         <h3>Say Hi to ${user.firstname}</h3>
 
@@ -305,23 +392,13 @@
             </div>
 
             <br/>
-            <p class="col_50" style="color: red">
-                ${requestScope.error}
-            </p>
+
             <br/>
         </form>
-
-        <%} else { %>
-
-        <h3>Settings and features</h3>
-        <div>
-            <a href="addbook.jsp">Contribute a book</a> <br/>
-            <a href="beforeedit.do?entrynumber=${user.entrynumber}">Edit Profile Details</a> <br/>
-            <a href="changePassword.jsp">Change Password </a> <br/>
-            <a href="editProfileImage.jsp">Edit Profile Image</a> <br/>
-            <a href="allmsgsview.do">View messages</a> <br/>
-        </div>
         <%}%>
+        <p class="col_50" style="color: red">
+            ${requestScope.error}
+        </p>
     </div>
     <%} else {%>
     <p class="col_50" style="color: #444">

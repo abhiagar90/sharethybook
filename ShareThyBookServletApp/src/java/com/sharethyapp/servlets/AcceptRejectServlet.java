@@ -5,9 +5,8 @@
  */
 package com.sharethyapp.servlets;
 
-import com.sharethyapp.helper.Messages;
-import com.sharethyapp.dbclasses.MessagesDB;
-import com.sun.corba.se.impl.protocol.giopmsgheaders.Message;
+import com.sharethyapp.dbclasses.TransactionDB;
+import com.sharethyapp.helper.UtilitiesHelper;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.RequestDispatcher;
@@ -20,50 +19,44 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author reshma
  */
-public class SuggestBookServlet extends HttpServlet {
+public class AcceptRejectServlet extends HttpServlet {
 
+    /**
+     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
+     * methods.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-    try {
-        String isbn=request.getParameter("ISBN").trim();
-        String Title=request.getParameter("Title").trim();
-        String Year=request.getParameter("Year").trim();
-        String Author=request.getParameter("Author").trim();
-        String Publisher=request.getParameter("Publisher").trim();
-        
-        if (isbn.isEmpty()&&Title.isEmpty()&& Author.isEmpty())
-        {
-            request.setAttribute("Error", "Information provided for book is not enough.Please Provide either isbn or title and author name.");
+        String transID = request.getParameter("tid");
+        String status = request.getParameter("status");
+        String cond = UtilitiesHelper.returnNullOrString(request, "cond");
+        String entrynum = (String) request.getSession().getAttribute("entrynumber");
 
-            RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/suggestBook.jsp");
+        String sqlOutput;
+
+        TransactionDB tb = new TransactionDB();
+
+        if (status.equals("E") && cond == null) {
+            request.setAttribute("tid", transID);
+            request.setAttribute("status", status);
+            RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/bookBorrowed.jsp");
             dispatcher.forward(request, response);
-        }
-        else
-        {
-            Messages msg=new Messages();
-            msg.setFromid(request.getSession().getAttribute("entrynumber").toString());
-            msg.setToid("ADMIN");
-            msg.setMessage("Book Suggessted :: ISBN-"+isbn+" Name- "+Title+" Author- "+Author+" Publisher- "+ Publisher+" Year-"+Year);
-            String res= new MessagesDB().insertNewMessage(msg);
-            
-            if(res.trim().equals("true"))
-            {
-                 request.setAttribute("Message", "The suggestion for book is sent to moderator. You'll be notified.");
-
-                RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/suggestBook.jsp");
+        } else {
+            sqlOutput = tb.acceptRejectTransaction(transID, status, cond);
+            if (sqlOutput.equals("true")) {
+                request.setAttribute("infoMsg", "Status updated for book while accepting/rejecting. <br/>");
+                RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/profile.do?entrynumber=" + entrynum);
+                dispatcher.forward(request, response);
+            } else {
+                request.setAttribute("error", "Error in accepting/rejecting transaction <br> " + sqlOutput);
+                RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/profile.do?entrynumber=" + entrynum);
                 dispatcher.forward(request, response);
             }
-            else
-            {
-                  request.setAttribute("error", res);
-
-                RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/suggestBook.jsp");
-                dispatcher.forward(request, response);
-            }
-        }
-        
-        } finally {
-  
         }
     }
 

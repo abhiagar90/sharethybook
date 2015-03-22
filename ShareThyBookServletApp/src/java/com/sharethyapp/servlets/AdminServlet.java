@@ -5,11 +5,12 @@
  */
 package com.sharethyapp.servlets;
 
-import com.sharethyapp.helper.Messages;
-import com.sharethyapp.dbclasses.MessagesDB;
-import com.sun.corba.se.impl.protocol.giopmsgheaders.Message;
+import com.sharethyapp.dbclasses.WishListDB;
+import com.sharethyapp.helper.WishList;
+import com.sharethyapp.helper.WishListAggregated;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -20,51 +21,29 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author reshma
  */
-public class SuggestBookServlet extends HttpServlet {
+public class AdminServlet extends HttpServlet {
 
+    /**
+     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
+     * methods.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-    try {
-        String isbn=request.getParameter("ISBN").trim();
-        String Title=request.getParameter("Title").trim();
-        String Year=request.getParameter("Year").trim();
-        String Author=request.getParameter("Author").trim();
-        String Publisher=request.getParameter("Publisher").trim();
+        List<WishListAggregated> wishlist = new WishListDB().getAllWishesAggregated();
+        List<WishList> wishlistall = new WishListDB().getAllWishes();
         
-        if (isbn.isEmpty()&&Title.isEmpty()&& Author.isEmpty())
-        {
-            request.setAttribute("Error", "Information provided for book is not enough.Please Provide either isbn or title and author name.");
-
-            RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/suggestBook.jsp");
-            dispatcher.forward(request, response);
-        }
-        else
-        {
-            Messages msg=new Messages();
-            msg.setFromid(request.getSession().getAttribute("entrynumber").toString());
-            msg.setToid("ADMIN");
-            msg.setMessage("Book Suggessted :: ISBN-"+isbn+" Name- "+Title+" Author- "+Author+" Publisher- "+ Publisher+" Year-"+Year);
-            String res= new MessagesDB().insertNewMessage(msg);
-            
-            if(res.trim().equals("true"))
-            {
-                 request.setAttribute("Message", "The suggestion for book is sent to moderator. You'll be notified.");
-
-                RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/suggestBook.jsp");
-                dispatcher.forward(request, response);
-            }
-            else
-            {
-                  request.setAttribute("error", res);
-
-                RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/suggestBook.jsp");
-                dispatcher.forward(request, response);
-            }
-        }
+                
+                
+        request.setAttribute("wish", wishlist);
+        request.setAttribute("wishall", wishlistall);
         
-        } finally {
-  
-        }
+        RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/adminDash.jsp");
+        dispatcher.forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

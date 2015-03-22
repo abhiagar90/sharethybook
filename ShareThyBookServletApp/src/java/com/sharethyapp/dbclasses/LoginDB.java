@@ -20,11 +20,12 @@ import java.util.logging.Logger;
 public class LoginDB extends DB {
 
     //Login is the materialized view we have created
-    private final String getPasswdSQL = "select password from Login where entrynumber=?";
+    private final String getPasswdSQL = "select password from Login where entrynumber ilike ?";
 
     public String getPassword(String entryNum) //returns null if exception
     {
         openConnection();
+        System.out.println("eeeeeeeeee: "+entryNum);
 
         String password = null;
         try {
@@ -40,6 +41,7 @@ public class LoginDB extends DB {
         } finally {
             closeConnection();
         }
+        System.out.println("ppppppppppppppppp: "+password);
         return password;
     }
 

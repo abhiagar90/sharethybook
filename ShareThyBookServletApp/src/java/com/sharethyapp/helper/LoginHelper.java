@@ -19,6 +19,7 @@ public class LoginHelper {
         if (fromDB == null) {
             return false;
         } else {
+            System.out.println("aaaaaaaaaaaaa "+UtilitiesHelper.getMD5Hash(Password));
             return (UtilitiesHelper.getMD5Hash(Password)).equals(fromDB);
         }
     }

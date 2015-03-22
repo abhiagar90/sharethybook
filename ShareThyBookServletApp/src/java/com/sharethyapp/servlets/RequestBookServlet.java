@@ -27,7 +27,7 @@ public class RequestBookServlet extends HttpServlet {
             throws ServletException, IOException {
    try {
  
-        String ownerId=request.getParameter("oid");
+        String ownerId=request.getSession().getAttribute("entrynumber").toString();
         String holderId=request.getParameter("hid");
         long bookId=Long.parseLong(request.getParameter("bookID"));
         String isbn=request.getParameter("ISBN");

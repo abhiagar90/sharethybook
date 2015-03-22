@@ -15,6 +15,16 @@ public class WishList {
     String isbn ;
     Date date;
     String title;
+    String entrynumber;
+
+    public String getEntrynumber() {
+        return entrynumber;
+    }
+
+    public void setEntrynumber(String entrynumber) {
+        this.entrynumber = entrynumber;
+    }
+    
 
     public String getIsbn() {
         return isbn;

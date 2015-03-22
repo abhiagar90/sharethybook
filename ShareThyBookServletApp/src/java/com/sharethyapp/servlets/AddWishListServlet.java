@@ -5,7 +5,7 @@
  */
 package com.sharethyapp.servlets;
 
-import com.sharethyapp.dbclasses.WishList;
+import com.sharethyapp.dbclasses.WishListDB;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.RequestDispatcher;
@@ -25,7 +25,7 @@ public class AddWishListServlet extends HttpServlet {
         try {
             String entryNumber=request.getSession().getAttribute("entrynumber").toString();
             String isbn=request.getParameter("ISBN");
-            String res= new WishList().insertIntoWishList(isbn,entryNumber);
+            String res= new WishListDB().insertIntoWishList(isbn,entryNumber);
             
                if (res.equals("true")) {
             request.setAttribute("infoMsg", "Inserted to your wishlist successfully. Notification will be sent once book is in the library.");

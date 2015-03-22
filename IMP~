@@ -1,5 +1,6 @@
 CREATE DATABASE library;
 sudo -u postgres psql library
+
 CREATE TABLE UserTable(
 EntryNumber VARCHAR(12) PRIMARY KEY,
 Password varchar(1000),
@@ -20,8 +21,10 @@ Photo BYTEA
 CONSTRAINT PinCode_Cons CHECK(PinCode ~ '[1-9][0-9][0-9][0-9][0-9][0-9]'),
 CONSTRAINT Email_Cons CHECK(EmailID ~ '^[A-Za-z][A-Za-z]*[0-9][0-9][0-9][0-9][0-9]*@iitd.ac.in'),
 CONSTRAINT UserType_Cons CHECK(TypeOfUser >0 AND TypeOfUser<4));
+
 //For Login table
 create materialized view Login as (select entrynumber, password from usertable);
+
 CREATE TABLE ContactNumbers(
 EntryNumber varchar(12) REFERENCES UserTable(EntryNumber) ON DELETE CASCADE,
 MobileNumber char(10),
@@ -29,6 +32,7 @@ Type char(1),
 PRIMARY KEY(EntryNumber, MobileNumber),
 CONSTRAINT PhoneNoCons CHECK(MobileNumber ~ '[7-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]'),
 CONSTRAINT TypeCons CHECK(Type ~* 'W|O|H'));
+
 CREATE TABLE MasterBooks (
 ISBN VARCHAR(13) PRIMARY KEY,
 Title VARCHAR(1000) NOT NULL,
@@ -37,16 +41,24 @@ Publisher VARCHAR(300),
 Rating decimal(6,2) DEFAULT 0
 CONSTRAINT RatingCons CHECK(Rating >=0 AND Rating<6)
 );
+
 //YEAR can have 0 for books which are na, can change to 1800
 update masterbooks set year=1800 where year=0;
 //
+
 COPY masterbooks from '/home/reshma/Reshma/Sem2/DataBase/Assignments/Project1/sharethybook/ShareThyBookServletApp/PhysicalFinal6.csv' with delimiter '|' csv header encoding 'latin1' quote '"';
 // from works.zip
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> 7fcdbcb1584a042972482361110629bbd17ae76a
 //why keeping a serial pk
 //http://stackoverflow.com/questions/2317766/postgresql-bytea-primary-key
 CREATE TABLE MasterBooksImages(imageid bigserial primary key,
 ISBN varchar(13) REFERENCES MasterBooks(ISBN) ON DELETE CASCADE,
 Image Bytea);
+
 CREATE TABLE Books(
 BookID BIGSERIAL PRIMARY KEY,
 ISBN VARCHAR(13) REFERENCES MasterBooks(ISBN) ON DELETE CASCADE ON UPDATE CASCADE,
@@ -56,18 +68,26 @@ HoldingDate DATE NOT NULL,
 LastCondition Char(1)
 CONSTRAINT BookCondCons CHECK(LastCondition ~* 'D|O|G|E')
 );
+
 CREATE TABLE Authors(
 AuthorID SERIAL NOT NULL UNIQUE,
 AuthorName VARCHAR(1000) NOT NULL
 );
+
 Use this:COPY Authors from '/home/reshma/Reshma/Sem2/DataBase/Assignments/Project1/sharethybook/AuthorWork/AuthorFinal2.csv' with delimiter '|' csv header encoding 'latin1' quote '"';
 SELECT setval('authors_authorid_seq', (SELECT MAX(authorid) FROM authors));
 select nextval('authors_authorid_seq');
+<<<<<<< HEAD
+=======
+
+>>>>>>> 7fcdbcb1584a042972482361110629bbd17ae76a
 CREATE TABLE BooksWrittenBy(
 ISBN VARCHAR(13) REFERENCES MasterBooks(ISBN),
 AuthorID INT REFERENCES Authors(AuthorID)
 );
+
 COPY BooksWrittenBy from '/home/reshma/Reshma/Sem2/DataBase/Assignments/Project1/sharethybook/AuthorWork/ISBNAuthor.csv' with delimiter '|' csv header encoding 'latin1' quote '"';
+
 CREATE TABLE Transactions(
 TransactionID BIGSERIAL PRIMARY KEY,
 FromID VARCHAR(12) REFERENCES UserTable(EntryNumber),
@@ -80,6 +100,7 @@ BookCondition Char(1)
 CONSTRAINT StatusCons CHECK(Status ~* 'R|T|H|E|C'),
 CONSTRAINT BookCondCons CHECK(BookCondition ~* 'D|O|G|E')
 );
+
 CREATE TABLE WishList(
 EntryNumber VARCHAR(12) REFERENCES UserTable(EntryNumber) ON DELETE CASCADE,
 ISBN VARCHAR(13) REFERENCES MasterBooks(ISBN),
@@ -117,12 +138,16 @@ DELETE FROM WishList WHERE ISBN ILIKE NEW.ISBN;
 RETURN NULL;
 END;
 $TriggerOnBookInsert$ LANGUAGE plpgsql;
+
 CREATE TRIGGER TriggerOnBookInsert AFTER INSERT ON Books
 FOR EACH ROW EXECUTE PROCEDURE TriggerOnBookInsert();
+
 //Trigger For message.......................updating NoofunRead messages of user
 //Trigger for Review........................updating mastertable review
 CREATE TRIGGER TriggerOnBookInsert AFTER INSERT ON Books
 FOR EACH ROW EXECUTE PROCEDURE TriggerOnBookInsert();
+
+
 //Trigger For message.......................updating NoofunRead messages of user
 //Trigger for Review........................updating mastertable review
 CREATE OR REPLACE FUNCTION TriggerOnMessagesInsert() RETURNS TRIGGER AS $TriggerOnMessagesInsert$
@@ -133,8 +158,12 @@ WHERE EntryNumber = NEW.ToID;
 RETURN NULL;
 END;
 $TriggerOnMessagesInsert$ LANGUAGE plpgsql;
+
 CREATE TRIGGER TriggerOnMessagesInsert AFTER INSERT ON Messages
 FOR EACH ROW EXECUTE PROCEDURE TriggerOnMessagesInsert();
+
+
+
 CREATE OR REPLACE FUNCTION TriggerOnMessagesUpdate() RETURNS TRIGGER AS $TriggerOnMessagesUpdate$
 BEGIN
 IF NEW.Status = TRUE THEN
@@ -145,8 +174,12 @@ END IF;
 RETURN NULL;
 END;
 $TriggerOnMessagesUpdate$ LANGUAGE plpgsql;
+
+
 CREATE TRIGGER TriggerOnMessagesUpdate AFTER UPDATE ON Messages
 FOR EACH ROW EXECUTE PROCEDURE TriggerOnMessagesUpdate();
+
+
 CREATE OR REPLACE FUNCTION TriggerOnRatingInsert() RETURNS TRIGGER AS $TriggerOnRatingInsert$
 BEGIN
 UPDATE MasterBooks
@@ -155,16 +188,26 @@ WHERE ISBN = NEW.ISBN;
 RETURN NULL;
 END;
 $TriggerOnRatingInsert$ LANGUAGE plpgsql;
+
+
 CREATE TRIGGER TriggerOnRatingInsert AFTER INSERT ON Rating
 FOR EACH ROW EXECUTE PROCEDURE TriggerOnRatingInsert();
+
+
 CREATE OR REPLACE FUNCTION TriggerOnUserTable() RETURNS TRIGGER AS $TriggerOnUserTable$
 BEGIN
 REFRESH MATERIALIZED VIEW login ;
 RETURN NULL;
 END;
 $TriggerOnUserTable$ LANGUAGE plpgsql;
+
+
 CREATE TRIGGER TriggerOnUserTable AFTER INSERT OR DELETE ON UserTable
 FOR EACH ROW EXECUTE PROCEDURE TriggerOnUserTable();
+<<<<<<< HEAD
+=======
+
+>>>>>>> 7fcdbcb1584a042972482361110629bbd17ae76a
 CREATE OR REPLACE FUNCTION TriggerOnTransactionUpdate() RETURNS TRIGGER AS $TriggerOnTransactionUpdate$
 BEGIN
 IF NEW.Status = 'E' THEN
@@ -181,9 +224,19 @@ END IF;
 RETURN NULL;
 END;
 $TriggerOnTransactionUpdate$ LANGUAGE plpgsql;
+<<<<<<< HEAD
 CREATE TRIGGER TriggerOnTransactionUpdate AFTER UPDATE ON Transactions
 FOR EACH ROW EXECUTE PROCEDURE TriggerOnTransactionUpdate();
+=======
+
+CREATE TRIGGER TriggerOnTransactionUpdate AFTER UPDATE ON Transactions
+FOR EACH ROW EXECUTE PROCEDURE TriggerOnTransactionUpdate();
+
+
+>>>>>>> 7fcdbcb1584a042972482361110629bbd17ae76a
 alter table masterbooks alter column rating set data type decimal(3,2);
+
+
 #####################INDEXES###############################
 CREATE INDEX authorname_idx ON authors USING gin(to_tsvector('english',authorname));
 CREATE INDEX booktitle_idx ON masterbooks USING gin(to_tsvector('english',title));

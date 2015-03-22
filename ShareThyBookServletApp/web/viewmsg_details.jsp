@@ -47,6 +47,11 @@
         <td>Read by receiver now</td>
         <td>${msg.status}</td>
         </tr>
+        
+        <tr>
+        <td>Message Content</td>
+        <td>${msg.message}</td>
+        </tr>
 
     </table>
     <br/>
