@@ -48,11 +48,8 @@ update masterbooks set year=1800 where year=0;
 
 COPY masterbooks from '/home/reshma/Reshma/Sem2/DataBase/Assignments/Project1/sharethybook/ShareThyBookServletApp/PhysicalFinal6.csv' with delimiter '|' csv header encoding 'latin1' quote '"';
 // from works.zip
-<<<<<<< HEAD
-=======
 
 
->>>>>>> 7fcdbcb1584a042972482361110629bbd17ae76a
 //why keeping a serial pk
 //http://stackoverflow.com/questions/2317766/postgresql-bytea-primary-key
 CREATE TABLE MasterBooksImages(imageid bigserial primary key,
@@ -77,10 +74,7 @@ AuthorName VARCHAR(1000) NOT NULL
 Use this:COPY Authors from '/home/reshma/Reshma/Sem2/DataBase/Assignments/Project1/sharethybook/AuthorWork/AuthorFinal2.csv' with delimiter '|' csv header encoding 'latin1' quote '"';
 SELECT setval('authors_authorid_seq', (SELECT MAX(authorid) FROM authors));
 select nextval('authors_authorid_seq');
-<<<<<<< HEAD
-=======
 
->>>>>>> 7fcdbcb1584a042972482361110629bbd17ae76a
 CREATE TABLE BooksWrittenBy(
 ISBN VARCHAR(13) REFERENCES MasterBooks(ISBN),
 AuthorID INT REFERENCES Authors(AuthorID)
@@ -204,10 +198,7 @@ $TriggerOnUserTable$ LANGUAGE plpgsql;
 
 CREATE TRIGGER TriggerOnUserTable AFTER INSERT OR DELETE ON UserTable
 FOR EACH ROW EXECUTE PROCEDURE TriggerOnUserTable();
-<<<<<<< HEAD
-=======
 
->>>>>>> 7fcdbcb1584a042972482361110629bbd17ae76a
 CREATE OR REPLACE FUNCTION TriggerOnTransactionUpdate() RETURNS TRIGGER AS $TriggerOnTransactionUpdate$
 BEGIN
 IF NEW.Status = 'E' THEN
@@ -218,22 +209,19 @@ UPDATE UserTable
 SET BooksHave = BooksHave -1
 WHERE EntryNumber = NEW.ToID;
 UPDATE Books
-SET LastCondition=New.BookCondition
+SET LastCondition=New.BookCondition,
+HolderID=New.FromID,
+HoldingDate=now()
 WHERE BookID=New.BookID;
 END IF;
 RETURN NULL;
 END;
 $TriggerOnTransactionUpdate$ LANGUAGE plpgsql;
-<<<<<<< HEAD
-CREATE TRIGGER TriggerOnTransactionUpdate AFTER UPDATE ON Transactions
-FOR EACH ROW EXECUTE PROCEDURE TriggerOnTransactionUpdate();
-=======
 
 CREATE TRIGGER TriggerOnTransactionUpdate AFTER UPDATE ON Transactions
 FOR EACH ROW EXECUTE PROCEDURE TriggerOnTransactionUpdate();
 
 
->>>>>>> 7fcdbcb1584a042972482361110629bbd17ae76a
 alter table masterbooks alter column rating set data type decimal(3,2);
 
 
@@ -242,3 +230,4 @@ CREATE INDEX authorname_idx ON authors USING gin(to_tsvector('english',authornam
 CREATE INDEX booktitle_idx ON masterbooks USING gin(to_tsvector('english',title));
 CREATE INDEX publisher_idx ON masterbooks USING gin(to_tsvector('english',publisher));
 CREATE INDEX year_idx ON masterbooks(year);
+

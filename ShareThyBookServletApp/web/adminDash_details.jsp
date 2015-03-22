@@ -13,9 +13,17 @@
     <p style="color: #6aa12e">
         ${infoMsg}
     </p>
+    
     <%if (LoginHelper.isLoggedIn(request)) {%>
-    <h1>Message View : ${sessionScope.entrynumber}</h1>
+    
+    
+    
+    <h1>${sessionScope.entrynumber} Dashboard</h1>
+    <%
+        Object rcvd = request.getAttribute("wish");
 
+        if (rcvd != null) {
+    %>
     <h3>Wish List Summary</h3>
     <table class="table">
         <tr>
@@ -24,11 +32,8 @@
         </tr>
 
         <%
-            Object rcvd = request.getAttribute("wish");
-
-            if (rcvd != null) {
-                for (WishListAggregated msg : (List<WishListAggregated>) rcvd) {
-                    pageContext.setAttribute("w", msg);
+            for (WishListAggregated msg : (List<WishListAggregated>) rcvd) {
+                pageContext.setAttribute("w", msg);
         %>
         <tr>
         <td>${w.isbn}</td>
@@ -36,13 +41,13 @@
         </tr>
 
         <%
-                }
-            }
+                } //for each
+            } //if condition for each type of view.
         %>
     </table>
-    
-    
-    
+
+
+
     <h3>Wish List ALL</h3>
     <table class="table">
         <tr>
@@ -69,8 +74,8 @@
             }
         %>
     </table>
-    
-    
+
+
     <br/>
 
     <%} else {%>
