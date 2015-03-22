@@ -230,4 +230,3 @@ CREATE INDEX authorname_idx ON authors USING gin(to_tsvector('english',authornam
 CREATE INDEX booktitle_idx ON masterbooks USING gin(to_tsvector('english',title));
 CREATE INDEX publisher_idx ON masterbooks USING gin(to_tsvector('english',publisher));
 CREATE INDEX year_idx ON masterbooks(year);
-
