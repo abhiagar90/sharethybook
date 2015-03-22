@@ -237,3 +237,6 @@ CREATE INDEX year_idx ON masterbooks(year);
 Insert into UserTable Values('MOD5','ab56b4d92b40713acc5af89985d4b786','Anamika','','true','','','Hauz khas','New Delhi','110016','mod00005@iitd.ac.in',2,0,0,0,NULL);
 
 
+select books.ISBN,Title,C from (select bookid,count(*) C from transactions where status='E' group by bookid Order by C DESC) tran,Books,masterbooks where Books.bookid=tran.bookid and masterbooks.isbn=books.isbn;
+
+
