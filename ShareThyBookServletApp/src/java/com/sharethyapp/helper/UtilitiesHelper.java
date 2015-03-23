@@ -5,6 +5,8 @@
  */
 package com.sharethyapp.helper;
 
+import com.sharethyapp.dbclasses.UserTable;
+import com.sharethyapp.dbclasses.UserTableDB;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
@@ -45,6 +47,14 @@ public class UtilitiesHelper {
         } else {
             return paramString.trim();
         }
+    }
+    
+    public static int getUserType(HttpServletRequest request)
+    {
+        String entrynumber = (String)request.getSession().getAttribute("entrynumber");
+        UserTableDB utb = new UserTableDB();
+        UserTable ut = utb.getDetailsfromEntryNum(entrynumber);
+        return ut.getTypeOfUser();
     }
 
     public static java.sql.Timestamp getCurrentTimeStamp() {

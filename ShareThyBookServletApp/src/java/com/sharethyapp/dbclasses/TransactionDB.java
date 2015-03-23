@@ -84,8 +84,6 @@ public class TransactionDB extends DB {
         }
         return "true";
     }
-    
-    
 
     public List<TransactionHistory> getBooksRequestedBy(String requester) {
 
@@ -135,6 +133,73 @@ public class TransactionDB extends DB {
             preparedStatement.setString(1, requestees.trim());
             ResultSet rs = preparedStatement.executeQuery();
             while (rs.next()) {
+                TransactionHistory trans = new TransactionHistory();
+                trans.setTransactionID(rs.getLong("TransactionID"));
+                trans.setFromID(rs.getString("FromID"));
+                trans.setToID(rs.getString("ToID"));
+                trans.setBookID(rs.getLong("BookID"));
+                trans.setTransStartDate(rs.getTimestamp("TransStartDate"));
+                trans.setLastUpdate(rs.getTimestamp("LastUpdate"));
+                trans.setStatus(rs.getString("Status"));
+                trans.setBookCondition(rs.getString("BookCondition"));
+                booksRequested.add(trans);
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(LoginDB.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            closeConnection();
+        }
+
+        return booksRequested;
+    }
+
+    public List<TransactionHistory> getTxnsWithStatus(String status) {
+        String txndDetailsSQL = "select * from transactions where status = ? order by lastupdate desc;";
+        List<TransactionHistory> booksRequested = new ArrayList<TransactionHistory>();
+
+        openConnection();
+
+        try {
+
+            preparedStatement = conn.prepareStatement(txndDetailsSQL);
+            preparedStatement.setString(1, status.trim());
+            ResultSet rs = preparedStatement.executeQuery();
+            while (rs.next()) {
+
+                TransactionHistory trans = new TransactionHistory();
+                trans.setTransactionID(rs.getLong("TransactionID"));
+                trans.setFromID(rs.getString("FromID"));
+                trans.setToID(rs.getString("ToID"));
+                trans.setBookID(rs.getLong("BookID"));
+                trans.setTransStartDate(rs.getTimestamp("TransStartDate"));
+                trans.setLastUpdate(rs.getTimestamp("LastUpdate"));
+                trans.setStatus(rs.getString("Status"));
+                trans.setBookCondition(rs.getString("BookCondition"));
+                booksRequested.add(trans);
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(LoginDB.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            closeConnection();
+        }
+
+        return booksRequested;
+    }
+    
+    public List<TransactionHistory> getPendingTxns() {
+        String txndDetailsSQL = "select * from transactions where status <> 'E' and status <> 'C' order by lastupdate desc;";
+        List<TransactionHistory> booksRequested = new ArrayList<TransactionHistory>();
+
+        openConnection();
+
+        try {
+
+            preparedStatement = conn.prepareStatement(txndDetailsSQL);
+            ResultSet rs = preparedStatement.executeQuery();
+            while (rs.next()) {
+
                 TransactionHistory trans = new TransactionHistory();
                 trans.setTransactionID(rs.getLong("TransactionID"));
                 trans.setFromID(rs.getString("FromID"));

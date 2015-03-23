@@ -5,15 +5,10 @@
  */
 package com.sharethyapp.servlets;
 
-import com.sharethyapp.dbclasses.TransactionDB;
-import com.sharethyapp.dbclasses.WishListDB;
-import com.sharethyapp.helper.TransactionHistory;
+import com.sharethyapp.dbclasses.UserTableDB;
 import com.sharethyapp.helper.UtilitiesHelper;
-import com.sharethyapp.helper.WishList;
-import com.sharethyapp.helper.WishListAggregated;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.List;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -25,7 +20,7 @@ import javax.swing.text.Utilities;
  *
  * @author reshma
  */
-public class AdminServlet extends HttpServlet {
+public class ChangeUserTypeServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -38,29 +33,26 @@ public class AdminServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
-        String type = UtilitiesHelper.returnNullOrString(request, "type");
-        if (type != null) {
-
-            if (type.equals("W")) {
-                List<WishListAggregated> wishlist = new WishListDB().getAllWishesAggregated();
-                List<WishList> wishlistall = new WishListDB().getAllWishes();
-                request.setAttribute("wish", wishlist);
-                request.setAttribute("wishall", wishlistall);
-            } else if (type.equals("C")) {
-                List<TransactionHistory> canceled = new TransactionDB().getTxnsWithStatus("C");
-                request.setAttribute("canceled", canceled);
-            } else if (type.equals("P")) {
-                List<TransactionHistory> pending = new TransactionDB().getPendingTxns();
-                request.setAttribute("pending", pending);
-            } else if (type.equals("E")) {
-                List<TransactionHistory> ended = new TransactionDB().getTxnsWithStatus("E");
-                request.setAttribute("ended", ended);
-            }
-
+        String entrynumber = UtilitiesHelper.returnNullOrString(request, "entrynumber");
+        String oldType = UtilitiesHelper.returnNullOrString(request, "oldtype");
+        String newType = null;
+        if(oldType.equals("Moderator"))
+            newType = "3";
+        else
+            newType = "2";
+        String sqloutput = new UserTableDB().updateUserType(entrynumber, Integer.parseInt(newType));
+        if(sqloutput.equals("true"))
+        {
+            request.setAttribute("infoMsg", "User type updated! <br/>");
+            RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/profile.do?entrynumber="+entrynumber);
+            dispatcher.forward(request, response);
         }
-        RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/adminDash.jsp");
-        dispatcher.forward(request, response);
+        else
+        {
+            request.setAttribute("error", "User type NOT updated! <br/>");
+            RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/profile.do?entrynumber="+entrynumber);
+            dispatcher.forward(request, response);
+        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

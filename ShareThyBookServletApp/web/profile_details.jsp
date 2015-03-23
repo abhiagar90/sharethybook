@@ -1,3 +1,4 @@
+<%@page import="com.sharethyapp.helper.UtilitiesHelper"%>
 <%@page import="java.util.concurrent.TimeUnit"%>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="java.util.Calendar"%>
@@ -24,6 +25,11 @@
             if (!sessionEntry.equals(userEntry)) {
         %>
         <div class="img_floatright">
+            <%
+                if (UtilitiesHelper.getUserType(request) == 1) {
+            %>
+            <a href="changetype.do?entrynumber=${user.entrynumber}&oldtype=${typeUser}">Elevate/De-Elevate</a>
+            <%}%>
             <p><a href="#msg">Send a message</a></p>
         </div>
         <%}%>
@@ -115,7 +121,7 @@
             </tr>
 
             <%
-                List<PhysicalBooks> ownListTemp = (List<PhysicalBooks>) request.getAttribute("ownlist");
+                Object ownListTemp = request.getAttribute("ownlist");
                 if (ownListTemp != null)
                     for (PhysicalBooks tempbook : (List<PhysicalBooks>) request.getAttribute("ownlist")) {
                         pageContext.setAttribute("tempbook", tempbook);
@@ -148,7 +154,7 @@
             </tr>
 
             <%
-                List<PhysicalBooks> phyListTemp = (List<PhysicalBooks>) request.getAttribute("havinglist");
+                Object phyListTemp = request.getAttribute("havinglist");
                 if (phyListTemp != null)
                     for (PhysicalBooks tempbook : (List<PhysicalBooks>) request.getAttribute("havinglist")) {
                         pageContext.setAttribute("tempbook", tempbook);
@@ -186,9 +192,9 @@
             </tr>
 
             <%
-                List<TransactionHistory> reqBooks = (List<TransactionHistory>) request.getAttribute("booksRequested");
+                Object reqBooks = request.getAttribute("booksRequested");
                 if (reqBooks != null)
-                    for (TransactionHistory tempbook : reqBooks) {
+                    for (TransactionHistory tempbook : (List<TransactionHistory>) reqBooks) {
                         pageContext.setAttribute("tempbook", tempbook);
             %>
             <tr>
@@ -237,9 +243,9 @@
             </tr>
 
             <%
-                List<TransactionHistory> reqBooksPending = (List<TransactionHistory>) request.getAttribute("booksReqPending");
+                Object reqBooksPending = request.getAttribute("booksReqPending");
                 if (reqBooksPending != null)
-                    for (TransactionHistory tempbook : reqBooksPending) {
+                    for (TransactionHistory tempbook : (List<TransactionHistory>) reqBooksPending) {
                         pageContext.setAttribute("tempbook", tempbook);
             %>
             <tr>
@@ -257,7 +263,7 @@
                     boolean rejectable = true;
                     if (phyListTemp != null) {
                         PhysicalBooks phyBooktemp = null;
-                        for (PhysicalBooks temp : phyListTemp) {
+                        for (PhysicalBooks temp : (List<PhysicalBooks>) phyListTemp) {
                             if (temp.getBookidPhysical().equals(tempbook.getBookID() + "")) {
                                 phyBooktemp = temp;
                                 break;
@@ -316,9 +322,9 @@
             </tr>
 
             <%
-                List<WishList> booksWished = (List<WishList>) request.getAttribute("booksWished");
+                Object booksWished = request.getAttribute("booksWished");
                 if (booksWished != null)
-                    for (WishList tempbook : booksWished) {
+                    for (WishList tempbook : (List<WishList>) booksWished) {
                         pageContext.setAttribute("tempbook", tempbook);
             %>
             <tr>
@@ -327,7 +333,7 @@
             <td>${tempbook.getDate()}</td>
             </tr>
             <%
-                    }
+                }
             %>
 
 
@@ -342,15 +348,15 @@
             <a href="editProfileImage.jsp">Edit Profile Image</a> <br/>
             <a href="allmsgsview.do">View messages</a> <br/>
         </div>
-            
-            
+
+
         <!-- ADMIN WORK -->
-        <% if(usertable.getTypeOfUser()==1){%>
+        <% if (usertable.getTypeOfUser() == 1) {%>
         <h3>ADMIN Stuff</h3>
-        <a href="admin.do">See all wishlist!</a> <br/>
-            See all canceled transactions <br/>
-            See all completed transactions <br/>
-            See all incomplete transactions <br/>
+        <a href="admin.do?type=W">See all wishlist!</a> <br/>
+        <a href="admin.do?type=C">See all canceled transactions</a> <br/>
+        <a href="admin.do?type=E">See all completed transactions</a> <br/>
+        <a href="admin.do?type=P">See all pending transactions</a> <br/>
         <%}%>
 
 

@@ -88,6 +88,14 @@
         <servlet-name>AdminServlet</servlet-name>
         <servlet-class>com.sharethyapp.servlets.AdminServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>FwdMessageServlet</servlet-name>
+        <servlet-class>com.sharethyapp.servlets.FwdMessageServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ChangeUserTypeServlet</servlet-name>
+        <servlet-class>com.sharethyapp.servlets.ChangeUserTypeServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>DummyServlet</servlet-name>
         <url-pattern>/dummy.do</url-pattern>
@@ -176,7 +184,14 @@
         <servlet-name>AdminServlet</servlet-name>
         <url-pattern>/admin.do</url-pattern>
     </servlet-mapping>
-    
+    <servlet-mapping>
+        <servlet-name>FwdMessageServlet</servlet-name>
+        <url-pattern>/fwd.do</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ChangeUserTypeServlet</servlet-name>
+        <url-pattern>/changetype.do</url-pattern>
+    </servlet-mapping>
     <session-config>
         <session-timeout>
             30

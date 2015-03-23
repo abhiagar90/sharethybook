@@ -5,27 +5,22 @@
  */
 package com.sharethyapp.servlets;
 
-import com.sharethyapp.dbclasses.TransactionDB;
-import com.sharethyapp.dbclasses.WishListDB;
-import com.sharethyapp.helper.TransactionHistory;
+import com.sharethyapp.dbclasses.MessagesDB;
+import com.sharethyapp.helper.Messages;
 import com.sharethyapp.helper.UtilitiesHelper;
-import com.sharethyapp.helper.WishList;
-import com.sharethyapp.helper.WishListAggregated;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.List;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.swing.text.Utilities;
 
 /**
  *
  * @author reshma
  */
-public class AdminServlet extends HttpServlet {
+public class FwdMessageServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -38,29 +33,40 @@ public class AdminServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        String modid = UtilitiesHelper.returnNullOrString(request, "modid");
+        String content = UtilitiesHelper.returnNullOrString(request, "content");
+        String fromid = "ADMIN";
+        boolean err = true;
 
-        String type = UtilitiesHelper.returnNullOrString(request, "type");
-        if (type != null) {
-
-            if (type.equals("W")) {
-                List<WishListAggregated> wishlist = new WishListDB().getAllWishesAggregated();
-                List<WishList> wishlistall = new WishListDB().getAllWishes();
-                request.setAttribute("wish", wishlist);
-                request.setAttribute("wishall", wishlistall);
-            } else if (type.equals("C")) {
-                List<TransactionHistory> canceled = new TransactionDB().getTxnsWithStatus("C");
-                request.setAttribute("canceled", canceled);
-            } else if (type.equals("P")) {
-                List<TransactionHistory> pending = new TransactionDB().getPendingTxns();
-                request.setAttribute("pending", pending);
-            } else if (type.equals("E")) {
-                List<TransactionHistory> ended = new TransactionDB().getTxnsWithStatus("E");
-                request.setAttribute("ended", ended);
+        Messages m = new Messages();
+        m.setFromid(fromid);
+        m.setToid(modid);
+        m.setMessage(content);
+        String firstOutput = new MessagesDB().insertNewMessage(m);
+        String secondOutput = null;
+        String msgid = UtilitiesHelper.returnNullOrString(request, "mid"); //for deletion
+        
+        if (firstOutput.equals("true")) {
+            
+            secondOutput = new MessagesDB().deleteMessage(msgid);
+            if (secondOutput.equals("true")) {
+                err = false;
             }
-
         }
-        RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/adminDash.jsp");
-        dispatcher.forward(request, response);
+        
+        if(!err)
+        {
+            request.setAttribute("infoMsg", "Msg Forwarded successfully! <br/>");
+            RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/allmsgsview.do");
+            dispatcher.forward(request, response);
+        }
+        else
+        {
+            request.setAttribute("error", "Msg NOT Forwarded!! <br/>");
+            RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/readmsg.do?mid="+msgid);
+            dispatcher.forward(request, response);
+        }
+
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

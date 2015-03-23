@@ -197,4 +197,32 @@ public class SearchBooks extends DB {
         return ratingCount;
     }
     
+    private final String getTop10BooksSql = "select * from masterbooks order by rating desc LIMIT 10;";
+
+    public  List<BookResult>  getTop10Books() {
+        openConnection();
+        List<BookResult> bookRes=new ArrayList<BookResult>();
+        try {
+            preparedStatement = conn.prepareStatement(getTop10BooksSql);
+            
+            ResultSet rs = preparedStatement.executeQuery();
+           
+            while (rs.next()) {
+                BookResult tempbook=new BookResult();
+                tempbook.setIsbn(rs.getString("isbn"));
+                tempbook.setPublisher(rs.getString("publisher"));
+                tempbook.setRating(rs.getString("rating"));
+                tempbook.setYear(rs.getString("year"));
+                tempbook.setTitle(rs.getString("title"));
+                bookRes.add(tempbook);
+            }
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(LoginDB.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            closeConnection();
+        }
+        return bookRes;
+    }
+    
 }

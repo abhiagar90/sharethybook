@@ -49,6 +49,32 @@ public class MessagesDB extends DB {
         }
         return "true";
     }
+    
+    private static final String deleteMsgSQL = "delete from messages where messageid=?;";
+
+    public String deleteMessage(String msgid) {
+        openConnection();
+
+        try {
+            preparedStatement = conn.prepareStatement(deleteMsgSQL);
+            preparedStatement.setLong(1, Long.parseLong(msgid));
+
+            int res = preparedStatement.executeUpdate();
+            if (res != 1) {
+                return "Nothing deleted from message table, seems our mistake.";
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(LoginDB.class.getName()).log(Level.SEVERE, null, ex);
+            return "SQL " + ex.getMessage();
+        } catch (Exception ex) {
+            Logger.getLogger(LoginDB.class.getName()).log(Level.SEVERE, null, ex);
+            return "NOT SQL : " + ex.getMessage();
+        } finally {
+            closeConnection();
+        }
+        return "true";
+    }
 
     private static String receivedMsgsSQL = "select * from messages where toid=? order by status, date desc;";
 
