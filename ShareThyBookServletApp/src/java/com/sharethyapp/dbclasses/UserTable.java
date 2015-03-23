@@ -5,6 +5,8 @@
  */
 package com.sharethyapp.dbclasses;
 
+import java.util.List;
+
 /**
  *
  * @author abhishek
@@ -27,7 +29,9 @@ public class UserTable {
     private int booksContri;
     private int booksHave;
     private byte[] profileImage;
-
+    
+    
+    
     public String getEntrynumber() {
         return entrynumber;
     }

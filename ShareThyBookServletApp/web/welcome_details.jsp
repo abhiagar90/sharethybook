@@ -20,8 +20,10 @@
 <article class="hero clearfix">
     <div class="col_100">
         <h1>Welcome</h1>
-        <p>Blah Blah Blah</p>
-        <p>Its free, crowd-sourced, blah, blah!!</p>
+        <p>
+            Share thy book is an institute based crowd sourced library. 
+            To begin with, we are focussing on IITD accounts only.
+        </p>
 
         <%if (!LoginHelper.isLoggedIn(request)) {%>
         <a href="signup.jsp">Sign up here</a> 
@@ -32,7 +34,7 @@
             if (topbooks != null) {
 
         %>
-        <h3>Top Rated Books</h3>
+        <h3>Top Rated Titles</h3>
         <table width="100%" class="table">
             <tr>
             <th align="center">ISBN</th>
@@ -47,6 +49,32 @@
             <td align="center"><a href="viewbook.do?isbn=${record.isbn}">${record.isbn }</a></td>
             <td align="center">${record.title }</td>
             <td align="center">${record.rating }</td>
+            </tr>
+            <%}%>
+        </table>
+        <%}%>
+        <br/>
+
+        <%
+            Object topTransactedbooks = new SearchBooks().getTop10TransactedBooks();
+            if (topTransactedbooks != null) {
+
+        %>
+        <h3>Top Transacted Titles</h3>
+        <table width="100%" class="table">
+            <tr>
+            <th align="center">ISBN</th>
+            <th align="center">Title</th>
+            <th align="center">No. of Transactions</th>
+            </tr>
+            <% for (BookResult bt : (List<BookResult>) topTransactedbooks) {
+                    pageContext.setAttribute("record", bt);
+            %>
+
+            <tr>
+            <td align="center"><a href="viewbook.do?isbn=${record.isbn}">${record.isbn}</a></td>
+            <td align="center">${record.title}</td>
+            <td align="center">${record.count}</td>
             </tr>
             <%}%>
         </table>
@@ -74,7 +102,7 @@
             <td align="center">${record.booksContri}</td>
             </tr>
             <%}%>
-            
+
         </table>
         <%}%>
         <br/>

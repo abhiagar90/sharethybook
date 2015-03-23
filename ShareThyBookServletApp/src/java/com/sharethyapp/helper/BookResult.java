@@ -23,6 +23,15 @@ public class BookResult {
     List<String> reviewList;
     List<RateAndReview> rateReviewList;
     String numOfRatings;
+    String count; //for the purpose of most transacted book this field will be filled.
+
+    public String getCount() {
+        return count;
+    }
+
+    public void setCount(String count) {
+        this.count = count;
+    }
 
     public List<RateAndReview> getRateReviewList() {
         return rateReviewList;

@@ -13,6 +13,9 @@
     </p>
     <%if (LoginHelper.isLoggedIn(request)) {%>
     <h1>${masterbook.title}</h1>
+    <div class="img_floatright">
+        <img width="60" height="80" src="bookimage.do?isbn=${masterbook.isbn}"></img>
+    </div>
 
     <h5 style="float: right"><a style="" href="addphysicalbook.do?ISBN=${masterbook.isbn}">Contribute this book</a></h5>
     <!--

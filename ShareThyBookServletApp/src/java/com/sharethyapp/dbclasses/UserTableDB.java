@@ -5,11 +5,13 @@
  */
 package com.sharethyapp.dbclasses;
 
+import com.sharethyapp.helper.ContactNumber;
 import com.sharethyapp.helper.TransactionHistory;
 import com.sharethyapp.helper.UtilitiesHelper;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -25,13 +27,13 @@ public class UserTableDB extends DB {
 
     //Login is the materialized view we have created
     private final String getAllDetailsSQL = "select * from UserTable where entrynumber ilike ?";
-
+    
     public UserTable getDetailsfromEntryNum(String entryNum) //returns null if exception
     {
         openConnection();
-
+        
         UserTable user = null;
-
+        
         try {
             UserTable temp = new UserTable();
             preparedStatement = conn.prepareStatement(getAllDetailsSQL);
@@ -55,7 +57,7 @@ public class UserTableDB extends DB {
                 temp.setProfileImage(rs.getBytes("photo"));
                 user = temp;
             }
-
+            
         } catch (SQLException ex) {
             Logger.getLogger(LoginDB.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
@@ -63,13 +65,13 @@ public class UserTableDB extends DB {
         }
         return user;
     }
-
+    
     public byte[] getImagefromEntryNum(String entryNum) //returns null if exception
     {
         openConnection();
-
+        
         byte[] photo = null;
-
+        
         try {
             byte[] temp = null;
             preparedStatement = conn.prepareStatement(getAllDetailsSQL);
@@ -87,11 +89,11 @@ public class UserTableDB extends DB {
         return photo;
         //if returned is null, then we have a problem
     }
-
+    
     public String addNewUser(UserTable newUser, String imagePath) //returns null if exception
     {
         openConnection();
-
+        
         newUser.setPassword(UtilitiesHelper.getMD5Hash(newUser.getPassword()));
         File file = new File(imagePath);
         FileInputStream fis = null;
@@ -102,9 +104,9 @@ public class UserTableDB extends DB {
         } catch (Exception e) {
             System.out.println("Exception in reading file :: " + e.getMessage() + " " + e.getStackTrace());
         }
-
+        
         String prepQuery = "Insert into UserTable Values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
-
+        
         try {
             preparedStatement = conn.prepareStatement(prepQuery);
             preparedStatement.setString(1, newUser.getEntrynumber());
@@ -138,13 +140,13 @@ public class UserTableDB extends DB {
         }
         return "true";
     }
-
+    
     public String updateOldUser(UserTable updatedUser) {
         openConnection();
-
+        
         String updateQuery = "update usertable set firstname=?, lastname=?, hosteler=?,"
                 + "houseno=?, streetno=?, city=?, state=?, pincode=?, emailid=? where entrynumber=?;";
-
+        
         try {
             preparedStatement = conn.prepareStatement(updateQuery);
             preparedStatement.setString(1, updatedUser.getFirstname());
@@ -157,12 +159,12 @@ public class UserTableDB extends DB {
             preparedStatement.setString(8, updatedUser.getPincode());
             preparedStatement.setString(9, updatedUser.getEmailId());
             preparedStatement.setString(10, updatedUser.getEntrynumber());
-
+            
             int res = preparedStatement.executeUpdate();
             if (res != 1) {
                 return "Nothing updated. Seems entry nubmer is wrong.";
             }
-
+            
         } catch (SQLException ex) {
             Logger.getLogger(LoginDB.class.getName()).log(Level.SEVERE, null, ex);
             return "SQL " + ex.getMessage();
@@ -174,23 +176,23 @@ public class UserTableDB extends DB {
         }
         return "true";
     }
-
+    
     public String updatePassword(String entrynumber, String newPassword, String oldPassword) {
         openConnection();
-
+        
         String updateQuery = "update usertable set password=? where entrynumber=? and password=?;";
-
+        
         try {
             preparedStatement = conn.prepareStatement(updateQuery);
             preparedStatement.setString(1, newPassword);
             preparedStatement.setString(2, entrynumber);
             preparedStatement.setString(3, oldPassword);
-
+            
             int res = preparedStatement.executeUpdate();
             if (res != 1) {
                 return "Nothing updated. Seems Old Password is wrong.";
             }
-
+            
         } catch (SQLException ex) {
             Logger.getLogger(LoginDB.class.getName()).log(Level.SEVERE, null, ex);
             return "SQL " + ex.getMessage();
@@ -202,22 +204,24 @@ public class UserTableDB extends DB {
         }
         return "true";
     }
-
+    
+    
+    
     public String updateImage(String entrynumber, byte[] image) {
         openConnection();
-
+        
         String updateQuery = "update usertable set photo=? where entrynumber=?;";
-
+        
         try {
             preparedStatement = conn.prepareStatement(updateQuery);
             preparedStatement.setBytes(1, image);
             preparedStatement.setString(2, entrynumber);
-
+            
             int res = preparedStatement.executeUpdate();
             if (res != 1) {
                 return "Nothing updated. Seems entrynumber is wrong.";
             }
-
+            
         } catch (SQLException ex) {
             Logger.getLogger(LoginDB.class.getName()).log(Level.SEVERE, null, ex);
             return "SQL " + ex.getMessage();
@@ -231,21 +235,20 @@ public class UserTableDB extends DB {
     }
     
     String updateTypeQuery = "update usertable set typeofuser=? where entrynumber=?;";
-
+    
     public String updateUserType(String entrynumber, int type) {
         openConnection();
-
         
         try {
             preparedStatement = conn.prepareStatement(updateTypeQuery);
             preparedStatement.setInt(1, type);
             preparedStatement.setString(2, entrynumber);
-
+            
             int res = preparedStatement.executeUpdate();
             if (res != 1) {
                 return "Nothing updated. Seems entrynumber is wrong.";
             }
-
+            
         } catch (SQLException ex) {
             Logger.getLogger(LoginDB.class.getName()).log(Level.SEVERE, null, ex);
             return "SQL " + ex.getMessage();
@@ -257,19 +260,19 @@ public class UserTableDB extends DB {
         }
         return "true";
     }
-
+    
     public List<UserTable> getModerators() {
         String modDetailsSQL = "select * from usertable where typeofuser=2;";
         List<UserTable> modsRequested = new ArrayList<UserTable>();
-
+        
         openConnection();
-
+        
         try {
-
+            
             preparedStatement = conn.prepareStatement(modDetailsSQL);
             ResultSet rs = preparedStatement.executeQuery();
             while (rs.next()) {
-
+                
                 UserTable temp = new UserTable();
                 temp.setEntrynumber(rs.getString("entrynumber"));
                 temp.setEmailId(rs.getString("emailid"));
@@ -278,48 +281,77 @@ public class UserTableDB extends DB {
                 temp.setTypeOfUser(rs.getInt("typeofuser"));
                 modsRequested.add(temp);
             }
-
+            
         } catch (SQLException ex) {
             Logger.getLogger(LoginDB.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             closeConnection();
         }
-
+        
         return modsRequested;
     }
     
     public List<UserTable> getTopContributors() {
         String topContList = "select entryNumber,BooksContributed from usertable order by booksContributed desc LIMIT 10;";
         List<UserTable> topContributors = new ArrayList<UserTable>();
-
+        
         openConnection();
-
+        
         try {
-
+            
             preparedStatement = conn.prepareStatement(topContList);
             ResultSet rs = preparedStatement.executeQuery();
             while (rs.next()) {
-
+                
                 UserTable temp = new UserTable();
                 temp.setEntrynumber(rs.getString("entryNumber"));
                 temp.setBooksContri(Integer.parseInt(rs.getString("BooksContributed")));
-        
+                
                 topContributors.add(temp);
             }
-
+            
         } catch (SQLException ex) {
             Logger.getLogger(LoginDB.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             closeConnection();
         }
-
+        
         return topContributors;
     }
     
-
+    String contactListSQL = "select mobilenumber, type from contactnumbers where entrynumber = ?;";
+     
+    public List<ContactNumber> getContactNumbers(String entryNumber) {
+        List<ContactNumber> contactList = new ArrayList<ContactNumber>();
+        
+        openConnection();
+        
+        try {
+            
+            preparedStatement = conn.prepareStatement(contactListSQL);
+            preparedStatement.setString(1, entryNumber);
+            ResultSet rs = preparedStatement.executeQuery();
+            while (rs.next()) {
+                
+                ContactNumber temp = new ContactNumber();
+                temp.setMobileNumber(rs.getString("mobilenumber"));
+                temp.setType(rs.getString("type"));
+                
+                contactList.add(temp);
+            }
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(LoginDB.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            closeConnection();
+        }
+        
+        return contactList;
+    }
+    
     public static void main(String[] args) {
         UserTable utb = new UserTableDB().getDetailsfromEntryNum("2013SMN1593");
         System.out.println(utb.getProfileImage().length);
     }
-
+    
 }

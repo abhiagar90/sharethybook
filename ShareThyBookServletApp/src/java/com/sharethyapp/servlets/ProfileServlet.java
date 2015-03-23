@@ -9,6 +9,7 @@ import com.sharethyapp.dbclasses.PhysicalBooksDB;
 import com.sharethyapp.dbclasses.UserTable;
 import com.sharethyapp.dbclasses.UserTableDB;
 import com.sharethyapp.dbclasses.TransactionDB;
+import com.sharethyapp.helper.ContactNumber;
 import com.sharethyapp.helper.LoginHelper;
 import com.sharethyapp.helper.PhysicalBooks;
 import com.sharethyapp.helper.TransactionHistory;
@@ -54,7 +55,9 @@ public class ProfileServlet extends HttpServlet {
             List<TransactionHistory> booksRequested=(new TransactionDB()).getBooksRequestedBy(entrynum);
             List<TransactionHistory> booksReqPending=(new TransactionDB()).getBooksRequestedFrom(entrynum);
             List<WishList> booksWished=(new TransactionDB()).getMyWishList(entrynum);
+            List<ContactNumber> contactList = new UserTableDB().getContactNumbers(entrynum);
             
+            request.setAttribute("contactlist", contactList);
             request.setAttribute("ownlist", ownList);
             request.setAttribute("havinglist", havingList);
             request.setAttribute("booksRequested", booksRequested);

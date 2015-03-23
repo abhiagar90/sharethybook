@@ -1,3 +1,4 @@
+<%@page import="com.sharethyapp.helper.ContactNumber"%>
 <%@page import="com.sharethyapp.helper.UtilitiesHelper"%>
 <%@page import="java.util.concurrent.TimeUnit"%>
 <%@page import="java.text.SimpleDateFormat"%>
@@ -107,6 +108,33 @@
         </table>
         <br/>
 
+
+        <h3>Contact Numbers</h3>
+
+        <table class="table">
+
+            <tr>
+            <th>Contact Number</th>
+            <th>Type</th>
+            </tr>
+
+            <%
+                Object conlist = request.getAttribute("contactlist");
+                if (conlist != null)
+                    for (ContactNumber tempcontact : (List<ContactNumber>) request.getAttribute("contactlist")) {
+                        pageContext.setAttribute("tempcontact", tempcontact);
+            %>
+            <tr>
+            <td>${tempcontact.mobileNumber}</td>
+            <td>${tempcontact.type}</td>
+            </tr>
+            <%
+                }
+            %>
+
+        </table>
+        <br/>
+
         <h3>Books Contributed</h3>
 
         <table class="table">
@@ -117,7 +145,6 @@
             <th>HolderID</th>
             <th>HoldingDate</th>
             <th>Last Condition</th>
-            <th>Revoke Book</th>
             </tr>
 
             <%
@@ -132,7 +159,6 @@
             <td><a href="profile.do?entrynumber=${tempbook.holderid}">${tempbook.holderid}</a></td>
             <td>${tempbook.holdingdate}</td>
             <td>${tempbook.lastCondition}</td>
-            <td>Revoke</td>
             </tr>
             <%
                 }

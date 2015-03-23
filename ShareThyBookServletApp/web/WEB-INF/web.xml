@@ -96,6 +96,14 @@
         <servlet-name>ChangeUserTypeServlet</servlet-name>
         <servlet-class>com.sharethyapp.servlets.ChangeUserTypeServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>EditImageServlet</servlet-name>
+        <servlet-class>com.sharethyapp.servlets.EditImageServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>BookImageServlet</servlet-name>
+        <servlet-class>com.sharethyapp.servlets.BookImageServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>DummyServlet</servlet-name>
         <url-pattern>/dummy.do</url-pattern>
@@ -191,6 +199,14 @@
     <servlet-mapping>
         <servlet-name>ChangeUserTypeServlet</servlet-name>
         <url-pattern>/changetype.do</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>EditImageServlet</servlet-name>
+        <url-pattern>/editImage.do</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>BookImageServlet</servlet-name>
+        <url-pattern>/bookimage.do</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

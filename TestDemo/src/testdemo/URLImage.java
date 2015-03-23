@@ -116,7 +116,7 @@ public class URLImage {
         URLImage ui = new URLImage();
         String[][] csv = ui.readAndConvert2dArrayCsv("ISBN_Image.csv");
         int count = 0;
-        byte[][] finalArr = new byte[271379][2];
+        byte[][] finalArr = new byte[271379][];
 
         for (String[] line : csv) {
 
